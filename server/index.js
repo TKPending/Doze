@@ -12,12 +12,7 @@ require("dotenv").config();
 const port = 3001;
 
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    //   useCreateIndex: true,
-  })
-  .then(() => {
+  .connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB");
   })
   .catch((err) => {
