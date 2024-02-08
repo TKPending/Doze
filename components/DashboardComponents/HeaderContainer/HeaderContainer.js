@@ -9,16 +9,15 @@ const inter = Inter({ subsets: ["latin"] });
 const TITLE_DEFAULT = "12 Weeks Goals";
 const QUOTE_DEFAULT =
   "In just 12 weeks, you can create a new habit that will last a lifetime.";
-const HEADER_DEFAULT =
-  `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
+const HEADER_DEFAULT = `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
 
 const HeaderContainer = () => {
   const [title, setTitle] = useState(TITLE_DEFAULT);
   const [quote, setQuote] = useState(QUOTE_DEFAULT);
   const [isHeader, setIsHeader] = useState(false); // Displays text to edit header
   const [headerImage, setHeaderImage] = useState(HEADER_DEFAULT); // Changing of header value
-  const [validHeader, setValidHeader] = useState(false); // Valid image 
-  const [imageLink, setImageLink] = useState(localStorage.getItem("Header Background"))
+  const [validHeader, setValidHeader] = useState(false); // Valid image
+  const [imageLink, setImageLink] = useState("");
 
   const headerRef = useRef(null);
 
@@ -58,10 +57,21 @@ const HeaderContainer = () => {
   // After user inputs a header image, make change
   useEffect(() => {
     if (validHeader) {
-      localStorage.setItem("Header Background", headerImage);
-      setImageLink(localStorage.getItem("Header Background"))
+      if (typeof window !== "undefined") {
+        localStorage.setItem("Header Background", headerImage);
+        setImageLink(localStorage.getItem("Header Background"));
+      }
     }
   }, [validHeader, imageLink]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedImageLink = localStorage.getItem("Header Background");
+      if (storedImageLink) {
+        setImageLink(storedImageLink);
+      }
+    }
+  }, []);
 
   useEffect(() => {}, [title, quote, headerImage]);
 
