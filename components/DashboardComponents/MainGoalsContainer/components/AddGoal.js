@@ -16,9 +16,9 @@ const AddGoal = ({ goals, setGoals }) => {
   return (
     <div
       onClick={handleAddGoal}
-      className={`mt-2 ml-8 flex gap-4 items-center justify-center w-32 h-8 bg-[#494368] hover:border hover:border-black hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
+      className={`mt-4 ml-8 flex gap-4 items-center justify-center w-32 h-8 border border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-black hover:border hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
     >
-      <h1 className="text-white font-semibold hover:text-border">Add Goal +</h1>
+      <h1 className="font-semibold">Add Goal +</h1>
     </div>
   );
 };

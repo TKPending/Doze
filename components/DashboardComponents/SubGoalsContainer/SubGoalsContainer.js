@@ -45,10 +45,10 @@ const SubGoalsContainer = () => {
   
 
   return (
-    <div className="bg-white w-full h-auto rounded-b-lg p-10 ">
+    <div className="bg-opacity-30 w-full h-auto rounded-b-lg p-10 bg-neutral-100 shadow-md">
       <h1 className="text-3xl text-black font-semibold mb-2">Board</h1>
 
-      <div className="flex gap-4 w-full max-h-screen h-full rounded-lg p-4">
+      <div className="flex gap-4 w-full shadow bg-indigo-600 bg-opacity-20 max-h-screen h-full rounded-lg p-4">
         {stages.map((section, index) => (
           <ProgressionContainer
             key={index}
