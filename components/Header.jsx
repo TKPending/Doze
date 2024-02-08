@@ -21,7 +21,7 @@ const Header = () => {
         {isUserLoggedIn ? (
         <div className="hidden sm:flex space-x-8 text-lg">
           <Link
-            href="/" className="rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center">Dashboard
+            href="/dashboard" className="rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center">Dashboard
           </Link> 
           <div className=" flex relative"> 
             <button className="text-4xl " onClick={() => setToggleMobileMenu((prev) => !prev)}>
@@ -37,16 +37,16 @@ const Header = () => {
                   <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">name@example.com</span>
                   <hr className="my-2 border-gray-300 dark:border-gray-700" />
                 </div>
-                <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Profile settings</Link>
-                <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>About us</Link>
-                <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
+                <Link href="/profile" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Profile settings</Link>
+                <Link href="/aboutus" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>About us</Link>
+                <Link href="/signout" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
               </div>
             )}
           </div>
         </div>) : (
         <div className="hidden sm:flex space-x-8 text-lg">
-            <Link href="/" className="rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black hover:border-black text-center text-sm font-inter flex items-center justify-center">Sign in</Link>
-            <Link href="/" className="rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-indigo-600 hover:border-indigo-600 hover:text-white text-center text-sm font-inter flex items-center justify-center">Sign up</Link>
+            <Link href="/signin" className="rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black hover:border-black text-center text-sm font-inter flex items-center justify-center">Sign in</Link>
+            <Link href="/signup" className="rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-indigo-600 hover:border-indigo-600 hover:text-white text-center text-sm font-inter flex items-center justify-center">Sign up</Link>
         </div>
         )}
 
@@ -63,10 +63,10 @@ const Header = () => {
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">name@example.com</span>
                     <hr className="my-2 border-gray-300 dark:border-gray-700" />
                   </div>
-                    <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Dashboard</Link>
-                    <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Profile</Link>
-                    <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>About us</Link>
-                    <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Logout</Link>
+                    <Link href="/dashboard" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Dashboard</Link>
+                    <Link href="/profile" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Profile</Link>
+                    <Link href="/aboutus" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>About us</Link>
+                    <Link href="/signout" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
                 </div>
             )}
         </div>) : (        
@@ -74,8 +74,8 @@ const Header = () => {
           <button className="text-3xl" onClick={() => setToggleMobileMenu((prev) => !prev)}>&#9776;</button>
           {toggleMobileMenu && (
             <div className="absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end shadow">
-                <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign in</Link>
-                <Link href="/" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
+                <Link href="/signin" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign in</Link>
+                <Link href="/signout" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
             </div>
           )}
         </div>)}
