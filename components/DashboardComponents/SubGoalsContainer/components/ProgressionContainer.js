@@ -51,7 +51,7 @@ const ProgressionContainer = ({
   useEffect(() => {}, [isModalVisible, taskClicked]);
 
   return (
-    <div className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2`}>
+    <div className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2 bg-opacity-50`}>
       {/* Renders the header of subsection, Todo, In Progress and Done */}
       <SubGoalTitleContainer
         stage={stage}
@@ -68,7 +68,7 @@ const ProgressionContainer = ({
           tasks.length >= 10 ? "h-5/6" : "h-auto"
         } overflow-y-auto mb-4`}
       >
-        <div className="flex flex-col overflow-y-auto gap-2 w-full p-2">
+        <div className="flex flex-col items-center justify-center overflow-y-auto gap-2 w-full p-2">
           {/* Render the Sub Goals */}
           {tasks.map((task, index) => (
             <SmallSubGoals

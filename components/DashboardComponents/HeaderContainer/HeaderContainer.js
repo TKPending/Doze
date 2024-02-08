@@ -10,7 +10,7 @@ const TITLE_DEFAULT = "12 Weeks Goals";
 const QUOTE_DEFAULT =
   "In just 12 weeks, you can create a new habit that will last a lifetime.";
 const HEADER_DEFAULT =
-  "Enter URL that you want to set as the header background";
+  `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
 
 const HeaderContainer = () => {
   const [title, setTitle] = useState(TITLE_DEFAULT);
@@ -69,7 +69,7 @@ const HeaderContainer = () => {
     <div
       ref={headerRef}
       onClick={() => setIsHeader(true)}
-      className={`flex items-end bg-neutral-200 w-full h-60 rounded-t-lg hover:cursor-pointer`}
+      className={`flex items-end w-full h-60 rounded-t-lg hover:cursor-pointer`}
       style={{
         backgroundImage: `${imageLink != "" ? `url(${imageLink})` : ""}`,
         backgroundSize: "cover",
@@ -102,7 +102,7 @@ const HeaderContainer = () => {
         />
         <input
           type="text"
-          className={`ml-[2%] ${inter.className} italic h-8 w-full text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`ml-[2%] ${inter.className} italic h-8 w-full font-bold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
           value={quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>
