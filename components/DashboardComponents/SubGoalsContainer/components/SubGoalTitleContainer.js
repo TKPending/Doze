@@ -43,16 +43,15 @@ const SubGoalTitleContainer = ({
 
       {/* Render the trashbin to remove all tasks */}
       <div className="flex items-center justify-center rounded-full border border-white hover:border-red-500 w-10 hover:text-red-500">
-      <IonIcon
-  icon={trashBinOutline}
-  onClick={handleRemoveAllTasks}
-  className="hover:cursor-pointer text-2xl"
-  // Filter out unwanted attributes
-  {...Object.keys({ role: undefined, class: undefined })
-    .filter(attr => !["role", "class"].includes(attr))
-    .reduce((acc, key) => ({ ...acc, [key]: undefined }), {})}
-/>
-
+        <IonIcon
+          icon={trashBinOutline}
+          onClick={handleRemoveAllTasks}
+          className="hover:cursor-pointer text-2xl"
+          // Filter out unwanted attributes
+          // {...Object.keys({ role: undefined, class: undefined })
+          //   .filter((attr) => !["role", "class"].includes(attr))
+          //   .reduce((acc, key) => ({ ...acc, [key]: undefined }), {})}
+        />
       </div>
     </div>
   );
