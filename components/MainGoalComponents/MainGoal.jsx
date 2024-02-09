@@ -1,5 +1,5 @@
 "use client"
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
@@ -10,21 +10,25 @@ const MainGoal = () => {
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [emoji, setEmoji] = useState("");
-
+ 
 const emojiPicture = () => {
   if (emoji !== ""){
+    console.log(emoji)
     return emoji
   } else {
-    return ":grin:"}
+    return "😁"}
 }
+
 
   const submitHandler = (e) => {
     e.preventDefault()
+    
   }
 
 
   const handleEmoji = (e) => {
     setEmoji(e.native)
+    
     
   }
   const toggleEmojiPicker = () => {
@@ -63,30 +67,26 @@ const emojiPicture = () => {
     setTags(newTags);
   }
 
-
-
-
  
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="w-1/2 h-full  m-24">
+    <div className="w-full flex justify-center items-center mb-48 mt-24">
+      <div className="md:w-1/2 h-full relative">
         <form id="goalForm" onSubmit={submitHandler}>
           <input name="title" type="text" className="input text-3xl mb-5" defaultValue={"Main Goal Title"} /> 
           <div className="flex border border-[#7899D4] p-10 flex-col">
-            <div>
-            
-            </div>
-          <button onClick={toggleEmojiPicker}>{isOpen ? "Close" : "Choose Emoji"}</button>
-          {isOpen &&  <div className=""><Picker data={data} onEmojiSelect={handleEmoji} /></div>} 
-            <div>
+            <div className="">
+            <button onClick={toggleEmojiPicker} className=""><span className="text-6xl">{emojiPicture()}</span></button>
+          {isOpen &&  <div className="absolute"><Picker data={data} onEmojiSelect={handleEmoji} onClickOutside={toggleEmojiPicker} /></div>} 
+          </div>
+            <div className="mt-2.5">
               
             <label htmlFor="date" className="font-bold">Date:</label>
-            <input name="date" type="date" className="input focus:border-[#ff9796] focus:outline-[#ff9796]" />
+            <input name="date" type="date" className="input focus:border-[#ff9796] focus:outline-[#ff9796] ml-7" />
             </div>
 
              {/* Button for changing Status */}
-             <div className="">
+             <div className="mt-2.5">
               <span className="font-bold mr-2.5">Status:</span>
               <select className="outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
                 <option>To-do</option>
@@ -97,12 +97,13 @@ const emojiPicture = () => {
             </div>
 
             {/* Tag input and colour changer */}
-            <div className="">
+            <div className="mt-2.5">
               <label htmlFor="tag" className="font-bold">Tags:</label>
-            <input name="tag" type="text" value={tagInput} onChange={handleTagInputChange} className="input focus:border-[#ff9796] focus:outline-[#ff9796] m-1" placeholder="e.g Travel"/>
+            <input name="tag" type="text" value={tagInput} onChange={handleTagInputChange} className="input focus:border-[#ff9796] focus:outline-[#ff9796] m-2.5 md:ml-14" placeholder="e.g Travel"/>
+            <button className="bg-[#7899D4] hover:bg-blue-400 text-white rounded-md pr-5 pl-5 m-2.5 pt-2.5 pb-2.5" onClick={handleAddTag}>+</button>
 
             {/* Buttons for changing tag colour */}
-            <div className="justify-center items-center">
+            <div className="justify-center items-center mt-2.5">
               <span className="font-bold">Tag Colour:</span>
               <input type="radio" id="blue" name="colour" value="blue" defaultChecked={selectedColour === "blue"} onChange={() => handleColourChange("blue")} className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 ml-2 mt-1"/>
 
@@ -118,11 +119,11 @@ const emojiPicture = () => {
 
               <input type="radio" id="pink" name="colour" value="pink" checked={selectedColour === "pink"} onChange={() => handleColourChange("pink")} className="radio border-pink-400 checked:bg-pink-400 bg-pink-400 ml-2 mt-1" />
 
-              <button className="bg-blue-400 hover:bg-blue-500 text-white rounded-md pr-2.5 pl-2.5 m-2.5" onClick={handleAddTag}>+</button>
+              
             </div>
             
             
-            <div>
+            <div className="mt-2.5">
               {tags.map((tag, index) => (
                 <span key={index}>
                   <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
@@ -139,12 +140,12 @@ const emojiPicture = () => {
 
            
 
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-2.5">
               <span className="font-bold mr-2.5">Description:</span>
               <textarea className="textarea focus:border-[#ff9796] focus:outline-[#ff9796]"></textarea>
             </div>
-           
             
+           <button className="absolute right-5 bottom-5 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">Save</button>
           </div>
         </form>
       </div>
