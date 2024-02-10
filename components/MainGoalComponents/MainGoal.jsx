@@ -5,6 +5,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import AddSubGoal from "./components/AddSubGoal";
 import SubGoalComponent from "./components/SubGoalComponent";
+import ClearSubGoals from "./components/ClearSubGoals";
 
 const TempSubGoal = ({ task, setIsModalVisible }) => {
   // User clicks on close modal, close modal
@@ -116,7 +117,7 @@ const MainGoal = () => {
             className="input text-3xl mb-5"
             defaultValue={"Main Goal Title"}
           />
-          <div className="flex border border-[#7899D4] p-10 flex-col">
+          <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
             <div className="">
               <button onClick={toggleEmojiPicker} className="">
                 <span className="text-6xl">{emojiPicture()}</span>
@@ -131,7 +132,7 @@ const MainGoal = () => {
                 </div>
               )}
             </div>
-            <div className="mt-2.5">
+            <div >
               <label htmlFor="date" className="font-bold">
                 Date:
               </label>
@@ -143,9 +144,9 @@ const MainGoal = () => {
             </div>
 
             {/* Button for changing Status */}
-            <div className="mt-2.5">
+            <div >
               <span className="font-bold mr-2.5">Status:</span>
-              <select className="outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
+              <select className="outline-[#ff9796] border border-indigo-600 border rounded-md focus:border-[#ff9796] p-2">
                 <option>To-do</option>
                 <option>In progress</option>
                 <option>Complete</option>
@@ -153,7 +154,7 @@ const MainGoal = () => {
             </div>
 
             {/* Tag input and colour changer */}
-            <div className="mt-2.5">
+            <div  >
               <label htmlFor="tag" className="font-bold">
                 Tags:
               </label>
@@ -162,7 +163,7 @@ const MainGoal = () => {
                 type="text"
                 value={tagInput}
                 onChange={handleTagInputChange}
-                className="input focus:border-[#ff9796] focus:outline-[#ff9796] m-2.5 md:ml-14"
+                className="input border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796] m-2.5 md:ml-14"
                 placeholder="e.g Travel"
               />
               <button
@@ -173,7 +174,7 @@ const MainGoal = () => {
               </button>
 
               {/* Buttons for changing tag colour */}
-              <div className="justify-center items-center mt-2.5">
+              <div className="flex items-center mt-2">
                 <span className="font-bold">Tag Colour:</span>
                 <input
                   type="radio"
@@ -274,12 +275,15 @@ const MainGoal = () => {
 
             <div className="flex items-center mt-2.5">
               <span className="font-bold mr-2.5">Description:</span>
-              <textarea className="textarea focus:border-[#ff9796] focus:outline-[#ff9796]"></textarea>
+              <textarea className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"></textarea>
             </div>
 
             {/* Sub Goals */}
-            <div className="flex flex-col gap-2 h-auto mb-20">
+            <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
+            <div className="w-2/4 h-8 flex items-center justify-between pr-2">
               <p className="font-bold">Sub Goals:</p>
+              {tempSubGoals.length !== 0 && <ClearSubGoals onClick={() => setTempSubGoals([])} />} 
+            </div>
 
               <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
                 {tempSubGoals.map((task, index) => (
@@ -291,6 +295,12 @@ const MainGoal = () => {
                     onClick={() => setTaskedClicked(task)}
                   />
                 ))}
+
+                {tempSubGoals.length === 0 && 
+                  <div>
+                    <p className="font-bold text-center text-neutral-400">Add goals which will help with achieving your mains goals!</p>
+                  </div>
+                }
 
                 <AddSubGoal
                   subGoals={tempSubGoals}
