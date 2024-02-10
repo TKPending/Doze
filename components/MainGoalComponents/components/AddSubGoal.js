@@ -1,7 +1,7 @@
 // For the main goals page
 const AddSubGoal = ({ subGoals, setSubGoals }) => {
   const handleAddSubTask = () => {
-    subGoals.push(1);
+    subGoals.push(subGoals.length + 1);
     setSubGoals([...subGoals]);
   };
 

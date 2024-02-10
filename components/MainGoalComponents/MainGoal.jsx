@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import AddSubGoal from "./components/AddSubGoal";
+import SubGoalComponent from "./components/SubGoalComponent";
 
 const TempSubGoal = ({ task, setIsModalVisible }) => {
   // User clicks on close modal, close modal
@@ -43,7 +44,7 @@ const MainGoal = () => {
   const [emoji, setEmoji] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [taskClicked, setTaskedClicked] = useState(false);
-  const [tempSubGoals, setTempSubGoals] = useState([1,2,3,4,5]);
+  const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
 
   const emojiPicture = () => {
     if (emoji !== "") {
@@ -96,10 +97,14 @@ const MainGoal = () => {
     setTags(newTags);
   };
 
-  const handleModal = (task) => {
-    setIsModalVisible(true);
-    setTaskedClicked(task);
-  };
+  useEffect(() => {
+    const isTaskExists = tempSubGoals.includes(taskClicked);
+  
+    if (isTaskExists) {
+      setIsModalVisible(true);
+    } 
+  }, [taskClicked])
+  
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -278,16 +283,19 @@ const MainGoal = () => {
 
               <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
                 {tempSubGoals.map((task, index) => (
-                  <div
+                  <SubGoalComponent
                     key={index}
-                    onClick={() => handleModal(task)}
-                    className=""
-                  >
-                    <p>Sub Goal {task}</p>
-                  </div>
+                    subGoals={tempSubGoals}
+                    setSubGoals={setTempSubGoals}
+                    task={task}
+                    onClick={() => setTaskedClicked(task)}
+                  />
                 ))}
 
-                <AddSubGoal subGoals={tempSubGoals} setSubGoals={setTempSubGoals} />
+                <AddSubGoal
+                  subGoals={tempSubGoals}
+                  setSubGoals={setTempSubGoals}
+                />
               </div>
             </div>
 
