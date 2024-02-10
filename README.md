@@ -518,6 +518,8 @@ Redux is employed to manage global state, ensuring consistent data flow througho
 
 [MongoDB](https://www.mongodb.com/) is chosen as the database for Doze due to its flexibility, scalability, and document-oriented structure. It accommodates the diverse data needs of the project, provides efficient querying, and seamlessly integrates with the Node.js backend.
 
+# Third-Pary Libraries
+
 ### **Why we used third-party libraries and the benefits it has**
 
 Third-party libraries enhance Doze's functionality by providing pre-built solutions for common tasks. These libraries save development time, offer robust features, and contribute to the overall efficiency and performance of the application.
