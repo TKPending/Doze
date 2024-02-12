@@ -1,7 +1,8 @@
-const AddSubGoal = ({ stage, stages, setStages }) => {
+// For the main goals page
+const AddSubGoal = ({ subGoals, setSubGoals }) => {
   const handleAddSubTask = () => {
-    stage.tasks.push(1);
-    setStages([...stages]);
+    subGoals.push(subGoals.length + 1);
+    setSubGoals([...subGoals]);
   };
 
   return (

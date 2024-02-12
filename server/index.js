@@ -1,35 +1,36 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const cors = require("cors");
 require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const router = require("./routes/goalsRoutes");
+const PORT = process.env.PORT || 3001;
+
+//const morgan = require("morgan");
+//const helmet = require("helmet");
+//app.use(morgan);
+//app.use(helmet());
 // const createError = require('http-errors');
 // const { User } = require('./models/user');
 // const { v4: uuidv4 } = require('uuid');
 
-const port = 3001;
+const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    //   useCreateIndex: true,
   })
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.log("Error connecting to MongoDB", err);
-  });
-
-app.use(express.json());
-app.use(morgan);
-app.use(helmet());
-
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log("Error connecting to MongoDB", err));
 app.use(
   cors({
+    credentials: true,
     origin: "http://localhost:3000",
   })
 );
+app.use(express.json());
+app.use(router);
+
+app.listen(PORT, () => {
+  console.log("Server is running on PORT 3001");
+});

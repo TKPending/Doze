@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 
 const Header = () => {
-    const isUserLoggedIn = true;
+    const isUserLoggedIn = false;
     const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
 
   return (

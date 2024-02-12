@@ -4,37 +4,7 @@ import { useState, useEffect } from "react";
 import AddSubGoal from "./AddSubGoal";
 import SubGoalTitleContainer from "./SubGoalTitleContainer";
 import SmallSubGoals from "./SmallSubGoals";
-
-
-const TempSubGoal = ({ task, setIsModalVisible }) => {
-  // User clicks on close modal, close modal
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
-
-  // User clicks off modal, close modal
-  const handleOffModalClick = (e) => {
-    if (e.target.classList.contains("bg-black")) {
-      closeModal();
-    }
-  };
-
-  return (
-    <div
-      onClick={handleOffModalClick}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div className="bg-white h-3/4 w-1/2 p-6 rounded-lg">
-        <h1 className="text-2xl text-black font-bold mb-4">
-          Sub Goal - {task.title}
-        </h1>
-        <p onClick={closeModal} className="text-blue-500 cursor-pointer">
-          Close Modal
-        </p>
-      </div>
-    </div>
-  );
-};
+import SubGoal from "../../../SubGoalComponent/SubGoal";
 
 const ProgressionContainer = ({
   title,
@@ -51,7 +21,9 @@ const ProgressionContainer = ({
   useEffect(() => {}, [isModalVisible, taskClicked]);
 
   return (
-    <div className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2`}>
+    <div
+      className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2 bg-opacity-50`}
+    >
       {/* Renders the header of subsection, Todo, In Progress and Done */}
       <SubGoalTitleContainer
         stage={stage}
@@ -68,7 +40,7 @@ const ProgressionContainer = ({
           tasks.length >= 10 ? "h-5/6" : "h-auto"
         } overflow-y-auto mb-4`}
       >
-        <div className="flex flex-col overflow-y-auto gap-2 w-full p-2">
+        <div className="flex flex-col items-center justify-center overflow-y-auto gap-2 w-full p-2">
           {/* Render the Sub Goals */}
           {tasks.map((task, index) => (
             <SmallSubGoals
@@ -82,10 +54,7 @@ const ProgressionContainer = ({
 
         {/* Display the sub goals, when a sub task is clicked */}
         {isModalVisible && (
-          <TempSubGoal
-            task={taskClicked}
-            setIsModalVisible={setIsModalVisible}
-          />
+            <SubGoal setIsModalVisible={setIsModalVisible} />
         )}
 
         {/* If no task, display no task */}
