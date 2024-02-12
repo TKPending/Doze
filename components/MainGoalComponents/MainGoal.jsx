@@ -6,36 +6,7 @@ import Picker from "@emoji-mart/react";
 import AddSubGoal from "./components/AddSubGoal";
 import SubGoalComponent from "./components/SubGoalComponent";
 import ClearSubGoals from "./components/ClearSubGoals";
-
-const TempSubGoal = ({ task, setIsModalVisible }) => {
-  // User clicks on close modal, close modal
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
-
-  // User clicks off modal, close modal
-  const handleOffModalClick = (e) => {
-    if (e.target.classList.contains("bg-black")) {
-      closeModal();
-    }
-  };
-
-  return (
-    <div
-      onClick={handleOffModalClick}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div className="bg-white h-3/4 w-1/2 p-6 rounded-lg">
-        <h1 className="text-2xl text-black font-bold mb-4">
-          Sub Goal - {task}
-        </h1>
-        <p onClick={closeModal} className="text-blue-500 cursor-pointer">
-          Close Modal
-        </p>
-      </div>
-    </div>
-  );
-};
+import SubGoal from "../SubGoalComponent/SubGoal";
 
 const MainGoal = () => {
   const [tags, setTags] = useState([]);
@@ -100,12 +71,11 @@ const MainGoal = () => {
 
   useEffect(() => {
     const isTaskExists = tempSubGoals.includes(taskClicked);
-  
+
     if (isTaskExists) {
       setIsModalVisible(true);
-    } 
-  }, [taskClicked])
-  
+    }
+  }, [taskClicked]);
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -132,7 +102,7 @@ const MainGoal = () => {
                 </div>
               )}
             </div>
-            <div >
+            <div>
               <label htmlFor="date" className="font-bold">
                 Date:
               </label>
@@ -144,7 +114,7 @@ const MainGoal = () => {
             </div>
 
             {/* Button for changing Status */}
-            <div >
+            <div>
               <span className="font-bold mr-2.5">Status:</span>
               <select className="outline-[#ff9796] border border-indigo-600 border rounded-md focus:border-[#ff9796] p-2">
                 <option>To-do</option>
@@ -154,7 +124,7 @@ const MainGoal = () => {
             </div>
 
             {/* Tag input and colour changer */}
-            <div  >
+            <div>
               <label htmlFor="tag" className="font-bold">
                 Tags:
               </label>
@@ -280,10 +250,12 @@ const MainGoal = () => {
 
             {/* Sub Goals */}
             <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
-            <div className="w-2/4 h-8 flex items-center justify-between pr-2">
-              <p className="font-bold">Sub Goals:</p>
-              {tempSubGoals.length !== 0 && <ClearSubGoals onClick={() => setTempSubGoals([])} />} 
-            </div>
+              <div className="w-2/4 h-8 flex items-center justify-between pr-2">
+                <p className="font-bold">Sub Goals:</p>
+                {tempSubGoals.length !== 0 && (
+                  <ClearSubGoals onClick={() => setTempSubGoals([])} />
+                )}
+              </div>
 
               <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
                 {tempSubGoals.map((task, index) => (
@@ -296,11 +268,13 @@ const MainGoal = () => {
                   />
                 ))}
 
-                {tempSubGoals.length === 0 && 
+                {tempSubGoals.length === 0 && (
                   <div>
-                    <p className="font-bold text-center text-neutral-400">Add goals which will help with achieving your mains goals!</p>
+                    <p className="font-bold text-center text-neutral-400">
+                      Add goals which will help with achieving your mains goals!
+                    </p>
                   </div>
-                }
+                )}
 
                 <AddSubGoal
                   subGoals={tempSubGoals}
@@ -316,10 +290,7 @@ const MainGoal = () => {
         </form>
 
         {isModalVisible && (
-          <TempSubGoal
-            task={taskClicked}
-            setIsModalVisible={setIsModalVisible}
-          />
+          <SubGoal setIsModalVisible={setIsModalVisible} />
         )}
       </div>
     </div>
