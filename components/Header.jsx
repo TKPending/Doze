@@ -2,10 +2,29 @@
 "use client"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import axios from "axios"
 
 const Header = () => {
-    const isUserLoggedIn = false;
+    const [user, setUser] = useState(null)
     const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
+
+const getUser = async() => {
+  try{const response = await axios.get("http://localhost:3001/user", {withCredentials: true});
+      setUser(response.data)}catch(err){console.log(err)}
+  
+}
+const signOutReq = async(e) => {
+  try{
+    e.preventDefault()
+    const response = await axios.post("http://localhost:3001/signout", null, {withCredentials: true});
+    window.location = '/'
+  }catch(err){
+    console.log(err)
+  }
+}
+    useEffect(() => {
+      getUser()
+    }, []);
 
   return (
     <header className="sticky top-0 z-10">
@@ -18,7 +37,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        {isUserLoggedIn ? (
+        {user ? (
         <div className="hidden sm:flex space-x-8 text-lg">
           <Link
             href="/dashboard" className="rounded-full border border-indigo-600 bg-indigo-600 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center">Dashboard
@@ -33,13 +52,13 @@ const Header = () => {
             {toggleMobileMenu && (
               <div className="absolute right-0 top-full mt-3 w-full  p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2  shadow">
                 <div>
-                  <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">User Name</span>
-                  <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">name@example.com</span>
+                  <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">{user.username}</span>
+                  <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">{user.email}</span>
                   <hr className="my-2 border-gray-300 dark:border-gray-700" />
                 </div>
                 <Link href="/profile" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Profile settings</Link>
                 <Link href="/aboutus" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>About us</Link>
-                <Link href="/signout" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Sign out</Link>
+                <Link href="/signout" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={signOutReq}>Sign out</Link>
               </div>
             )}
           </div>
@@ -51,7 +70,7 @@ const Header = () => {
         )}
 
       {/* Mobile navigation */}
-      {isUserLoggedIn ? (
+      {user ? (
         <div
         className="sm:hidden flex relative text-lg"
       >
@@ -59,8 +78,8 @@ const Header = () => {
             {toggleMobileMenu && (
                 <div className="absolute right-0 top-full mt-3 w-full  p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 shadow">
                   <div>
-                    <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">User Name</span>
-                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">name@example.com</span>
+                    <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">{user.username}</span>
+                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">{user.email}</span>
                     <hr className="my-2 border-gray-300 dark:border-gray-700" />
                   </div>
                     <Link href="/dashboard" className="hover:bg-slate-100 rounded-full p-2 w-full" onClick={() => setToggleMobileMenu(false)}>Dashboard</Link>

@@ -4,6 +4,9 @@ const cors = require("cors");
 const app = express();
 const router = require("./routes/goalsRoutes");
 const PORT = process.env.PORT || 3001;
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+require("./controllers/passport");
 
 //const morgan = require("morgan");
 //const helmet = require("helmet");
@@ -22,6 +25,10 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("Error connecting to MongoDB", err));
+
+app.use(cookieParser());
+app.use(passport.initialize());
+
 app.use(
   cors({
     credentials: true,

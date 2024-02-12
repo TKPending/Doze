@@ -1,11 +1,33 @@
 "use client"
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 const Signin = () => {
-    const submitHandler = (e) => {
-        e.preventDefault();
+  const router = useRouter();
+  const [userData, setUserData] = useState({ email: "", password: ""})
+
+  const handleInputValue = (e) => {
+    if(e.target.name === "email") {
+      setUserData({...userData, email: e.target.value})
     }
+    if(e.target.name === "password") {
+      setUserData({...userData, password: e.target.value})
+    }
+  }
+
+  const signInReq = async(e) => {
+    e.preventDefault();
+    try{
+      const response = await axios.post("http://localhost:3001/signin", userData, { withCredentials: true });
+      window.location = '/'
+    }catch(err){
+      console.log(err)
+    }
+    
+  }
   return (
     <div className="w-screen h-auto">
-      <form onSubmit={submitHandler}>
+      <form onSubmit={signInReq}>
       <div className="flex flex-col items-center">
         <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
 
@@ -23,10 +45,10 @@ const Signin = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+                className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"  onChange={handleInputValue}
               />
         <label for="password" className="">Password</label>
-        <input type="password" placeholder="" name="password" className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5" />
+        <input type="password" placeholder="" name="password" className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5" onChange={handleInputValue}/>
         <div>
         {/* <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Continue</button> */}
         <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Sign In</button>
