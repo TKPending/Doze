@@ -73,6 +73,10 @@ const SubGoal = ({ setIsModalVisible }) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div className="bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-[#FF9796]">
+        <div className="w-full flex justify-end pr-[3%]">
+          <p onClick={closeModal} className="text-[#ff9796] hover:text-white hover:bg-red-400 border border-[#ff9796] rounded-full w-12 h-12 flex items-center justify-center text-2xl">x</p>
+        </div>
+
         <form
           className="flex flex-col items-center w-full h-full"
           onSubmit={formHandler}
