@@ -10,7 +10,7 @@ const Footer = () => {
                 Doze
             </h1>
             </Link>
-            <span class="block text-sm text-gray-500  dark:text-gray-400">© 2024 Doze™. All Rights Reserved.</span>
+            <span className="block text-sm text-gray-500  dark:text-gray-400">© 2024 Doze™. All Rights Reserved.</span>
         </div>
             <ul className="flex gap-5 text-sm font-medium text-gray-500  dark:text-gray-40">
                 <Link href="/aboutus" className="hover:text-gray-400 rounded-full p-2  text-nowrap" >About us</Link>

@@ -16,13 +16,20 @@ const Signin = () => {
 
         <h2 className="m-2.5">or</h2>
 
-        <label for="username" className="">Username</label>
-        <input type="text" placeholder="" name="username" className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5" />
+        <label for="email" className="">Email</label>
+        <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+              />
         <label for="password" className="">Password</label>
         <input type="password" placeholder="" name="password" className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5" />
         <div>
-        <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Continue</button>
-        <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Sign Up</button>
+        {/* <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Continue</button> */}
+        <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Sign In</button>
         </div>
         </div>
         </form>
