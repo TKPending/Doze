@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import AddSubGoal from "./AddSubGoal";
 import SubGoalTitleContainer from "./SubGoalTitleContainer";
 import SmallSubGoals from "./SmallSubGoals";
+import SubGoal from "../../../SubGoalComponent/SubGoal";
 
 
 const TempSubGoal = ({ task, setIsModalVisible }) => {
@@ -24,14 +25,7 @@ const TempSubGoal = ({ task, setIsModalVisible }) => {
       onClick={handleOffModalClick}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div className="bg-white h-3/4 w-1/2 p-6 rounded-lg">
-        <h1 className="text-2xl text-black font-bold mb-4">
-          Sub Goal - {task.title}
-        </h1>
-        <p onClick={closeModal} className="text-blue-500 cursor-pointer">
-          Close Modal
-        </p>
-      </div>
+      <SubGoal />
     </div>
   );
 };
