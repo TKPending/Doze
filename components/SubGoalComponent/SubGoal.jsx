@@ -91,17 +91,17 @@ const SubGoal = ({ setIsModalVisible }) => {
 
           <input
             type="text"
-            className="input input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
             defaultValue="Title"
           ></input>
 
-          <select className="outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
+          <select className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
             <option>To-do</option>
             <option>In progress</option>
             <option>Complete</option>
           </select>
 
-          <select className="outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
+          <select className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
             <option>Buy A House</option>
             <option>Visit France</option>
             <option>Gain 5kg</option>
@@ -118,7 +118,7 @@ const SubGoal = ({ setIsModalVisible }) => {
             ></input>
 
             <button
-              className="bg-[#FF9796] text-white rounded-md p-2.5 ml-4"
+              className="bg-[#FF9796] text-white rounded-md w-12 hover:bg-red-500 transition duration-200 p-2.5 ml-4"
               onClick={handleAddTag}
             >
               +
@@ -213,13 +213,15 @@ const SubGoal = ({ setIsModalVisible }) => {
           </div>
 
           <textarea
-            className="textarea input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="textarea h-72 input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
             placeholder="Additional information"
           ></textarea>
 
-          <button className="absolute right-96 bottom-16 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
-            Save
-          </button>
+          <div className="w-full h-full flex justify-end items-end pb-[5%] pr-[5%]">
+            <button className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
+              Save
+            </button>
+          </div>
         </form>
       </div>
     </div>
