@@ -23,8 +23,7 @@ const Signin = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/signin",
-        userData,
-        { withCredentials: true }
+        userData
       );
       onUserSignedIn();
       router.push("/");

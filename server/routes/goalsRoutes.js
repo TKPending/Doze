@@ -13,7 +13,7 @@ router.post("/signup", signUp);
 router.post("/signin", signIn);
 router.get(
   "/user",
-  passport.authenticate(["jwt", "google", "facebook"], { session: false }),
+  passport.authenticate(["jwt"], { session: false }),
   getUser
 );
 router.post("/signout", signOut);

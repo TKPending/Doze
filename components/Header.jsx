@@ -11,9 +11,7 @@ const Header = () => {
   const signOutReq = async (e) => {
     try {
       e.preventDefault();
-      await axios.post("http://localhost:3001/signout", null, {
-        withCredentials: true,
-      });
+      await axios.post("http://localhost:3001/signout");
       onUserSignedOut();
     } catch (err) {
       console.log(err);
