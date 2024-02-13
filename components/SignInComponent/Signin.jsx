@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
+
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
@@ -37,6 +38,7 @@ const Signin = () => {
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
 
+          {/* Facebook */}
           <button className="btn btn-outline text-[#7899D4] hover:border-[#7899D4] hover:bg-[#7899D4] m-2.5 max-w-xs w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +57,8 @@ const Signin = () => {
             </svg>
             Continue with Facebook{" "}
           </button>
+
+          {/* Google */}
           <button className="btn btn-outline text-[#7899D4] hover:bg-[#7899D4] hover:border-[#7899D4] m-2.5 max-w-xs w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -88,10 +92,10 @@ const Signin = () => {
                     gradientTransform="matrix(0 -253.715 235.975 0 68 275.717)"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#FD5" />
-                    <stop offset=".1" stopColor="#FD5" />
-                    <stop offset=".5" stopColor="#FF543E" />
-                    <stop offset="1" stopColor="#C837AB" />
+                    <stop stop-color="#FD5" />
+                    <stop offset=".1" stop-color="#FD5" />
+                    <stop offset=".5" stop-color="#FF543E" />
+                    <stop offset="1" stop-color="#C837AB" />
                   </radialGradient>
                   <radialGradient
                     id="skillIconsInstagram1"
@@ -101,15 +105,17 @@ const Signin = () => {
                     gradientTransform="matrix(22.25952 111.2061 -458.39518 91.75449 -42.881 18.441)"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stopColor="#3771C8" />
-                    <stop offset=".128" stopColor="#3771C8" />
-                    <stop offset="1" stopColor="#60F" stopOpacity="0" />
+                    <stop stop-color="#3771C8" />
+                    <stop offset=".128" stop-color="#3771C8" />
+                    <stop offset="1" stop-color="#60F" stop-opacity="0" />
                   </radialGradient>
                 </defs>
               </g>
             </svg>{" "}
-            Continue with Instagram{" "}
+            Sign in with Google{" "}
           </button>
+
+          {/* Github */}
           <button className="btn btn-outline text-[#7899D4] hover:border-[#7899D4] hover:bg-[#7899D4] m-2.5 max-w-xs w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +134,7 @@ const Signin = () => {
 
           <h2 className="m-2.5">or</h2>
 
-          <label htmlFor="email" className="">
+          <label for="email" className="">
             Email
           </label>
           <input
