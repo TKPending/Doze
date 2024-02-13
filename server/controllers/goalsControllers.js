@@ -8,7 +8,6 @@ const User = require("../models/user");
 exports.signUp = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log(req.body.email, req.body.password);
     const user = new User({
       username: req.body.username,
       email: req.body.email,
@@ -29,8 +28,7 @@ exports.signIn = async (req, res, next) => {
       return next(createError(404, "The user not found"));
     }
     const result = await bcrypt.compare(req.body.password, user.password);
-    console.log(result);
-    console.log(result);
+
     if (result) {
       const accessToken = jwt.sign(
         { id: user._id },
