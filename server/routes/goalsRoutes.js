@@ -11,7 +11,11 @@ const passport = require("passport");
 // Authentication
 router.post("/signup", signUp);
 router.post("/signin", signIn);
-router.get("/user", passport.authenticate("jwt", { session: false }), getUser);
+router.get(
+  "/user",
+  passport.authenticate(["jwt"], { session: false }),
+  getUser
+);
 router.post("/signout", signOut);
 
 // Main Goals

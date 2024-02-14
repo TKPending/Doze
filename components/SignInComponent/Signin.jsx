@@ -1,11 +1,13 @@
 "use client";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
 
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
+  const { onUserSignedIn } = useContext(Context);
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
@@ -21,10 +23,10 @@ const Signin = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/signin",
-        userData,
-        { withCredentials: true }
+        userData
       );
-      window.location = "/";
+      onUserSignedIn();
+      router.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -143,7 +145,7 @@ const Signin = () => {
             className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
             onChange={handleInputValue}
           />
-          <label for="password" className="">
+          <label htmlFor="password" className="">
             Password
           </label>
           <input
