@@ -5,16 +5,17 @@ import axios from "axios";
 import { Context } from "./ContextUser";
 
 const Header = () => {
-  const { user, onUserSignedOut } = useContext(Context);
+  const { user, onUserSignedOut, UserAuth } = useContext(Context);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
 
   const signOutReq = async (e) => {
     try {
       e.preventDefault();
-      await axios.post("http://localhost:3001/signout");
-      onUserSignedOut();
+      await UserAuth.signOutUser(onUserSignedOut);
+
     } catch (err) {
-      console.log(err);
+      console.log("Problem signin out user")
+      console.error(err);
     }
   };
 
