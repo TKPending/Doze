@@ -1,7 +1,8 @@
 "use client";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
+import { Context } from "../ContextUser";
 
 const Signup = () => {
   const router = useRouter();
@@ -10,6 +11,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const { UserAuth } = useContext(Context);
 
   const handleInputValue = (e) => {
     if (e.target.name === "username") {
@@ -23,21 +25,20 @@ const Signup = () => {
     }
   };
 
-  const signUpReq = async (e) => {
+  const onSignUpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3001/signup",
-        userData
-      );
+      await UserAuth.signUpReq(userData)
+
       router.push("/signin");
     } catch (err) {
       console.log(err);
     }
   };
+  
   return (
     <div className="w-screen h-auto">
-      <form onSubmit={signUpReq}>
+      <form onSubmit={onSignUpSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
 

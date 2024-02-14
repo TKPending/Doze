@@ -9,10 +9,6 @@ const subGoalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  endDate: {
-    type: String, // Will be linked to main goal end date
-    required: true,
-  },
   icon: {
     type: String,
     required: true,

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
-  const { onUserSignedIn } = useContext(Context);
+  const { onUserSignedIn, UserAuth } = useContext(Context);
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
@@ -18,22 +18,20 @@ const Signin = () => {
     }
   };
 
-  const signInReq = async (e) => {
+  const onSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3001/signin",
-        userData
-      );
-      onUserSignedIn();
+      await UserAuth.signInReq(userData, onUserSignedIn);
+
       router.push("/");
     } catch (err) {
-      console.log(err);
+      console.log("Problem authenticating user");
+      console.error(err);
     }
   };
   return (
     <div className="w-screen h-auto">
-      <form onSubmit={signInReq}>
+      <form onSubmit={onSignInSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
 
