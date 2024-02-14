@@ -27,3 +27,25 @@ exports.signIn = async (req, res, next) => {
     return next(createError(500, error.message));
   }
 };
+
+exports.signUpWithFacebook = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ accountId: req.user.id });
+    if (!user) {
+      const user = new User({
+        accountId: req.user.id,
+        email: req.user.email,
+        name: req.user.displayName,
+        provider: req.user.provider,
+      });
+      await user.save();
+    }
+    res.cookie("auth", accessToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.json({ message: "Authenticated via Facebook" });
+  } catch (error) {
+    return next(createError(500, error.message));
+  }
+};

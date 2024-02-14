@@ -4,6 +4,15 @@ const cors = require("cors");
 const app = express();
 const router = require("./routes/goalsRoutes");
 const PORT = process.env.PORT || 3001;
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+app.use(express.json());
+
+
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(router);
+
 
 //const morgan = require("morgan");
 //const helmet = require("helmet");
@@ -13,24 +22,48 @@ const PORT = process.env.PORT || 3001;
 // const { User } = require('./models/user');
 // const { v4: uuidv4 } = require('uuid');
 
+
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("Error connecting to MongoDB", err));
-app.use(
-  cors({
+
+  app.use(cors({
     credentials: true,
-    origin: "http://localhost:3000",
-  })
-);
-app.use(express.json());
-app.use(router);
+    origin: (origin, callback) => callback(null, true),
+    optionSuccessStatus: 200
+  }
+  ));
+
+
+
+// app.use('/auth/facebook', facebookRouter);
+
+// app.get('/auth/facebook', passport.authenticate('facebook'))
+
+// app.use('/auth/facebook/callback', passport.authenticate('facebook', {
+//   failureRedirect: '/signin'
+// }), (req, res) => {
+//   res.cookie('auth', JSON.stringify(req.user));
+//   res.redirect('/');
+// });
+
+// app.get('auth/facebook/callback', passport.authenticate('facebook', {
+//   failureRedirect: '/signin'
+// }), (req, res) => {
+//   res.cookie('auth', JSON.stringify(req.user));
+//   res.send('Authenticated via Facebook');
+//   res.redirect('/');
+// })
+
+
+
+
 
 app.listen(PORT, () => {
   console.log("Server is running on PORT 3001");
 });
+
+
