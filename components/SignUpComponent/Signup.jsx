@@ -1,8 +1,6 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Context } from "../ContextUser";
 import AuthClient from "@/util/clients/AuthClient";
 
 const Signup = () => {

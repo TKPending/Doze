@@ -1,6 +1,5 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/AuthClient";

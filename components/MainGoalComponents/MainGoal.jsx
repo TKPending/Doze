@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";

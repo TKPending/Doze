@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import { useState, useContext } from "react";
 import { Context } from "./ContextUser";
 import AuthClient from "@/util/clients/AuthClient";
 
