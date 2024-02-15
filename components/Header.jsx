@@ -3,18 +3,19 @@ import Link from "next/link";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Context } from "./ContextUser";
+import AuthClient from "@/util/clients/AuthClient";
 
 const Header = () => {
-  const { user, onUserSignedOut, UserAuth } = useContext(Context);
+  const { user, onUserSignedOut } = useContext(Context);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
 
   const signOutReq = async (e) => {
     try {
       e.preventDefault();
-      await UserAuth.signOutUser(onUserSignedOut);
-
+      await AuthClient.signOutUser();
+      onUserSignedOut();
     } catch (err) {
-      console.log("Problem signin out user")
+      console.log("Problem signin out user");
       console.error(err);
     }
   };

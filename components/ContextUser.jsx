@@ -2,44 +2,34 @@
 
 import { useState, createContext, useEffect } from "react";
 export const Context = createContext();
+import AuthClient from "@/util/clients/AuthClient";
 import axios from "axios";
-import AuthClient from "@/util/clients/authClient";
-import MainGoalsClient from "@/util/clients/mainGoalsClient";
-import SubGoalsClient from "@/util/clients/subGoalsClient";
-import DashboardClient from "@/util/clients/dashboardClient";
 
 axios.defaults.withCredentials = true;
 
 export function ContextUser({ children }) {
   const [user, setUser] = useState(null);
-  const [UserAuth, setUserAuth] = useState(new AuthClient());
-  const [MainClient, setMainClient] = useState(new MainGoalsClient());
-  const [SubClient, setSubClient] = useState(new SubGoalsClient());
-  const [DashClient, setDashboardClient] = useState(new DashboardClient());
 
   const onUserSignedIn = async () => {
-    await UserAuth.getUser(setUser);
+    const newUser = await AuthClient.getUser();
+    setUser(newUser);
   };
 
   const onUserSignedOut = async () => {
-   setUser(null);
+    setUser(null);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        await UserAuth.getUser(setUser)
-      } catch (err) {
-        console.log("Problem getting user from ContextUser.jsx")
-        console.error(err);
-      }
-    }
-  
+      const newUser = await AuthClient.getUser();
+      setUser(newUser);
+    };
+
     fetchData();
   }, []);
 
   return (
-    <Context.Provider value={{ user, UserAuth, MainClient, onUserSignedOut, onUserSignedIn }}>
+    <Context.Provider value={{ user, onUserSignedOut, onUserSignedIn }}>
       {children}
     </Context.Provider>
   );

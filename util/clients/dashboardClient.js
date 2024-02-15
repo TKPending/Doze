@@ -1,5 +1,3 @@
-class DashboardClient {
-    
-}
+class DashboardClient {}
 
-export default DashboardClient;
+export default new DashboardClient();

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class AuthClient {
-  async getUser(setUser) {
+  async getUser() {
     try {
       const response = await axios.get("http://localhost:3001/user");
 
@@ -11,17 +11,16 @@ class AuthClient {
         return;
       }
 
-      setUser(response.data);
+      return response.data;
     } catch (err) {
       console.log(err);
     }
   }
 
   // Signing in a user
-  async signInReq(userData, onUserSignedIn) {
+  async signInReq(userData) {
     try {
       await axios.post("http://localhost:3001/signin", userData);
-      onUserSignedIn();
     } catch (err) {
       console.log(err);
     }
@@ -35,14 +34,13 @@ class AuthClient {
     }
   }
 
-  async signOutUser(onUserSignedOut) {
+  async signOutUser() {
     try {
       await axios.post("http://localhost:3001/signout");
-      onUserSignedOut();
     } catch (err) {
       console.log(err);
     }
   }
 }
 
-export default AuthClient;
+export default new AuthClient();
