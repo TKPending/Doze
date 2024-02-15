@@ -2,11 +2,10 @@ import { IonIcon } from "@ionic/react";
 import { trashBinOutline } from "ionicons/icons";
 
 const SubGoalComponent = ({ subGoals, setSubGoals, task, onClick }) => {
-
-    const handleRemoveTask = () => {
-        const newTasks= subGoals.filter((tasks) => tasks != task);
-        setSubGoals([...newTasks])
-    }
+  const handleRemoveTask = () => {
+    const newTasks = subGoals.filter((tasks) => tasks != task);
+    setSubGoals([...newTasks]);
+  };
 
   return (
     <div
@@ -18,13 +17,7 @@ const SubGoalComponent = ({ subGoals, setSubGoals, task, onClick }) => {
         <p>Sub Goal {task}</p>
       </div>
 
-      <div className="hover:cursor-pointer flex items-center text-black transition duration-200 justify-center rounded-full hover:scale-105 transition duration-200 hover:border-red-800 w-10 hover:text-red-800 font-bold">
-        <IonIcon
-          icon={trashBinOutline}
-          onClick={handleRemoveTask}
-          className="text-2xl"
-        />
-      </div>
+      <div className="hover:cursor-pointer flex items-center text-black transition duration-200 justify-center rounded-full hover:scale-105 transition duration-200 hover:border-red-800 w-10 hover:text-red-800 font-bold"></div>
     </div>
   );
 };

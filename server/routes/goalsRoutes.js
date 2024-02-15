@@ -5,6 +5,7 @@ const {
   signIn,
   getUser,
   signOut,
+  addOneGoal,
 } = require("../controllers/goalsControllers");
 const passport = require("passport");
 
@@ -19,7 +20,11 @@ router.get(
 router.post("/signout", signOut);
 
 // Main Goals
-router.post("/mainGoal");
+router.post(
+  "/mainGoal",
+  passport.authenticate(["jwt"], { session: false }),
+  addOneGoal
+);
 router.get("/mainGoal");
 router.put("/mainGoal");
 router.delete("/mainGoal");

@@ -1,4 +1,4 @@
-const mongoose = requrie("mongoose");
+const mongoose = require("mongoose");
 
 const subGoalSchema = new mongoose.Schema({
   title: {
@@ -40,7 +40,7 @@ const mainGoalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dateCreated: {
+  startDate: {
     type: String,
     required: true,
   },
@@ -52,22 +52,21 @@ const mainGoalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
-    type: String,
-    required: true,
-  },
   status: {
     type: String,
     required: true,
   },
-  tags: {
-    type: String,
-    required: false,
-  },
-  tagColours: {
-    type: String,
-    required: false,
-  },
+  tags: [
+    {
+      text: {
+        type: String,
+        required: false,
+      },
+      colour: {
+        type: String,
+      },
+    },
+  ],
   description: {
     type: String,
     required: false,
