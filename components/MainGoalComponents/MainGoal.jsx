@@ -22,8 +22,8 @@ const MainGoal = () => {
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [taskClicked, setTaskedClicked] = useState(false);
+  const [isSubGoalModelVisible, setSubGoalModalVisible] = useState(false);
+  const [subGoalClicked, setSubGoalClicked] = useState(false);
   const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
 
   const handleInputValue = (e) => {
@@ -105,14 +105,12 @@ const MainGoal = () => {
   };
 
   useEffect(() => {
-    const isTaskExists = tempSubGoals.includes(taskClicked);
+    const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
 
-    if (isTaskExists) {
-      setIsModalVisible(true);
+    if (isSubGoalExists) {
+      setSubGoalModalVisible(true);
     }
-  }, [taskClicked]);
-
-  console.log(mainGoalData);
+  }, [subGoalClicked]);
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -305,13 +303,13 @@ const MainGoal = () => {
               </div>
 
               <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
-                {tempSubGoals.map((task, index) => (
+                {tempSubGoals.map((subGoal, index) => (
                   <SubGoalComponent
                     key={index}
                     subGoals={tempSubGoals}
                     setSubGoals={setTempSubGoals}
-                    task={task}
-                    onClick={() => setTaskedClicked(task)}
+                    task={subGoal}
+                    onClick={() => setSubGoalClicked(subGoal)}
                   />
                 ))}
 
@@ -336,7 +334,9 @@ const MainGoal = () => {
           </div>
         </form>
 
-        {isModalVisible && <SubGoal setIsModalVisible={setIsModalVisible} />}
+        {isSubGoalModelVisible && (
+          <SubGoal setIsModalVisible={setSubGoalModalVisible} />
+        )}
       </div>
     </div>
   );
