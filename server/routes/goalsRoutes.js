@@ -25,9 +25,9 @@ router.post(
   passport.authenticate(["jwt"], { session: false }),
   addOneGoal
 );
-router.get("/mainGoal");
-router.put("/mainGoal");
-router.delete("/mainGoal");
+router.get("/mainGoal/:id", passport.authenticate(["jwt"], { session: false }));
+router.put("/mainGoal/:id", passport.authenticate(["jwt"], { session: false }));
+router.delete("/mainGoal/:id");
 
 // Sub Goals
 router.post("/subGoal");

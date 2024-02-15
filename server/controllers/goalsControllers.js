@@ -79,7 +79,7 @@ exports.addOneGoal = async (req, res, next) => {
       status: req.body.status,
       tags: req.body.tags,
       description: req.body.description,
-      userId: req.body.userId,
+      userId: req.user._id,
     });
     await goal.save();
     res.json({ message: goal });
