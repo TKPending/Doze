@@ -5,6 +5,7 @@ const {
   signIn,
   getUser,
   signOut,
+  addOneGoal,
 } = require("../controllers/goalsControllers");
 const passport = require("passport");
 const { dashboardHeaderData, updateDashboardTitle, updateDashboardQuote, updateDashboardBackground } = require("../controllers/headerControllers");
@@ -20,10 +21,14 @@ router.get(
 router.post("/signout", signOut);
 
 // Main Goals
-router.post("/mainGoal");
-router.get("/mainGoal");
-router.put("/mainGoal");
-router.delete("/mainGoal");
+router.post(
+  "/mainGoal",
+  passport.authenticate(["jwt"], { session: false }),
+  addOneGoal
+);
+router.get("/mainGoal/:id", passport.authenticate(["jwt"], { session: false }));
+router.put("/mainGoal/:id", passport.authenticate(["jwt"], { session: false }));
+router.delete("/mainGoal/:id");
 
 // Sub Goals
 router.post("/subGoal");

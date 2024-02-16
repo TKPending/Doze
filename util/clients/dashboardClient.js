@@ -72,4 +72,4 @@ class DashboardClient {
   }
 }
 
-export default new DashboardClient;
+export default new DashboardClient();

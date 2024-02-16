@@ -1,13 +1,13 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
+import AuthClient from "@/util/clients/AuthClient";
 
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
-  const { onUserSignedIn, UserAuth } = useContext(Context);
+  const { onUserSignedIn } = useContext(Context);
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
@@ -21,7 +21,8 @@ const Signin = () => {
   const onSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      await UserAuth.signInReq(userData, onUserSignedIn);
+      await AuthClient.signInReq(userData);
+      onUserSignedIn();
 
       router.push("/");
     } catch (err) {

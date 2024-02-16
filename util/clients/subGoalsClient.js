@@ -1,5 +1,3 @@
-class SubGoalsClient {
-    
-}
+class SubGoalsClient {}
 
-export default SubGoalsClient;
+export default new SubGoalsClient();

@@ -1,5 +1,3 @@
-class MainGoalsClient {
+class MainGoalsClient {}
 
-}
-
-export default MainGoalsClient;
+export default new MainGoalsClient();
