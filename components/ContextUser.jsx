@@ -15,7 +15,6 @@ export function ContextUser({ children }) {
   const [UserAuth, setUserAuth] = useState(new AuthClient());
   const [MainClient, setMainClient] = useState(new MainGoalsClient());
   const [SubClient, setSubClient] = useState(new SubGoalsClient());
-  const [DashClient, setDashboardClient] = useState(new DashboardClient());
 
   const onUserSignedIn = async () => {
     await UserAuth.getUser(setUser);
@@ -28,7 +27,7 @@ export function ContextUser({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await UserAuth.getUser(setUser)
+        await UserAuth.getUser(setUser);
       } catch (err) {
         console.log("Problem getting user from ContextUser.jsx")
         console.error(err);
@@ -39,7 +38,7 @@ export function ContextUser({ children }) {
   }, []);
 
   return (
-    <Context.Provider value={{ user, UserAuth, MainClient, onUserSignedOut, onUserSignedIn }}>
+    <Context.Provider value={{ user, UserAuth, MainClient, DashboardClient, onUserSignedOut, onUserSignedIn }}>
       {children}
     </Context.Provider>
   );
