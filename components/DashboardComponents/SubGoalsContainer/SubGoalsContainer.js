@@ -1,20 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import ProgressionContainer from "./components/ProgressionContainer";
+import { SubGoalsClient } from "@/util/clients/subGoalsClient";
+import { Context } from "../../ContextUser";
 
 const SubGoalsContainer = () => {
+
+  const { user, SubClient } = useContext(Context);
+  const [currentSubGoal, setCurrentSubGoal] = useState(null);
+  const [toDos, setToDos] = useState([]);
+  const [inProgress, setInProgress] = useState([]);
+  const [done, setDone] = useState([]);
+  const [subGoals, setSubGoals] = useState([]);
   const [stages, setStages] = useState([
     {
       text: "To-Do",
       color: "bg-[#FF9796]",
       circleColor: "#E87775",
       tasks: [
-        "Task 1 - Go on a run",
-        "Task 2 - Read a book",
-        "Task 3 - Complete coding exercise",
-        "Task 4 - Write a blog post",
-        "Task 5 - Do grocery shopping",
+        "Task 1 - Complete task",
+        "Task 2 - Review code",
+        "Task 3 - Organize files",
+        "Task 4 - Attend team meeting",
       ],
     },
     {
@@ -42,6 +50,28 @@ const SubGoalsContainer = () => {
       ],
     },
   ]);
+
+  // const getSubGoals = () => {
+  //   SubClient.getAllSubGoals().then((res) => {
+  //     setSubGoals(res.data);
+  //   });
+  // //   if (subGoals.status === "To-Do") {
+  // //     setToDos(subGoals.data);
+  // //   } else if (subGoals.status === "In Progress") {
+  // //     setInProgress(subGoals.data);
+  // //   } else if (subGoals.status === "Done") {
+  // //     setDone(subGoals.data);
+  // //   }
+  // // console.log(subGoals);
+  // // console.log(toDos);
+  // // console.log(inProgress);
+  // // console.log(done);
+  // }
+
+
+  useEffect(() => {
+    getSubGoals();
+  }, []);
   
 
   return (
