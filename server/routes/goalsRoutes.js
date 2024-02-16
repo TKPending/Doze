@@ -37,9 +37,9 @@ router.put("/subGoal");
 router.delete("/subGoal");
 
 // Header Data - Header title, quote and background
-router.get("/headerData", dashboardHeaderData);
-router.patch("/headerData/updateBackground", updateDashboardBackground);
-router.patch("/headerData/updateTitle", updateDashboardTitle);
-router.patch("/headerData/updateQuote", updateDashboardQuote);
+router.get("/headerData", passport.authenticate(["jwt"], { session: false }), dashboardHeaderData);
+router.patch("/headerData/updateBackground", passport.authenticate(["jwt"], { session: false }), updateDashboardBackground);
+router.patch("/headerData/updateTitle", passport.authenticate(["jwt"], { session: false }), updateDashboardTitle);
+router.patch("/headerData/updateQuote", passport.authenticate(["jwt"], { session: false }), updateDashboardQuote);
 
 module.exports = router;

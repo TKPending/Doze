@@ -37,19 +37,18 @@ const HeaderContainer = () => {
   const handleEnterOrBlur = async (e, section) => {
     e.preventDefault();
     const inputValue = e.target.value;
-    const username = user.username;
 
     // If input is enter, default to original text
     if (section == "title") {
-      const titleResponse = await DashboardClient.changeDashboardTitle(username, inputValue);
+      const titleResponse = await DashboardClient.changeDashboardTitle(inputValue);
 
       handleHeader(setTitle, titleResponse);
     } else if (section == "quote") {
-      const quoteResponse = await DashboardClient.changeDashboardQuote(username, inputValue);
+      const quoteResponse = await DashboardClient.changeDashboardQuote(inputValue);
 
       handleHeader(setQuote, quoteResponse)
     } else {
-      const backgroundResponse = await DashboardClient.changeDashboardBackground(validHeader, username, inputValue);
+      const backgroundResponse = await DashboardClient.changeDashboardBackground(validHeader, inputValue);
 
       handleHeader(setImageLink, backgroundResponse)
     }
@@ -80,7 +79,7 @@ const HeaderContainer = () => {
         if (!user) {
           return;
         }
-        const response = await DashboardClient.getDashboardHeaderData(user.username);
+        const response = await DashboardClient.getDashboardHeaderData();
 
         if (!response) {
           console.log("Invalid Data Received From Call To Backend");
