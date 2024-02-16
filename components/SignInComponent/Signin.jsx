@@ -2,7 +2,7 @@
 import { useState, useContext } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
-import AuthClient from "@/util/clients/AuthClient";
+import AuthClient from "@/util/clients/authClient";
 
 const Signin = () => {
   const router = useRouter();

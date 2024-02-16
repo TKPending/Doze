@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState, useContext } from "react";
 import { Context } from "./ContextUser";
-import AuthClient from "@/util/clients/AuthClient";
+import AuthClient from "@/util/clients/authClient";
 
 const Header = () => {
   const { user, onUserSignedOut } = useContext(Context);

@@ -2,7 +2,7 @@
 
 import { useState, createContext, useEffect } from "react";
 export const Context = createContext();
-import AuthClient from "@/util/clients/AuthClient";
+import AuthClient from "@/util/clients/authClient";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthClient from "@/util/clients/AuthClient";
+import AuthClient from "@/util/clients/authClient";
 
 const Signup = () => {
   const router = useRouter();

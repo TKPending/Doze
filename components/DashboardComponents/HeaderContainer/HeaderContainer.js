@@ -4,11 +4,12 @@ import { Inter } from "next/font/google";
 import { useState, useEffect, useRef, useContext } from "react";
 import HeaderBackground from "./components/HeaderBackground";
 import { Context } from "@/components/ContextUser";
+import DashboardClient from "@/util/clients/dashboardClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const HeaderContainer = () => {
-  const { user, DashboardClient } = useContext(Context);
+  const { user } = useContext(Context);
 
   const [title, setTitle] = useState("");
   const [quote, setQuote] = useState("");
