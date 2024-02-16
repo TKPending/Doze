@@ -8,6 +8,7 @@ const {
   addOneGoal,
 } = require("../controllers/goalsControllers");
 const passport = require("passport");
+const { dashboardHeaderData, updateDashboardTitle, updateDashboardQuote, updateDashboardBackground } = require("../controllers/headerControllers");
 
 // Authentication
 router.post("/signup", signUp);
@@ -36,8 +37,9 @@ router.put("/subGoal");
 router.delete("/subGoal");
 
 // Header Data - Header title, quote and background
-router.post("/headerData");
-router.get("/headerData");
-router.put("/headerData");
+router.get("/headerData", dashboardHeaderData);
+router.patch("/headerData/updateBackground", updateDashboardBackground);
+router.patch("/headerData/updateTitle", updateDashboardTitle);
+router.patch("/headerData/updateQuote", updateDashboardQuote);
 
 module.exports = router;
