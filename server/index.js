@@ -40,4 +40,5 @@ app.use(router);
 
 app.listen(PORT, () => {
   console.log("Doze backend server is running!");
+  console.log(`Running on ${PORT}`);
 });
