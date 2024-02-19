@@ -1,21 +1,25 @@
 "use client";
+import Link from "next/link";
 
-const Goal = ({ goals, uid, handleRemoveGoal }) => {
-  // Handle sending user to goal page
-  const handleGoalPressed = () => {
-    console.log(goals);
-  };
-
+const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
   return (
     <div className="flex items-center gap-4 w-2/4">
-      <div className="flex items-center gap-4">
-        <div onClick={handleGoalPressed} className="h-4 w-4 bg-black hover:cursor-pointer"></div>
-        <h2 onClick={handleGoalPressed} className="text-black text-lg font-lg hover:underline hover:cursor-pointer">
-          {goals}
+      <Link
+        href={`http://localhost:3000/MainGoal/${goal._id}`}
+        className="flex items-center gap-4"
+      >
+        <div className="h-4 w-4 bg-black hover:cursor-pointer"></div>
+        <h2 className="text-black text-lg font-lg hover:underline hover:cursor-pointer">
+          {goal.title}
         </h2>
-      </div>
+      </Link>
       {/* <ProgressBar /> */}
-      <h2 onClick={() => handleRemoveGoal(uid)} className="hover:text-black text-transparent hover:cursor-pointer">
+      <h2
+        className="hover:text-black text-transparent hover:cursor-pointer"
+        onClick={() => {
+          deleteOneMainGoalFromDashboard(goal._id);
+        }}
+      >
         x
       </h2>
     </div>
