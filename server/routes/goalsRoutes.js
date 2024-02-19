@@ -9,6 +9,7 @@ const {
   getOneMainGoal,
   changeOneMainGoal,
   deleteOneMainGoal,
+  getAllMainGoalsForDashboard,
 } = require("../controllers/goalsControllers");
 const passport = require("passport");
 const {
@@ -50,6 +51,12 @@ router.delete(
   deleteOneMainGoal
 );
 
+//For getting all goals for the Dashboard
+router.get(
+  "/mainGoal",
+  passport.authenticate(["jwt"], { session: false }),
+  getAllMainGoalsForDashboard
+);
 // Sub Goals
 router.post("/subGoal");
 router.get("/subGoal");

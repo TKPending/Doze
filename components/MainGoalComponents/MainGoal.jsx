@@ -16,7 +16,7 @@ const MainGoal = ({
     title: "Main Goal Title",
     description: "",
     status: "to-do",
-    startDate: "",
+    startDate: new Date().toLocaleDateString("en-CA"),
     tags: [],
     icon: "😁",
   },
@@ -60,7 +60,8 @@ const MainGoal = ({
     handleInputValue({ target: { name: "icon", value: e.native } });
   };
 
-  const toggleEmojiPicker = () => {
+  const toggleEmojiPicker = (e) => {
+    e.preventDefault();
     setIsOpen(!isOpen);
   };
 
