@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const SERVER = process.env.SERVER_URL;
-
 class MainGoalsClient {
   //POST
   async createNewMainGoalReq(mainGoalData) {
     try {
-      await axios.post(`${SERVER}/mainGoal`, mainGoalData);
+      await axios.post("http://localhost:3001/mainGoal", mainGoalData);
     } catch (error) {
       console.log(error);
     }
@@ -14,7 +12,7 @@ class MainGoalsClient {
   //GET
   async getOneMainGoalReq(id) {
     try {
-      const response = await axios.get(`${SERVER}/mainGoal/${id}`);
+      const response = await axios.get(`http://localhost:3001/mainGoal/${id}`);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -24,7 +22,7 @@ class MainGoalsClient {
   async changeOneMainGoalReq(id, changedMainGoalData) {
     try {
       const response = await axios.put(
-        `${SERVER}/mainGoal/${id}`,
+        `http://localhost:3001/mainGoal/${id}`,
         changedMainGoalData
       );
     } catch (error) {
@@ -34,7 +32,7 @@ class MainGoalsClient {
   //DELETE
   async deleteOneMainGoalReq(id) {
     try {
-      await axios.delete(`${SERVER}/mainGoal/${id}`);
+      await axios.delete(`http://localhost:3001/mainGoal/${id}`);
       alert("deleted");
     } catch (error) {
       console.log(error);
@@ -42,7 +40,7 @@ class MainGoalsClient {
   }
 
   async getAllMainGoals() {
-    const response = await axios.get(`${SERVER}/mainGoal`);
+    const response = await axios.get("http://localhost:3001/mainGoal");
     return response.data;
   }
 }
