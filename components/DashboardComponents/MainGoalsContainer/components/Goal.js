@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 
+const SITE = process.env.SERVER_URL;
+
 const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
   return (
     <div className="flex items-center gap-4 w-2/4">
       <Link
-        href={`http://localhost:3000/maingoal/${goal._id}`}
+        href={`${SITE}/maingoal/${goal._id}`}
         className="flex items-center gap-4"
       >
         <div className="h-4 w-4 bg-black hover:cursor-pointer"></div>

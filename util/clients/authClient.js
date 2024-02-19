@@ -1,9 +1,11 @@
 import axios from "axios";
 
+const SERVER = process.env.SERVER_URL;
+
 class AuthClient {
   async getUser() {
     try {
-      const response = await axios.get("http://localhost:3001/user");
+      const response = await axios.get(`${SERVER}/user`);
 
       // Response isn't received
       if (!response) {
@@ -20,7 +22,7 @@ class AuthClient {
   // Signing in a user
   async signInReq(userData) {
     try {
-      await axios.post("http://localhost:3001/signin", userData);
+      await axios.post(`${SERVER}/signin`, userData);
     } catch (err) {
       console.log(err);
     }
@@ -28,7 +30,7 @@ class AuthClient {
 
   async signUpReq(userData) {
     try {
-      await axios.post("http://localhost:3001/signup", userData);
+      await axios.post(`${SERVER}/signup`, userData);
     } catch (err) {
       console.log(err);
     }
@@ -36,7 +38,7 @@ class AuthClient {
 
   async signOutUser() {
     try {
-      await axios.post("http://localhost:3001/signout");
+      await axios.post(`${SERVER}/signout`);
     } catch (err) {
       console.log(err);
     }
