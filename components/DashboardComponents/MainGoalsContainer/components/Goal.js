@@ -5,7 +5,7 @@ const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
   return (
     <div className="flex items-center gap-4 w-2/4">
       <Link
-        href={`http://localhost:3000/maingoal/${goal._id}`}
+        href={`http://localhost:3000/MainGoal/${goal._id}`}
         className="flex items-center gap-4"
       >
         <div className="h-4 w-4 bg-black hover:cursor-pointer"></div>
