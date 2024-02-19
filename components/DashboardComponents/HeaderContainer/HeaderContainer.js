@@ -86,7 +86,7 @@ const HeaderContainer = () => {
           return;
         }
 
-        const { dashboard_background, dashboard_title, dashboard_quote } =response;
+        const { dashboard_background, dashboard_title, dashboard_quote } = response;
 
         setTitle(dashboard_title);
         setQuote(dashboard_quote);
@@ -99,7 +99,7 @@ const HeaderContainer = () => {
     };
 
     fetchHeader();
-  }, [user]);
+  }, [user, imageLink]);
 
   return (
     <div

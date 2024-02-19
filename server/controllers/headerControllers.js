@@ -65,6 +65,9 @@ exports.updateDashboardTitle = async (req, res, next) => {
   const { userInputValue } = request;
   const userUid = req.user._id;
 
+  console.log(userUid);
+  console.log(request);
+
   try {
     const userDB = await User.findOne({ _id: userUid });
 
@@ -81,6 +84,8 @@ exports.updateDashboardTitle = async (req, res, next) => {
         return;
     }
     headerDB.dashboard_title = userInputValue == "" ? TITLE_DEFAULT : userInputValue;
+
+    console.log(headerDB.dashboard_title);
     await headerDB.save();
   } catch (err) {
     return (next(createError(500, "Internal Server Error! (Dashboard Title)")));
