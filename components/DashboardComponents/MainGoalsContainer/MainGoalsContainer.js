@@ -81,7 +81,7 @@ const MainGoalsContainer = () => {
         )}
 
         <Link
-          href={"/maingoal"}
+          href={"/MainGoal"}
           className={`mt-4 ml-8 flex gap-4 items-center justify-center w-32 h-8 border border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-black hover:border hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
         >
           Add Goal +
