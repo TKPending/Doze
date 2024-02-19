@@ -34,7 +34,6 @@ class DashboardClient {
   }
 
   async changeDashboardTitle(userInputValue) {
-    console.log(userInputValue)
     await this.patchRequest(`${serverUrl}/headerData/updateTitle`, userInputValue);
 
     if (userInputValue == "") {
@@ -55,9 +54,6 @@ class DashboardClient {
   }
 
   async changeDashboardBackground(validHeader, userInputValue) {
-    console.log(validHeader);
-    console.log(userInputValue)
-    
     await this.patchRequest(`${serverUrl}/headerData/updateBackground`, userInputValue, validHeader);
 
     if (!validHeader || userInputValue == "") {

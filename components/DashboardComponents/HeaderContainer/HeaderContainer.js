@@ -35,7 +35,6 @@ const HeaderContainer = () => {
 
   // When a user presses enter or clicks off, set value to last value
   const handleEnterOrBlur = async (e, section) => {
-    e.preventDefault();
     const inputValue = e.target.value;
 
     // If input is enter, default to original text
@@ -50,7 +49,8 @@ const HeaderContainer = () => {
     } else {
       const backgroundResponse = await DashboardClient.changeDashboardBackground(validHeader, inputValue);
 
-      handleHeader(setImageLink, backgroundResponse)
+      handleHeader(setImageLink, backgroundResponse);
+      setHeaderImage(backgroundResponse);
     }
 
     // Close header input
@@ -99,6 +99,11 @@ const HeaderContainer = () => {
     };
 
     fetchHeader();
+
+    if (validHeader) {
+      fetchHeader();
+    }
+
   }, [user, imageLink]);
 
   return (
