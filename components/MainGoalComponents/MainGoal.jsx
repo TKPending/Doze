@@ -7,17 +7,21 @@ import AddSubGoal from "./components/AddSubGoal";
 import SubGoalComponent from "./components/SubGoalComponent";
 import ClearSubGoals from "./components/ClearSubGoals";
 import SubGoal from "../SubGoalComponent/SubGoal";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+import mainGoalsClient from "@/util/clients/mainGoalsClient";
 
-const MainGoal = () => {
-  const [mainGoalData, setMainGoalData] = useState({
-    title: "",
+const MainGoal = ({
+  onSave,
+  initialMainGoalData = {
+    title: "Main Goal Title",
     description: "",
     status: "to-do",
     startDate: "",
     tags: [],
     icon: "😁",
-  });
+  },
+}) => {
+  const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
 
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
@@ -25,9 +29,9 @@ const MainGoal = () => {
   const [isSubGoalModelVisible, setSubGoalModalVisible] = useState(false);
   const [subGoalClicked, setSubGoalClicked] = useState(false);
   const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
+  const router = useRouter();
 
   const handleInputValue = (e) => {
-    console.log(e);
     if (e.target.name === "title") {
       setMainGoalData({ ...mainGoalData, title: e.target.value });
     }
@@ -47,14 +51,9 @@ const MainGoal = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/mainGoal",
-        mainGoalData
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    //PUT and POST request
+    onSave(mainGoalData);
+    router.push("/dashboard");
   };
 
   const handleEmoji = (e) => {
@@ -71,7 +70,6 @@ const MainGoal = () => {
 
   const handleColourChange = (colour) => {
     setSelectedColour(colour);
-    console.log(colour);
   };
 
   const handleAddTag = (e) => {
@@ -104,6 +102,13 @@ const MainGoal = () => {
     });
   };
 
+  //DELETE - deleting main goal
+  const onDeleteMainGoal = async (e) => {
+    e.preventDefault();
+    await mainGoalsClient.deleteOneMainGoalReq(mainGoalData._id);
+    router.push("/dashboard");
+  };
+
   useEffect(() => {
     const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
 
@@ -120,7 +125,7 @@ const MainGoal = () => {
             name="title"
             type="text"
             className="input text-3xl mb-5"
-            defaultValue={"Main Goal Title"}
+            value={mainGoalData.title}
             onChange={handleInputValue}
           />
           <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
@@ -147,6 +152,7 @@ const MainGoal = () => {
                 type="date"
                 className="input focus:border-[#ff9796] focus:outline-[#ff9796] ml-7"
                 onChange={handleInputValue}
+                value={mainGoalData.startDate}
               />
             </div>
 
@@ -157,6 +163,7 @@ const MainGoal = () => {
                 className="outline-[#ff9796] border-indigo-600 border rounded-md focus:border-[#ff9796] p-2"
                 name="status"
                 onChange={handleInputValue}
+                value={mainGoalData.status}
               >
                 <option value="to-do">To-do</option>
                 <option value="in-progress">In progress</option>
@@ -290,6 +297,7 @@ const MainGoal = () => {
                 className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"
                 name="description"
                 onChange={handleInputValue}
+                value={mainGoalData.description}
               ></textarea>
             </div>
 
@@ -327,10 +335,19 @@ const MainGoal = () => {
                 />
               </div>
             </div>
-
-            <button className="absolute right-5 bottom-5 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
-              Save
-            </button>
+            <div className="flex justify-between">
+              {mainGoalData._id && (
+                <button
+                  className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
+                  onClick={onDeleteMainGoal}
+                >
+                  Delete
+                </button>
+              )}
+              <button className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
+                Save
+              </button>
+            </div>
           </div>
         </form>
 
