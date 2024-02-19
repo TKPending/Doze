@@ -32,7 +32,7 @@ app.use(passport.initialize());
 app.use(
   cors({
     credentials: true,
-    origin: "https://doze-pink.vercel.app",
+    origin: ["https://doze-pink.vercel.app", "http://localhost:3000"],
   })
 );
 app.use(express.json());
