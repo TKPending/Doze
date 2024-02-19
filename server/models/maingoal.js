@@ -42,7 +42,7 @@ const mainGoalSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  dateCreated: {
+  startDate: {
     type: String,
     required: false,
   },
@@ -56,20 +56,23 @@ const mainGoalSchema = new mongoose.Schema({
   },
   date: {
     type: String,
-    required: false,
+    required: true,
   },
   status: {
     type: String,
     required: false,
   },
-  tags: {
-    type: String,
-    required: false,
-  },
-  tagColours: {
-    type: String,
-    required: false,
-  },
+  tags: [
+    {
+      text: {
+        type: String,
+        required: false,
+      },
+      colour: {
+        type: String,
+      },
+    },
+  ],
   description: {
     type: String,
     required: false,

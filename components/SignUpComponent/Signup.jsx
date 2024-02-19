@@ -1,8 +1,7 @@
 "use client";
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Context } from "../ContextUser";
+import AuthClient from "@/util/clients/authClient";
 
 const Signup = () => {
   const router = useRouter();
@@ -11,7 +10,6 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const { UserAuth } = useContext(Context);
 
   const handleInputValue = (e) => {
     if (e.target.name === "username") {
@@ -28,14 +26,13 @@ const Signup = () => {
   const onSignUpSubmit = async (e) => {
     e.preventDefault();
     try {
-      await UserAuth.signUpReq(userData)
-
+      await AuthClient.signUpReq(userData);
       router.push("/signin");
     } catch (err) {
       console.log(err);
     }
   };
-  
+
   return (
     <div className="w-screen h-auto">
       <form onSubmit={onSignUpSubmit}>

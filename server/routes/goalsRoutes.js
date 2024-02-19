@@ -5,6 +5,10 @@ const {
   signIn,
   getUser,
   signOut,
+  addOneGoal,
+  getOneMainGoal,
+  changeOneMainGoal,
+  deleteOneMainGoal,
 } = require("../controllers/goalsControllers");
 const {
    addSubGoal,
@@ -13,6 +17,12 @@ const {
      deleteSubGoal 
     } = require("../controllers/subGoalController");
 const passport = require("passport");
+const {
+  dashboardHeaderData,
+  updateDashboardTitle,
+  updateDashboardQuote,
+  updateDashboardBackground,
+} = require("../controllers/headerControllers");
 
 // Authentication
 router.post("/signup", signUp);
@@ -25,10 +35,26 @@ router.get(
 router.post("/signout", signOut);
 
 // Main Goals
-router.post("/mainGoal");
-router.get("/mainGoal");
-router.put("/mainGoal");
-router.delete("/mainGoal");
+router.post(
+  "/mainGoal",
+  passport.authenticate(["jwt"], { session: false }),
+  addOneGoal
+);
+router.get(
+  "/mainGoal/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  getOneMainGoal
+);
+router.put(
+  "/mainGoal/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  changeOneMainGoal
+);
+router.delete(
+  "/mainGoal/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  deleteOneMainGoal
+);
 
 // Sub Goals
 router.post("/maingoals/:id/subgoals", addSubGoal);
@@ -37,8 +63,9 @@ router.put("/maingoals/:id/subgoals/:id", editSubGoal);
 router.delete("/maingoals/:id/subgoals/:id", deleteSubGoal);
 
 // Header Data - Header title, quote and background
-router.post("/headerData");
-router.get("/headerData");
-router.put("/headerData");
+router.get("/headerData", dashboardHeaderData);
+router.patch("/headerData/updateBackground", updateDashboardBackground);
+router.patch("/headerData/updateTitle", updateDashboardTitle);
+router.patch("/headerData/updateQuote", updateDashboardQuote);
 
 module.exports = router;

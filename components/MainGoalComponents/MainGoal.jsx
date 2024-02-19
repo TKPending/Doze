@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -7,32 +7,57 @@ import AddSubGoal from "./components/AddSubGoal";
 import SubGoalComponent from "./components/SubGoalComponent";
 import ClearSubGoals from "./components/ClearSubGoals";
 import SubGoal from "../SubGoalComponent/SubGoal";
+import { useRouter } from "next/navigation";
+import mainGoalsClient from "@/util/clients/mainGoalsClient";
 
-const MainGoal = () => {
-  const [tags, setTags] = useState([]);
+const MainGoal = ({
+  onSave,
+  initialMainGoalData = {
+    title: "Main Goal Title",
+    description: "",
+    status: "to-do",
+    startDate: "",
+    tags: [],
+    icon: "😁",
+  },
+}) => {
+  const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
+
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [emoji, setEmoji] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [taskClicked, setTaskedClicked] = useState(false);
+  const [isSubGoalModelVisible, setSubGoalModalVisible] = useState(false);
+  const [subGoalClicked, setSubGoalClicked] = useState(false);
   const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
+  const router = useRouter();
 
-  const emojiPicture = () => {
-    if (emoji !== "") {
-      console.log(emoji);
-      return emoji;
-    } else {
-      return "😁";
+  const handleInputValue = (e) => {
+    if (e.target.name === "title") {
+      setMainGoalData({ ...mainGoalData, title: e.target.value });
+    }
+    if (e.target.name === "description") {
+      setMainGoalData({ ...mainGoalData, description: e.target.value });
+    }
+    if (e.target.name === "status") {
+      setMainGoalData({ ...mainGoalData, status: e.target.value });
+    }
+    if (e.target.name === "startDate") {
+      setMainGoalData({ ...mainGoalData, startDate: e.target.value });
+    }
+    if (e.target.name === "icon") {
+      setMainGoalData({ ...mainGoalData, icon: e.target.value });
     }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    //PUT and POST request
+    onSave(mainGoalData);
+    router.push("/dashboard");
   };
 
   const handleEmoji = (e) => {
-    setEmoji(e.native);
+    handleInputValue({ target: { name: "icon", value: e.native } });
   };
 
   const toggleEmojiPicker = () => {
@@ -45,14 +70,19 @@ const MainGoal = () => {
 
   const handleColourChange = (colour) => {
     setSelectedColour(colour);
-    console.log(colour);
   };
 
-  const handleAddTag = () => {
+  const handleAddTag = (e) => {
+    e.preventDefault();
     try {
-      console.log(tagInput, selectedColour);
       if (tagInput !== "" && selectedColour !== "") {
-        setTags([...tags, { text: tagInput, colour: selectedColour }]);
+        setMainGoalData({
+          ...mainGoalData,
+          tags: [
+            ...mainGoalData.tags,
+            { text: tagInput, colour: selectedColour },
+          ],
+        });
         setTagInput("");
         setSelectedColour("");
       } else {
@@ -64,18 +94,28 @@ const MainGoal = () => {
   };
 
   const handleRemoveTag = (index) => {
-    const newTags = [...tags];
+    const newTags = mainGoalData.tags;
     newTags.splice(index, 1);
-    setTags(newTags);
+    setMainGoalData({
+      ...mainGoalData,
+      tags: newTags,
+    });
+  };
+
+  //DELETE - deleting main goal
+  const onDeleteMainGoal = async (e) => {
+    e.preventDefault();
+    await mainGoalsClient.deleteOneMainGoalReq(mainGoalData._id);
+    router.push("/dashboard");
   };
 
   useEffect(() => {
-    const isTaskExists = tempSubGoals.includes(taskClicked);
+    const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
 
-    if (isTaskExists) {
-      setIsModalVisible(true);
+    if (isSubGoalExists) {
+      setSubGoalModalVisible(true);
     }
-  }, [taskClicked]);
+  }, [subGoalClicked]);
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -85,12 +125,13 @@ const MainGoal = () => {
             name="title"
             type="text"
             className="input text-3xl mb-5"
-            defaultValue={"Main Goal Title"}
+            value={mainGoalData.title}
+            onChange={handleInputValue}
           />
           <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
             <div className="">
               <button onClick={toggleEmojiPicker} className="">
-                <span className="text-6xl">{emojiPicture()}</span>
+                <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
                 <div className="absolute">
@@ -103,23 +144,30 @@ const MainGoal = () => {
               )}
             </div>
             <div>
-              <label htmlFor="date" className="font-bold">
-                Date:
+              <label htmlFor="startDate" className="font-bold">
+                Start Date:
               </label>
               <input
-                name="date"
+                name="startDate"
                 type="date"
                 className="input focus:border-[#ff9796] focus:outline-[#ff9796] ml-7"
+                onChange={handleInputValue}
+                value={mainGoalData.startDate}
               />
             </div>
 
             {/* Button for changing Status */}
             <div>
               <span className="font-bold mr-2.5">Status:</span>
-              <select className="outline-[#ff9796] border border-indigo-600 border rounded-md focus:border-[#ff9796] p-2">
-                <option>To-do</option>
-                <option>In progress</option>
-                <option>Complete</option>
+              <select
+                className="outline-[#ff9796] border-indigo-600 border rounded-md focus:border-[#ff9796] p-2"
+                name="status"
+                onChange={handleInputValue}
+                value={mainGoalData.status}
+              >
+                <option value="to-do">To-do</option>
+                <option value="in-progress">In progress</option>
+                <option value="complete">Complete</option>
               </select>
             </div>
 
@@ -218,7 +266,7 @@ const MainGoal = () => {
               </div>
 
               <div className="mt-2.5">
-                {tags.map((tag, index) => (
+                {mainGoalData.tags.map((tag, index) => (
                   <span key={index}>
                     <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                       {tag.text}
@@ -245,7 +293,12 @@ const MainGoal = () => {
 
             <div className="flex items-center mt-2.5">
               <span className="font-bold mr-2.5">Description:</span>
-              <textarea className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"></textarea>
+              <textarea
+                className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"
+                name="description"
+                onChange={handleInputValue}
+                value={mainGoalData.description}
+              ></textarea>
             </div>
 
             {/* Sub Goals */}
@@ -258,13 +311,13 @@ const MainGoal = () => {
               </div>
 
               <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
-                {tempSubGoals.map((task, index) => (
+                {tempSubGoals.map((subGoal, index) => (
                   <SubGoalComponent
                     key={index}
                     subGoals={tempSubGoals}
                     setSubGoals={setTempSubGoals}
-                    task={task}
-                    onClick={() => setTaskedClicked(task)}
+                    task={subGoal}
+                    onClick={() => setSubGoalClicked(subGoal)}
                   />
                 ))}
 
@@ -282,15 +335,24 @@ const MainGoal = () => {
                 />
               </div>
             </div>
-
-            <button className="absolute right-5 bottom-5 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
-              Save
-            </button>
+            <div className="flex justify-between">
+              {mainGoalData._id && (
+                <button
+                  className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
+                  onClick={onDeleteMainGoal}
+                >
+                  Delete
+                </button>
+              )}
+              <button className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
+                Save
+              </button>
+            </div>
           </div>
         </form>
 
-        {isModalVisible && (
-          <SubGoal setIsModalVisible={setIsModalVisible} />
+        {isSubGoalModelVisible && (
+          <SubGoal setIsModalVisible={setSubGoalModalVisible} />
         )}
       </div>
     </div>

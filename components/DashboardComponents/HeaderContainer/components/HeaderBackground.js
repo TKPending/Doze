@@ -2,7 +2,6 @@ const HeaderBackground = ({
   setValidHeader,
   handleValueChange,
   setHeaderImage,
-  HEADER_DEFAULT,
   handleEnterOrBlur,
   headerImage,
 }) => {
@@ -37,13 +36,13 @@ const HeaderBackground = ({
       onChange={(e) => handleValueChange(e, setHeaderImage)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          handleEnterOrBlur(e, setHeaderImage, HEADER_DEFAULT);
+          handleEnterOrBlur(e, "background");
           handleImageChange(e);
         }
       }}
       onBlur={(e) =>
         e.type === "blur" &&
-        handleEnterOrBlur(e, setHeaderImage, HEADER_DEFAULT)
+        handleEnterOrBlur(e, "background")
       }
       className="text-black text-xl w-3/4 border-none bg-transparent focus:border-none outline-none"
       value={headerImage}
