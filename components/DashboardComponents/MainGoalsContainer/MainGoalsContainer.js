@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,8 +26,11 @@ const MainGoalsContainer = () => {
   };
 
   useEffect(() => {
-    getAllMainGoals();
-  }, []);
+    const user = localStorage.getItem('user')
+    if (user !== "") {
+      getAllMainGoals();
+    }
+  }, [mainGoals]);
   return (
     <div
       className={`${inter.className} bg-white flex flex-col w-full ${
