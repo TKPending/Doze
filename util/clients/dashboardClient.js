@@ -7,17 +7,10 @@ const QUOTE_DEFAULT =
   "In just 12 weeks, you can create a new habit that will last a lifetime.";
 const HEADER_DEFAULT = `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
 
-
-// {username: 'header', email: 'header@header.com'}
-
 class DashboardClient {
-  async getDashboardHeaderData(userId) {
+  async getDashboardHeaderData() {
     try {
-      const response = await axios.get(`${serverUrl}/headerData`, {
-        params: {
-          user: userId,
-        },
-      });
+      const response = await axios.get(`${serverUrl}/headerData`);
 
       if (!response) {
         console.log(`Response from DashboardHeaderData, is invalid!`);
@@ -32,16 +25,16 @@ class DashboardClient {
     }
   }
 
-  async patchRequest(url, username, userInputValue, validHeader) {
+  async patchRequest(url, userInputValue, validHeader) {
     try {
-      await axios.patch(`${url}`, { username, userInputValue, validHeader});
+      await axios.patch(`${url}`, {userInputValue, validHeader});
     } catch (err) {
         console.error("Error Making API Request! - Check DashboardClient!");
     }
   }
 
-  async changeDashboardTitle(userId, userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateTitle`, userId, userInputValue);
+  async changeDashboardTitle(userInputValue) {
+    await this.patchRequest(`${serverUrl}/headerData/updateTitle`, userInputValue);
 
     if (userInputValue == "") {
       return TITLE_DEFAULT;
@@ -50,8 +43,8 @@ class DashboardClient {
     return userInputValue;
   }
 
-  async changeDashboardQuote(userId, userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateQuote`, userId, userInputValue);
+  async changeDashboardQuote(userInputValue) {
+    await this.patchRequest(`${serverUrl}/headerData/updateQuote`, userInputValue);
 
     if (userInputValue == "") {
       return QUOTE_DEFAULT;
@@ -60,11 +53,10 @@ class DashboardClient {
     return userInputValue;
   }
 
-  async changeDashboardBackground(validHeader, userId, userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateBackground`, userId, userInputValue, validHeader);
+  async changeDashboardBackground(validHeader, userInputValue) {
+    await this.patchRequest(`${serverUrl}/headerData/updateBackground`, userInputValue, validHeader);
 
     if (!validHeader || userInputValue == "") {
-        console.log("Invalid Image Type!");
         return HEADER_DEFAULT;
     }
 

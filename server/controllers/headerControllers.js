@@ -12,16 +12,16 @@ const HEADER_DEFAULT = `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
 
 exports.dashboardHeaderData = async (req, res, next) => {
   try {
-    if (!req.query.user) {
+    if (!req.user._id) {
         console.log("Failure getting all data from header - Check DashboardClient!");
         return (next(createError(400, "invalid Request Body!")));
     }
 
-    const username = req.query.user;
-    const userDB = await User.findOne({username});
+    const userUid = req.user._id;
+    const userDB = await User.findOne({_id: userUid});
 
     if (!userDB) {
-        console.log(`Couldn't find user ${username}!`);
+        console.log(`Couldn't find user ${userUid}!`);
     }
 
     if (!userDB.header_data) {
@@ -54,23 +54,22 @@ exports.dashboardHeaderData = async (req, res, next) => {
   }
 };
 
-// headerControllers.js
-
 exports.updateDashboardTitle = async (req, res, next) => {
   const request = req.body ? req.body : false;
 
-  if (!request) {
+  if (!request && !req.user._id) {
     console.log("Invalid request sent to - UpdateDashboardTitle");
     return (next(createError(500, "invalid Request Body!")));
   }
 
-  const { username, userInputValue } = request;
+  const { userInputValue } = request;
+  const userUid = req.user._id;
 
   try {
-    const userDB = await User.findOne({ username });
+    const userDB = await User.findOne({ _id: userUid });
 
     if (!userDB) {
-      console.log(`Couldn't find user ${username}!`);
+      console.log(`Couldn't find user ${userUid}!`);
       return res.status(404).json({ error: "User not found" });
     }
 
@@ -78,7 +77,7 @@ exports.updateDashboardTitle = async (req, res, next) => {
     const headerDB = await Header.findOne({ _id: userDB.header_data });
 
     if (!headerDB) {
-        console.log(`Couldn't find header data for ${username}`);
+        console.log(`Couldn't find header data for ${userUid}`);
         return;
     }
     headerDB.dashboard_title = userInputValue == "" ? TITLE_DEFAULT : userInputValue;
@@ -91,18 +90,19 @@ exports.updateDashboardTitle = async (req, res, next) => {
 exports.updateDashboardQuote = async (req, res, next) => {
   const request = req.body ? req.body : false;
 
-  if (!request) {
+  if (!request && !req.user._id) {
     console.log("Invalid request sent to - UpdateDashboardQuote");
     return (next(createError(400, "Invalid Request Body!")));
   }
 
-  const { username, userInputValue } = request;
+  const { userInputValue } = request;
+  const userUid = req.user._id;
 
   try {
-    const userDB = await User.findOne({ username });
+    const userDB = await User.findOne({ _id: userUid });
 
     if (!userDB) {
-      console.log(`Couldn't find user ${username}!`);
+      console.log(`Couldn't find user ${userUid}!`);
       return (next(createError(400, "User not found!")));
     }
 
@@ -110,7 +110,7 @@ exports.updateDashboardQuote = async (req, res, next) => {
     const headerDB = await Header.findOne({ _id: userDB.header_data });
 
     if (!headerDB) {
-        console.log(`Problem finding header data for ${username}`);
+        console.log(`Problem finding header data for ${userUid}`);
         return;
     }
 
@@ -125,18 +125,19 @@ exports.updateDashboardQuote = async (req, res, next) => {
 exports.updateDashboardBackground = async (req, res, next) => {
   const request = req.body ? req.body : false;
 
-  if (!request) {
+  if (!request && !req.user._id) {
     console.log("Invalid request sent to - UpdateDashboardBackground");
     return (next(createError(400, "Invalid Request Body!")));
   }
 
-  const {username, userInputValue, validHeader} = request;
+  const {userInputValue, validHeader} = request;
+  const userUid = req.user._id;
 
   try {
-    const userDB = await User.findOne({ username });
+    const userDB = await User.findOne({ _id: userUid });
 
     if (!userDB) {
-      console.log(`Couldn't find user ${username}!`);
+      console.log(`Couldn't find user ${userUid}!`);
       return (next(createError(400, "User not found!")));
     }
 
@@ -144,7 +145,7 @@ exports.updateDashboardBackground = async (req, res, next) => {
     const headerDB = await Header.findOne({ _id: userDB.header_data });
 
     if (!headerDB) {
-        console.log(`Problem finding header data for ${username}`);
+        console.log(`Problem finding header data for ${userUid}`);
         return;
     }
 
