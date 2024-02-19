@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER = "https://dozebackend.onrender.com";
+const SERVER = "http://localhost:3001";
 
 class MainGoalsClient {
   //POST
