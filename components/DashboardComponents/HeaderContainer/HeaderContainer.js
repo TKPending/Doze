@@ -1,23 +1,23 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import HeaderBackground from "./components/HeaderBackground";
+import { Context } from "@/components/ContextUser";
+import DashboardClient from "@/util/clients/dashboardClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const TITLE_DEFAULT = "12 Weeks Goals";
-const QUOTE_DEFAULT =
-  "In just 12 weeks, you can create a new habit that will last a lifetime.";
-const HEADER_DEFAULT = `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
-
 const HeaderContainer = () => {
-  const [title, setTitle] = useState(TITLE_DEFAULT);
-  const [quote, setQuote] = useState(QUOTE_DEFAULT);
+  const { user } = useContext(Context);
+
+  const [title, setTitle] = useState("");
+  const [quote, setQuote] = useState("");
+  const [imageLink, setImageLink] = useState(""); // Database Image Link
+
   const [isHeader, setIsHeader] = useState(false); // Displays text to edit header
-  const [headerImage, setHeaderImage] = useState(HEADER_DEFAULT); // Changing of header value
+  const [headerImage, setHeaderImage] = useState(""); // Changing of header value
   const [validHeader, setValidHeader] = useState(false); // Valid image
-  const [imageLink, setImageLink] = useState("");
 
   const headerRef = useRef(null);
 
@@ -26,13 +26,32 @@ const HeaderContainer = () => {
     setValue(e.target.value);
   };
 
+  const handleHeader = (setValue, response) => {
+    if (!response) {
+      setValue("Error Returning Value. Try Again");
+    }
+    setValue(response);
+  };
+
   // When a user presses enter or clicks off, set value to last value
-  const handleEnterOrBlur = (e, setValue, defaultValue) => {
-    e.preventDefault();
+  const handleEnterOrBlur = async (e, section) => {
     const inputValue = e.target.value;
 
     // If input is enter, default to original text
-    setValue(inputValue === "" ? defaultValue : inputValue);
+    if (section == "title") {
+      const titleResponse = await DashboardClient.changeDashboardTitle(inputValue);
+
+      handleHeader(setTitle, titleResponse);
+    } else if (section == "quote") {
+      const quoteResponse = await DashboardClient.changeDashboardQuote(inputValue);
+
+      handleHeader(setQuote, quoteResponse)
+    } else {
+      const backgroundResponse = await DashboardClient.changeDashboardBackground(validHeader, inputValue);
+
+      handleHeader(setImageLink, backgroundResponse);
+      setHeaderImage(backgroundResponse);
+    }
 
     // Close header input
     setIsHeader(false);
@@ -54,26 +73,38 @@ const HeaderContainer = () => {
     };
   }, []);
 
-  // After user inputs a header image, make change
   useEffect(() => {
+    const fetchHeader = async () => {
+      try {
+        if (!user) {
+          return;
+        }
+        const response = await DashboardClient.getDashboardHeaderData();
+
+        if (!response) {
+          console.log("Invalid Data Received From Call To Backend");
+          return;
+        }
+
+        const { dashboard_background, dashboard_title, dashboard_quote } = response;
+
+        setTitle(dashboard_title);
+        setQuote(dashboard_quote);
+        setImageLink(dashboard_background);
+        setHeaderImage(dashboard_background)
+      } catch (err) {
+        console.error("Problem making original API CALL");
+        console.error(err);
+      }
+    };
+
+    fetchHeader();
+
     if (validHeader) {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("Header Background", headerImage);
-        setImageLink(localStorage.getItem("Header Background"));
-      }
+      fetchHeader();
     }
-  }, [validHeader, imageLink]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedImageLink = localStorage.getItem("Header Background");
-      if (storedImageLink) {
-        setImageLink(storedImageLink);
-      }
-    }
-  }, []);
-
-  useEffect(() => {}, [title, quote, headerImage]);
+  }, [user, imageLink]);
 
   return (
     <div
@@ -90,9 +121,8 @@ const HeaderContainer = () => {
         {isHeader && (
           <HeaderBackground
             setValidHeader={setValidHeader}
-            handleValueChange={handleValueChange}
             setHeaderImage={setHeaderImage}
-            HEADER_DEFAULT={HEADER_DEFAULT}
+            handleValueChange={handleValueChange}
             handleEnterOrBlur={handleEnterOrBlur}
             headerImage={headerImage}
           />
@@ -104,10 +134,10 @@ const HeaderContainer = () => {
           value={title}
           onChange={(e) => handleValueChange(e, setTitle)}
           onKeyDown={(e) =>
-            e.key === "Enter" && handleEnterOrBlur(e, setTitle, TITLE_DEFAULT)
+            e.key === "Enter" && handleEnterOrBlur(e, "title")
           }
           onBlur={(e) =>
-            e.type === "blur" && handleEnterOrBlur(e, setTitle, TITLE_DEFAULT)
+            e.type === "blur" && handleEnterOrBlur(e, "title")
           }
         />
         <input
@@ -116,10 +146,10 @@ const HeaderContainer = () => {
           value={quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>
-            e.key === "Enter" && handleEnterOrBlur(e, setQuote, QUOTE_DEFAULT)
+            e.key === "Enter" && handleEnterOrBlur(e, "quote")
           }
           onBlur={(e) =>
-            e.type === "blur" && handleEnterOrBlur(e, setQuote, QUOTE_DEFAULT)
+            e.type === "blur" && handleEnterOrBlur(e, "quote")
           }
         />
       </form>

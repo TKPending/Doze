@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  header_data: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Header"
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);
