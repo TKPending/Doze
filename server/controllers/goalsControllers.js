@@ -59,7 +59,7 @@ exports.getUser = async (req, res, next) => {
 
 exports.signOut = async (req, res, next) => {
   try {
-    cookies.set('testtoken', {maxAge: 0});
+    cookies.set('testtoken', {expires: Date.now()});
     res.json({ message: "Sign out" });
   } catch (error) {
     return next(createError(500, error.message));
