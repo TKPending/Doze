@@ -59,12 +59,7 @@ exports.getUser = async (req, res, next) => {
 
 exports.signOut = async (req, res, next) => {
   try {
-    res.clearCookie("jwt",{
-      httpOnly:true,
-      sameSite:"None",
-      path:"/",
-      secure:true,
-    });
+    cookies.set('testtoken', {maxAge: 0});
     res.json({ message: "Sign out" });
   } catch (error) {
     return next(createError(500, error.message));
