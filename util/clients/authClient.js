@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER = process.env.PRODUCTION ? "https://dozebackend.onrender.com" : "http://localhost:3001"
+const SERVER = "https://dozebackend.onrender.com" // "http://localhost:3001"
 
 class AuthClient {
   async getUser() {
