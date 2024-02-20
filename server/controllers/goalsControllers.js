@@ -36,6 +36,10 @@ exports.signIn = async (req, res, next) => {
       );
       res.cookie("jwt", accessToken, {
         httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        sameSite: "None",
+        path: "/",
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
     }
