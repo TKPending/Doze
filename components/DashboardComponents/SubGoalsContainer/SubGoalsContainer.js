@@ -58,6 +58,7 @@ const SubGoalsContainer = () => {
 fetchData();
   
 useEffect (() => {
+  console.log(taskUpdated)
   if (!taskUpdated) {
     fetchData();
   }

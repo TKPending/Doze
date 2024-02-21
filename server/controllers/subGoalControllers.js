@@ -150,6 +150,22 @@ exports.deleteAllSubGoalsFromStages = async (req, res, next) => {
 
 exports.deleteAllSubGoalsFromMainGoal = async (req, res, next) => {
   try {
+    const mainGoalId = req.params.mainGoalId;
+    const mainGoal = await MainGoals.findById(mainGoalId);
+
+    for (const subGoal of mainGoal.subGoals) {
+        const deleteSubGoal = await MainGoals.findByIdAndUpdate(
+            mainGoalId,
+            { $pull: { subGoals: { _id: subGoal._id } } },
+            { new: true }
+        )
+
+        if (!deleteSubGoal) {
+            return next(createError(404, `Problem deleting ${subGoal.title}`))
+        }
+    }
+
+
   } catch (err) {
     return next(createError(500, err.message));
   }

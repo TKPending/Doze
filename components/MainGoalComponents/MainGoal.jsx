@@ -10,6 +10,7 @@ import SubGoal from "../SubGoalComponent/SubGoal";
 import { useRouter } from "next/navigation";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import EditSubGoal from "../SubGoalComponent/EditSubGoal";
+import SubGoalsClient from "@/util/clients/subGoalsClient";
 
 const MainGoal = ({
   onSave,
@@ -30,6 +31,7 @@ const MainGoal = ({
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [taskClicked, setTaskClicked] = useState({});
   const [taskUpdated, setTaskUpdated] = useState(false);
+  const [emptyAllSubGoals, setEmptyAllSubGoals] = useState(false);
   const router = useRouter();
 
   const handleInputValue = (e) => {
@@ -120,18 +122,28 @@ const MainGoal = ({
   };
 
   // Add logic to empty all Sub Goals
-  const emptySubGoals = () => {
-    // Goes into line 315 in th onClick
+  const emptySubGoals = async () => {
+    const response = await SubGoalsClient.deleteAllSubGoalsInMainGoals(mainGoalData._id);
+
+    if (!response) {
+      console.log("Problem emptying sub goals in main goals page!");
+    }
+
+    setEmptyAllSubGoals(true)
   };
 
   useEffect(() => {
+    if (emptyAllSubGoals) {
+      setEmptyAllSubGoals(false);
+    }
+    
     const fetchData = async () => {
       const response = await MainGoalsClient.getOneMainGoalReq(mainGoalData._id);
       setMainGoalData(response);
     }
 
     fetchData();
-  }, [isSubGoalModalVisible, taskUpdated, taskClicked, isEditModalVisible]);
+  }, [isSubGoalModalVisible, emptyAllSubGoals ,taskUpdated, taskClicked, isEditModalVisible]);
 
   // Add useEffect which will re-render after adding sub tasks
 
@@ -325,7 +337,7 @@ const MainGoal = ({
                 <div className="w-2/4 h-8 flex items-center justify-between pr-2">
                   <p className="font-bold">Sub Goals:</p>
                   {mainGoalData.subGoals.length !== 0 && (
-                    <ClearSubGoals onClick={() => {}} />
+                    <ClearSubGoals onClick={emptySubGoals} />
                   )}
                 </div>
 

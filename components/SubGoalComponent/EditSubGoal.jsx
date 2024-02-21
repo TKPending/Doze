@@ -56,9 +56,9 @@ const EditSubGoal = ({
     e.preventDefault();
 
     await SubGoalsClient.editSubGoal(subGoalData);
-    closeModal();
-
     setTaskUpdated(true);
+
+    closeModal();
   };
 
   const deleteSubGoal = async (subGoalData) => {

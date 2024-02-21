@@ -5,14 +5,6 @@ const SmallSubGoals = ({ task, setTaskClicked, setIsEditModalVisible }) => {
     setTaskClicked(task);
   };
 
-  // const deleteSubGoal =  async (task) => {
-  //   const id = task._id;
-  //   const mainGoalId = task.mainGoalId
-  //   if (!confirm("Do you want to delete this sub goal?")) {
-  //     subGoalsClient.deleteSubGoal({ id, mainGoalId });
-  //     setTaskAdded(true);
-  // }}
-
   return (
     <div
       onClick={openModal}
