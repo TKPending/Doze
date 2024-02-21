@@ -140,3 +140,16 @@ exports.deleteOneMainGoal = async (req, res, next) => {
     return next(createError(500, error.message));
   }
 };
+
+exports.getSubGoals = async (req, res, next) => {
+  try {
+      const userId = req.user._id.toString();
+      const mainGoals = await MainGoals.find({ userId: userId });
+      res.json(mainGoals);
+      if (!mainGoals){
+          return next(createError(404, "No goals found"));
+      }
+  } catch (error) {
+      return next(createError(500, error.message));
+  }
+};

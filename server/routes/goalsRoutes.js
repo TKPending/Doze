@@ -9,12 +9,13 @@ const {
   getOneMainGoal,
   changeOneMainGoal,
   deleteOneMainGoal,
+  getSubGoals,
 } = require("../controllers/goalsControllers");
 const {
    addSubGoal,
-   getAllSubGoals,
     editSubGoal,
-     deleteSubGoal 
+     deleteSubGoal,
+
     } = require("../controllers/subGoalController");
 const passport = require("passport");
 const {
@@ -57,10 +58,19 @@ router.delete(
 );
 
 // Sub Goals
-router.post("/maingoals/:id/subgoals", addSubGoal);
-router.get("/maingoals", getAllSubGoals);
-router.put("/maingoals/:id/subgoals/:id", editSubGoal);
-router.delete("/maingoals/:id/subgoals/:id", deleteSubGoal);
+router.post("/mainGoal/:id/subGoals", addSubGoal);
+
+router.get("/mainGoal",
+ passport.authenticate(["jwt"], { session: false }),
+ getSubGoals);
+
+router.put("/mainGoal/:mainGoalId/subGoals/:id",
+ passport.authenticate(["jwt"], { session: false }),
+  editSubGoal);
+
+router.delete("/mainGoal/:mainGoalId/subGoals/:id", 
+passport.authenticate(["jwt"], { session: false }),
+deleteSubGoal);
 
 // Header Data - Header title, quote and background
 router.get("/headerData", dashboardHeaderData);

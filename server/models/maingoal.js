@@ -17,19 +17,24 @@ const subGoalSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  mainGoalId: {
+    type: String,
+    required: false,
+  },
   mainGoal: {
     type: String,
-    required: false, // Default = Untitled
+    required: false,
   },
   tags: [
-      {text: {
+    {
+      text: {
         type: String,
-        required: false
+        required: false,
       },
       colour: {
         type: String,
-        required: false
-      }}
+      },
+    },
   ],
   description: {
     type: String,
@@ -53,10 +58,6 @@ const mainGoalSchema = new mongoose.Schema({
   icon: {
     type: String,
     required: false,
-  },
-  date: {
-    type: String,
-    required: true,
   },
   status: {
     type: String,
