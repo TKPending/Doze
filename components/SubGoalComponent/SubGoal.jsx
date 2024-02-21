@@ -20,8 +20,8 @@ const SubGoal = ({
     dateCreated: "",
     icon: "😁",
     status: stageName ? stageName : "",
-    mainGoal: "",
-    mainGoalId: "",
+    mainGoal: goalTitle ? goalTitle : "",
+    mainGoalId: mainGoalData ? mainGoalData._id : "",
     tags: [],
     description: "",
     id: "",
@@ -74,13 +74,24 @@ const SubGoal = ({
 
   const saveSubGoal = async () => {
     //send request to backend to add sub goal
-    await SubGoalsClient.addSubGoal(subGoalData);
+    if (goalTitle) {
+      const mainGoal = mainGoalData.find((goal) => goal.title == goalTitle);
+      const mainGoalId = mainGoal._id;
+
+      const goalData = {...subGoalData, mainGoalId}
+      await SubGoalsClient.addSubGoal(goalData);
+    } else {
+      await SubGoalsClient.addSubGoal(subGoalData);
+    }
     setTaskUpdated(true);
   };
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
-    // Send request to backend to add sub goal to main goal
+    if (!mainGoalData.status) {
+      alert("Please select a status.");
+      return;
+    }
     saveSubGoal(subGoalData);
     closeModal();
   };

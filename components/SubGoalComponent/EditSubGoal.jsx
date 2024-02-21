@@ -25,6 +25,8 @@ const EditSubGoal = ({
     id: taskClicked._id,
   });
 
+  console.log(subGoalData);
+
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
       setSubGoalData({ ...subGoalData, title: e.target.value });

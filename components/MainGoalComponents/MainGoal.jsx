@@ -125,7 +125,6 @@ const MainGoal = ({
 
   // Add logic to empty all Sub Goals
   const emptySubGoals = async () => {
-    console.log("Calling emptySubGoals");
     const response = await SubGoalsClient.deleteAllSubGoalsInMainGoals(
       mainGoalData._id
     );
@@ -149,6 +148,9 @@ const MainGoal = ({
       setMainGoalData(response);
     };
 
+    if (!mainGoalData._id) {
+      return;
+    }
     fetchData();
   }, [
     isSubGoalModalVisible,

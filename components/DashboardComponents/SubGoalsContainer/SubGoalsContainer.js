@@ -28,10 +28,8 @@ const SubGoalsContainer = () => {
   ]);
 
   function pushTaskIfNotExists(task, taskArray) {
-    // Check if the task already exists in the array
     const taskExists = taskArray.some((subgoal) => subgoal._id === task._id);
 
-    // If the task doesn't exist, push it into the array
     if (!taskExists) {
       taskArray.push(task);
     }
