@@ -5,19 +5,20 @@ const {
   signIn,
   getUser,
   signOut,
+} = require("../controllers/authenticationControllers");
+const {
   addOneGoal,
   getOneMainGoal,
   changeOneMainGoal,
   deleteOneMainGoal,
-  getSubGoals,
   getAllMainGoalsForDashboard,
-} = require("../controllers/goalsControllers");
+} = require("../controllers/mainGoalsControllers");
 const {
-   addSubGoal,
-    editSubGoal,
-     deleteSubGoal,
-
-    } = require("../controllers/subGoalController");
+  addSubGoal,
+  editSubGoal,
+  deleteSubGoal,
+  getSubGoals,
+} = require("../controllers/subGoalControllers");
 const passport = require("passport");
 const {
   dashboardHeaderData,
@@ -67,22 +68,44 @@ router.get(
 // Sub Goals
 router.post("/mainGoal/:id/subGoals", addSubGoal);
 
-router.get("/mainGoal",
- passport.authenticate(["jwt"], { session: false }),
- getSubGoals);
+router.get(
+  "/mainGoal",
+  passport.authenticate(["jwt"], { session: false }),
+  getSubGoals
+);
 
-router.put("/mainGoal/:mainGoalId/subGoals/:id",
- passport.authenticate(["jwt"], { session: false }),
-  editSubGoal);
+router.put(
+  "/mainGoal/:mainGoalId/subGoals/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  editSubGoal
+);
 
-router.delete("/mainGoal/:mainGoalId/subGoals/:id", 
-passport.authenticate(["jwt"], { session: false }),
-deleteSubGoal);
+router.delete(
+  "/mainGoal/:mainGoalId/subGoals/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  deleteSubGoal
+);
 
 // Header Data - Header title, quote and background
-router.get("/headerData", passport.authenticate(["jwt"], { session: false }), dashboardHeaderData);
-router.patch("/headerData/updateBackground", passport.authenticate(["jwt"], { session: false }), updateDashboardBackground);
-router.patch("/headerData/updateTitle", passport.authenticate(["jwt"], { session: false }), updateDashboardTitle);
-router.patch("/headerData/updateQuote", passport.authenticate(["jwt"], { session: false }), updateDashboardQuote);
+router.get(
+  "/headerData",
+  passport.authenticate(["jwt"], { session: false }),
+  dashboardHeaderData
+);
+router.patch(
+  "/headerData/updateBackground",
+  passport.authenticate(["jwt"], { session: false }),
+  updateDashboardBackground
+);
+router.patch(
+  "/headerData/updateTitle",
+  passport.authenticate(["jwt"], { session: false }),
+  updateDashboardTitle
+);
+router.patch(
+  "/headerData/updateQuote",
+  passport.authenticate(["jwt"], { session: false }),
+  updateDashboardQuote
+);
 
 module.exports = router;

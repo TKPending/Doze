@@ -6,7 +6,11 @@ import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 import TagButtonColours from "./Components/TagColoursButtons";
 
-const EditSubGoal = ({ setIsEditModalVisible, taskClicked, setTaskUpdated }) => {
+const EditSubGoal = ({
+  setIsEditModalVisible,
+  taskClicked,
+  setTaskUpdated,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [subGoalData, setSubGoalData] = useState({
     title: taskClicked.title,
@@ -19,6 +23,8 @@ const EditSubGoal = ({ setIsEditModalVisible, taskClicked, setTaskUpdated }) => 
     description: taskClicked.description,
     id: taskClicked._id,
   });
+
+  console.log(subGoalData);
 
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
@@ -158,9 +164,11 @@ const EditSubGoal = ({ setIsEditModalVisible, taskClicked, setTaskUpdated }) => 
             <option value="Complete">Complete</option>
           </select>
 
-          <TagButtonColours subGoalData={subGoalData} setSubGoalData={setSubGoalData} />
+          <TagButtonColours
+            subGoalData={subGoalData}
+            setSubGoalData={setSubGoalData}
+          />
 
-         
           <div className="mt-2.5 mb-2.5">
             {subGoalData.tags.map((tag, index) => (
               <span key={index}>
