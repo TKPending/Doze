@@ -22,7 +22,7 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
-
+  console.log(mainGoalData);
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -303,39 +303,43 @@ const MainGoal = ({
             </div>
 
             {/* Sub Goals */}
-            <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
-              <div className="w-2/4 h-8 flex items-center justify-between pr-2">
-                <p className="font-bold">Sub Goals:</p>
-                {tempSubGoals.length !== 0 && (
-                  <ClearSubGoals onClick={() => setTempSubGoals([])} />
-                )}
-              </div>
+            {mainGoalData._id && (
+              <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
+                <div className="w-2/4 h-8 flex items-center justify-between pr-2">
+                  <p className="font-bold">Sub Goals:</p>
+                  {tempSubGoals.length !== 0 && (
+                    <ClearSubGoals onClick={() => setTempSubGoals([])} />
+                  )}
+                </div>
 
-              <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
-                {tempSubGoals.map((subGoal, index) => (
-                  <SubGoalComponent
-                    key={index}
+                <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
+                  {tempSubGoals.map((subGoal, index) => (
+                    <SubGoalComponent
+                      key={index}
+                      subGoals={tempSubGoals}
+                      setSubGoals={setTempSubGoals}
+                      task={subGoal}
+                      onClick={() => setSubGoalClicked(subGoal)}
+                    />
+                  ))}
+
+                  {tempSubGoals.length === 0 && (
+                    <div>
+                      <p className="font-bold text-center text-neutral-400">
+                        Add goals which will help with achieving your mains
+                        goals!
+                      </p>
+                    </div>
+                  )}
+
+                  <AddSubGoal
                     subGoals={tempSubGoals}
                     setSubGoals={setTempSubGoals}
-                    task={subGoal}
-                    onClick={() => setSubGoalClicked(subGoal)}
                   />
-                ))}
-
-                {tempSubGoals.length === 0 && (
-                  <div>
-                    <p className="font-bold text-center text-neutral-400">
-                      Add goals which will help with achieving your mains goals!
-                    </p>
-                  </div>
-                )}
-
-                <AddSubGoal
-                  subGoals={tempSubGoals}
-                  setSubGoals={setTempSubGoals}
-                />
+                </div>
               </div>
-            </div>
+            )}
+
             <div className="flex justify-between">
               {mainGoalData._id && (
                 <button
