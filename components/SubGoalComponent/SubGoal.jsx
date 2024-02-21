@@ -73,7 +73,7 @@ const SubGoal = ({
   };
 
   const saveSubGoal = async () => {
-    //send request to backend to add sub goal
+    // Adding main goal from Main Goal
     if (goalTitle) {
       const mainGoal = mainGoalData.find((goal) => goal.title == goalTitle);
       const mainGoalId = mainGoal._id;
@@ -81,6 +81,7 @@ const SubGoal = ({
       const goalData = {...subGoalData, mainGoalId}
       await SubGoalsClient.addSubGoal(goalData);
     } else {
+      console.log(subGoalData)
       await SubGoalsClient.addSubGoal(subGoalData);
     }
     setTaskUpdated(true);
@@ -88,9 +89,9 @@ const SubGoal = ({
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
-    if (!mainGoalData.status) {
-      alert("Please select a status.");
-      return;
+    if (!subGoalData.title || !subGoalData.mainGoal) {
+      alert("Pleae fill in form! Check Title and Main Goal");
+      return
     }
     saveSubGoal(subGoalData);
     closeModal();
@@ -175,7 +176,7 @@ const SubGoal = ({
             className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             onChange={handleSubGoalInput}
           >
-            <option value="">
+            <option value={stageName ? stageName : ""}>
               {stageName ? stageName : "Select a status"}
             </option>
             <option value="To-do">To-do</option>

@@ -20,7 +20,7 @@ const SubGoalsContainer = () => {
       tasks: [],
     },
     {
-      text: "Completed",
+      text: "Complete",
       color: "bg-[#ACE4AA]",
       circleColor: "#87C082",
       tasks: [],
@@ -43,7 +43,7 @@ const SubGoalsContainer = () => {
           pushTaskIfNotExists(item, stages[0].tasks);
         } else if (item.status === "In progress") {
           pushTaskIfNotExists(item, stages[1].tasks);
-        } else if (item.status === "Completed") {
+        } else if (item.status === "Complete") {
           pushTaskIfNotExists(item, stages[2].tasks);
         }
       });
