@@ -18,6 +18,7 @@ const {
   editSubGoal,
   deleteSubGoal,
   getSubGoals,
+  deleteAllSubGoalsFromStages
 } = require("../controllers/subGoalControllers");
 const passport = require("passport");
 const {
@@ -85,6 +86,20 @@ router.delete(
   passport.authenticate(["jwt"], { session: false }),
   deleteSubGoal
 );
+
+router.delete(
+  "/mainGoal/stages_delete_all/:stage",
+  passport.authenticate(["jwt"], { session: false }),
+  deleteAllSubGoalsFromStages
+);
+
+router.delete(
+  "/mainGoal/:mainGoalId/mainGoal_delete_all/:id",
+  passport.authenticate(["jwt"], { session: false }),
+  deleteSubGoal
+);
+
+
 
 // Header Data - Header title, quote and background
 router.get(

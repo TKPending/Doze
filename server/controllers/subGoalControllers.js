@@ -93,8 +93,6 @@ exports.deleteSubGoal = async (req, res, next) => {
       return next(createError(404, "Sub Goal not found with that id"));
     }
 
-    // const deletedSubGoal = await MainGoals.findByIdAndDelete(goalSubGoal);
-
     const deletedSubGoal = await MainGoals.findByIdAndUpdate(
       mainGoalId,
       { $pull: { subGoals: { _id: subGoalId } } },
@@ -111,5 +109,48 @@ exports.deleteSubGoal = async (req, res, next) => {
     res.json({ result: true });
   } catch (error) {
     return next(createError(500, error.message));
+  }
+};
+
+exports.deleteAllSubGoalsFromStages = async (req, res, next) => {
+  try {
+    const stage = req.params.stage;
+    const allMainGoals = await MainGoals.find({ userId: req.user._id });
+
+    if (!allMainGoals) {
+      return next(createError(404, "Can't find all Main Goals"));
+    }
+
+    for (const goal of allMainGoals) {
+      const mainGoalId = goal.id;
+      const subGoalsArray = goal.subGoals;
+
+      for (const subGoal of subGoalsArray) {
+        if (subGoal.status === stage) {
+          const deleteSubGoal = await MainGoals.findByIdAndUpdate(
+            mainGoalId,
+            { $pull: { subGoals: { _id: subGoal._id } } },
+            { new: true }
+          );
+
+          if (!deleteSubGoal) {
+            return next(createError(404, `Problem deleting ${subGoal.title}`));
+          }
+        }
+      }
+    }
+
+    res.json({
+      message: `Sub goals with status ${stage} deleted successfully`,
+    });
+  } catch (err) {
+    return next(createError(500, err.message));
+  }
+};
+
+exports.deleteAllSubGoalsFromMainGoal = async (req, res, next) => {
+  try {
+  } catch (err) {
+    return next(createError(500, err.message));
   }
 };

@@ -59,16 +59,20 @@ class SubGoalsClient {
 
   async deleteAllSubGoalsInStages(stage) {
     try {
-      
+      await axios.delete(
+        `http://localhost:3001/mainGoal/stages_delete_all/${stage}`
+      );
     } catch (err) {
       console.log("Error: Problem deleting all sub goals from stages");
       console.error(err);
     }
   }
 
-  async deleteAllSubGoalsInMainGoals() {
+  async deleteAllSubGoalsInMainGoals(mainGoalId) {
     try {
-      
+      await axios.delete(
+        `http://localhost:3001/mainGoal/${mainGoalId}/mainGoals_delete_all/${mainGoalId}`
+      );
     } catch (err) {
       console.log("Error: Problem deleting all sub goals from main goals page");
       console.error(err);

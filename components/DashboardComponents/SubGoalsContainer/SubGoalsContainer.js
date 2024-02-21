@@ -8,19 +8,19 @@ const SubGoalsContainer = () => {
   const [taskUpdated, setTaskUpdated] = useState(true);
   const [stages, setStages] = useState([
     {
-      text: "To-Do",
+      text: "To-do",
       color: "bg-[#FF9796]",
       circleColor: "#E87775",
       tasks: [],
     },
     {
-      text: "In Progress",
+      text: "In progress",
       color: "bg-[#7899D4]",
       circleColor: "#5677A6",
       tasks: [],
     },
     {
-      text: "Done",
+      text: "Completed",
       color: "bg-[#ACE4AA]",
       circleColor: "#87C082",
       tasks: [],
