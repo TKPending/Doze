@@ -28,13 +28,9 @@ const SubGoalsContainer = () => {
   ]);
   const fetchData = async () => {
     try {
-      const goals = await SubGoalsClient.getSubGoals();
-      console.log(goals);
+      const goals = await SubGoalsClient.getAllSubGoals();
       goals.forEach (item => {
-        // const subGoalID = item._id;
         if (item.status === "To-do"){ 
-          // const filteredSubGoals = stages[0].tasks.filter((i) => i._id !== subGoalID)
-          // console.log(filteredSubGoals);
           stages[0].tasks = [];
           stages[0].tasks.push(item);
         }
@@ -56,7 +52,6 @@ const SubGoalsContainer = () => {
   
 useEffect (() => {
   if (taskAdded){
-    console.log("Adding or deleting task")
     fetchData()
   } 
 }, [taskAdded])

@@ -8,7 +8,8 @@ import SubGoalComponent from "./components/SubGoalComponent";
 import ClearSubGoals from "./components/ClearSubGoals";
 import SubGoal from "../SubGoalComponent/SubGoal";
 import { useRouter } from "next/navigation";
-import mainGoalsClient from "@/util/clients/mainGoalsClient";
+import MainGoalsClient from "@/util/clients/mainGoalsClient";
+import EditSubGoal from "../SubGoalComponent/EditSubGoal";
 
 const MainGoal = ({
   onSave,
@@ -25,9 +26,10 @@ const MainGoal = ({
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isSubGoalModelVisible, setSubGoalModalVisible] = useState(false);
-  const [subGoalClicked, setSubGoalClicked] = useState(false);
-  const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
+  const [isSubGoalModalVisible, setSubGoalModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [taskClicked, setTaskClicked] = useState({});
+  const [taskUpdated, setTaskUpdated] = useState(false);
   const router = useRouter();
 
   const handleInputValue = (e) => {
@@ -93,6 +95,12 @@ const MainGoal = ({
     }
   };
 
+  // Set modal to the task clicked
+  const handleOnClick = (subGoal) => {
+    setIsEditModalVisible(true);
+    setTaskClicked(subGoal);
+  }
+
   const handleRemoveTag = (index) => {
     const newTags = mainGoalData.tags;
     newTags.splice(index, 1);
@@ -105,22 +113,25 @@ const MainGoal = ({
   //DELETE - deleting main goal
   const onDeleteMainGoal = async (e) => {
     e.preventDefault();
-    await mainGoalsClient.deleteOneMainGoalReq(mainGoalData._id);
+    const response = await MainGoalsClient.deleteOneMainGoalReq(mainGoalData._id);
     router.push("/dashboard");
+
+    setMainGoalData(response);
   };
 
   // Add logic to empty all Sub Goals
   const emptySubGoals = () => {
     // Goes into line 315 in th onClick
-  }
+  };
 
   useEffect(() => {
-    const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
-
-    if (isSubGoalExists) {
-      setSubGoalModalVisible(true);
+    const fetchData = async () => {
+      const response = await MainGoalsClient.getOneMainGoalReq(mainGoalData._id);
+      setMainGoalData(response);
     }
-  }, [subGoalClicked]);
+
+    fetchData();
+  }, [isSubGoalModalVisible, taskUpdated, taskClicked, isEditModalVisible]);
 
   // Add useEffect which will re-render after adding sub tasks
 
@@ -314,7 +325,7 @@ const MainGoal = ({
                 <div className="w-2/4 h-8 flex items-center justify-between pr-2">
                   <p className="font-bold">Sub Goals:</p>
                   {mainGoalData.subGoals.length !== 0 && (
-                    <ClearSubGoals onClick={() => setTempSubGoals([])} />
+                    <ClearSubGoals onClick={() => {}} />
                   )}
                 </div>
 
@@ -322,10 +333,8 @@ const MainGoal = ({
                   {mainGoalData.subGoals.map((subGoal, index) => (
                     <SubGoalComponent
                       key={index}
-                      subGoals={tempSubGoals}
-                      setSubGoals={setTempSubGoals}
-                      task={subGoal}
-                      onClick={() => setSubGoalClicked(subGoal)}
+                      subGoal={subGoal}
+                      onClick={handleOnClick}
                     />
                   ))}
 
@@ -338,10 +347,7 @@ const MainGoal = ({
                     </div>
                   )}
 
-                  <AddSubGoal
-                    subGoals={tempSubGoals}
-                    setSubGoals={setTempSubGoals}
-                  />
+                  <AddSubGoal setIsModalVisible={setSubGoalModalVisible} />
                 </div>
               </div>
             )}
@@ -362,8 +368,19 @@ const MainGoal = ({
           </div>
         </form>
 
-        {isSubGoalModelVisible && (
-          <SubGoal setIsModalVisible={setSubGoalModalVisible} />
+        {isSubGoalModalVisible && (
+          <SubGoal
+            setIsModalVisible={setSubGoalModalVisible}
+            setTaskUpdated={setTaskUpdated}
+          />
+        )}
+
+        {isEditModalVisible && (
+          <EditSubGoal
+            setIsEditModalVisible={setIsEditModalVisible}
+            taskClicked={taskClicked}
+            setTaskUpdated={setTaskUpdated}
+          />
         )}
       </div>
     </div>
