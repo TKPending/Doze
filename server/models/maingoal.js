@@ -3,32 +3,39 @@ const mongoose = require("mongoose");
 const subGoalSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   dateCreated: {
     type: String,
-    required: true,
+    required: false,
   },
   icon: {
     type: String,
-    required: true,
+    required: false,
   },
   status: {
     type: String,
-    required: true,
+    required: false,
+  },
+  mainGoalId: {
+    type: String,
+    required: false,
   },
   mainGoal: {
     type: String,
-    required: true, // Default = Untitled
-  },
-  tags: {
-    type: String,
     required: false,
   },
-  tagColours: {
-    type: String,
-    required: false,
-  },
+  tags: [
+    {
+      text: {
+        type: String,
+        required: false,
+      },
+      colour: {
+        type: String,
+      },
+    },
+  ],
   description: {
     type: String,
     required: false,
@@ -38,23 +45,23 @@ const subGoalSchema = new mongoose.Schema({
 const mainGoalSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   startDate: {
     type: String,
-    required: true,
+    required: false,
   },
   maxDate: {
     type: String,
-    required: true,
+    required: false,
   },
   icon: {
     type: String,
-    required: true,
+    required: false,
   },
   status: {
     type: String,
-    required: true,
+    required: false,
   },
   tags: [
     {

@@ -142,6 +142,18 @@ exports.deleteOneMainGoal = async (req, res, next) => {
   }
 };
 
+
+exports.getSubGoals = async (req, res, next) => {
+  try {
+      const userId = req.user._id.toString();
+      const mainGoals = await MainGoals.find({ userId: userId });
+      res.json(mainGoals);
+      if (!mainGoals){
+          return next(createError(404, "No goals found"));
+      }
+  } catch (error) {
+      return next(createError(500, error.message));
+
 exports.getAllMainGoalsForDashboard = async (req, res, next) => {
   try {
     const userId = req.user._id.toString();
@@ -152,5 +164,6 @@ exports.getAllMainGoalsForDashboard = async (req, res, next) => {
     res.json(goals);
   } catch (error) {
     return next(createError(500, error.message));
+
   }
 };

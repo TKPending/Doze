@@ -6,12 +6,11 @@ import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 
 
-const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
+const EditSubGoal = ({ setIsEditModalVisible, taskClicked, setTaskAdded }) => {
   
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [mainGoalData, setMainGoalData] = useState([]);
   const [subGoalData, setSubGoalData] = useState({
     title: "",
     dateCreated: "",
@@ -24,48 +23,27 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     id: "",
   });
 
-  //once merged, change this function to call MainGoalsClient instead
-  const fetchMainGoals = async () => {
-    try {
-  const mainGoalData = await SubGoalsClient.getSubGoals();
-  setMainGoalData(mainGoalData)
-    } catch(error) {
-      console.log(error, "error fetching maingoals");
-      setMainGoalData([]);
-    }
-  }
 
-
- 
 
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
-        setSubGoalData({...subGoalData, title: e.target.value})
-        console.log("Sub Data", subGoalData)
-      }
+      setSubGoalData({...subGoalData, title: e.target.value})
+    }
     if (e.target.name === "status") {  
      setSubGoalData({...subGoalData, status: e.target.value})
     }
     if (e.target.name === "description") {
-     setSubGoalData({...subGoalData, description: e.target.value})
+    setSubGoalData({...subGoalData, description: e.target.value})
     }
     if (e.target.name === "icon") {
         setSubGoalData({...subGoalData, icon: e.target.value})
-    }
+      }
     };
 
-    const handleMainGoalChange = (e) => {
-      const selectedGoal = JSON.parse(e.target.value);
-      setSubGoalData({
-        ...subGoalData, 
-        mainGoal: selectedGoal.title,
-        mainGoalId: selectedGoal._id
-      })
-    }
 
 
   const closeModal = () => {
-    setIsModalVisible(false);
+    setIsEditModalVisible(false);
   }
 
   //close modal when user clicks outside the modal
@@ -78,14 +56,29 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
  
 
   const saveSubGoal = async () => {
-    //send request to backend to add sub goal
-      await SubGoalsClient.addSubGoal(subGoalData);
+    console.log(subGoalData)
+      await SubGoalsClient.editSubGoal(subGoalData);
+   }
+
+
+   const deleteSubGoal =  async (subGoalData) => {
+    const mainGoalId = subGoalData.mainGoalId
+    const id = subGoalData.id;
+    if (!confirm("Do you want to delete this sub goal?")) {
+     return
+  }
+  await SubGoalsClient.deleteSubGoal(mainGoalId, id);
+  console.log("Deleted Task")
+  setTaskAdded(true);
+  console.log("State changed to true")
+  closeModal();
 }
+
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
     // Send request to backend to add sub goal to main goal
-    saveSubGoal(subGoalData);
+    saveSubGoal();
     closeModal();
     setTaskAdded(true);
   }
@@ -115,7 +108,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
 
   //remove tag from tag list
   const handleRemoveTag = (index) => {
-   const newTags = subGoalData.tags;
+const newTags = subGoalData.tags;
     newTags.splice(index, 1);
     setSubGoalData({
       ...subGoalData,
@@ -123,21 +116,16 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     });
   }
 
-    const mapMainGoals = () => {
-      return mainGoalData.map((goal) => {
-        return <option key={goal._id} value={JSON.stringify(goal)}>{goal.title}</option>
-      })  
-    
-    }
+   
     const handleAddTag = (e) => {
       e.preventDefault();
       try {
         if (tagInput !== "" && selectedColour !== "") {
-          setSubGoalData({
+         setSubGoalData({
           ...subGoalData, 
           tags: [...subGoalData.tags, {text:tagInput, colour: selectedColour }]
          })
-          setTagInput("");
+        setTagInput("");
          setSelectedColour("");
         } else {
           alert("Please enter a tag and select a colour");
@@ -147,10 +135,23 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
       }
     };
     
-    useEffect(() => {
-      fetchMainGoals();
-    }, []);
 
+    useEffect(() => {
+      if (taskClicked.task !== undefined) {
+        console.log(taskClicked.task)
+        setSubGoalData({
+          title: taskClicked.task.title,
+          dateCreated: taskClicked.task.dateCreated || "",
+          icon: taskClicked.task.icon,
+          status: taskClicked.task.status,
+          mainGoalId: taskClicked.task.mainGoalId,
+          mainGoal: taskClicked.task.mainGoal, 
+          tags: taskClicked.task.tags,
+          description: taskClicked.task.description,
+          id: taskClicked.task._id
+        })
+      }
+    }, [taskClicked]);
 
    
 
@@ -192,11 +193,12 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
           <input name="title" id="title"
             type="text"
             className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]" placeholder="Title" 
-            onChange={handleSubGoalInput}
+            onChange={handleSubGoalInput} defaultValue={subGoalData.title}
           ></input>
 
           <select name="status" className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2" 
           onChange={handleSubGoalInput}
+          value={subGoalData.status}
           >
             <option value="">Select a status</option>
             <option value="To-do">To-do</option>
@@ -204,13 +206,6 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
             <option value="Complete">Complete</option>
           </select>
 
-          <select name="mainGoal"
-           onChange={handleMainGoalChange} 
-           className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
-            <option>Select a main goal</option>
-           {mainGoalData ? mapMainGoals() : <option value="Untracked">Leave Untracked</option>}
-          
-          </select>
 
           <div className="flex justify-center items-center mb-2.5">
             <input
@@ -303,7 +298,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
             />
           </div>
           <div className="mt-2.5 mb-2.5">
-           { subGoalData.tags.map((tag, index) => (
+            {subGoalData.tags.map((tag, index) => (
               <span key={index}>
                 <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                   {tag.text}
@@ -321,8 +316,11 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
           <textarea name="description"
             className="textarea h-72 input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
             placeholder="Additional information" 
-            onChange={handleSubGoalInput}
+            onChange={handleSubGoalInput} defaultValue={subGoalData.description}
           ></textarea>
+<a onClick={() => deleteSubGoal(subGoalData)} className="hover:cursor-pointer">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-delete"><path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"/><line x1="18" x2="12" y1="9" y2="15"/><line x1="12" x2="18" y1="9" y2="15"/></svg>
+</a>
 
           <div className="w-full h-full flex justify-end items-end pb-[5%] pr-[5%]">
             <button type="submit" className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
@@ -336,4 +334,4 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
 
 };
 
-export default SubGoal;
+export default EditSubGoal; 
