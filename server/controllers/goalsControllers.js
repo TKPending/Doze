@@ -153,6 +153,8 @@ exports.getSubGoals = async (req, res, next) => {
       }
   } catch (error) {
       return next(createError(500, error.message));
+  }
+}
 
 exports.getAllMainGoalsForDashboard = async (req, res, next) => {
   try {
