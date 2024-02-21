@@ -22,7 +22,6 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
-  console.log(mainGoalData);
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -110,6 +109,11 @@ const MainGoal = ({
     router.push("/dashboard");
   };
 
+  // Add logic to empty all Sub Goals
+  const emptySubGoals = () => {
+    // Goes into line 315 in th onClick
+  }
+
   useEffect(() => {
     const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
 
@@ -117,6 +121,8 @@ const MainGoal = ({
       setSubGoalModalVisible(true);
     }
   }, [subGoalClicked]);
+
+  // Add useEffect which will re-render after adding sub tasks
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -307,13 +313,13 @@ const MainGoal = ({
               <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
                 <div className="w-2/4 h-8 flex items-center justify-between pr-2">
                   <p className="font-bold">Sub Goals:</p>
-                  {tempSubGoals.length !== 0 && (
+                  {mainGoalData.subGoals.length !== 0 && (
                     <ClearSubGoals onClick={() => setTempSubGoals([])} />
                   )}
                 </div>
 
                 <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
-                  {tempSubGoals.map((subGoal, index) => (
+                  {mainGoalData.subGoals.map((subGoal, index) => (
                     <SubGoalComponent
                       key={index}
                       subGoals={tempSubGoals}
@@ -323,7 +329,7 @@ const MainGoal = ({
                     />
                   ))}
 
-                  {tempSubGoals.length === 0 && (
+                  {mainGoalData.subGoals.length === 0 && (
                     <div>
                       <p className="font-bold text-center text-neutral-400">
                         Add goals which will help with achieving your mains
