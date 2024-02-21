@@ -101,7 +101,7 @@ const MainGoal = ({
   const handleOnClick = (subGoal) => {
     setIsEditModalVisible(true);
     setTaskClicked(subGoal);
-  }
+  };
 
   const handleRemoveTag = (index) => {
     const newTags = mainGoalData.tags;
@@ -115,7 +115,9 @@ const MainGoal = ({
   //DELETE - deleting main goal
   const onDeleteMainGoal = async (e) => {
     e.preventDefault();
-    const response = await MainGoalsClient.deleteOneMainGoalReq(mainGoalData._id);
+    const response = await MainGoalsClient.deleteOneMainGoalReq(
+      mainGoalData._id
+    );
     router.push("/dashboard");
 
     setMainGoalData(response);
@@ -123,14 +125,16 @@ const MainGoal = ({
 
   // Add logic to empty all Sub Goals
   const emptySubGoals = async () => {
-    console.log("Calling emptySubGoals")
-    const response = await SubGoalsClient.deleteAllSubGoalsInMainGoals(mainGoalData._id);
+    console.log("Calling emptySubGoals");
+    const response = await SubGoalsClient.deleteAllSubGoalsInMainGoals(
+      mainGoalData._id
+    );
 
     if (!response) {
       console.log("Problem emptying sub goals in main goals page!");
     }
 
-    setEmptyAllSubGoals(true)
+    setEmptyAllSubGoals(true);
   };
 
   useEffect(() => {
@@ -139,12 +143,20 @@ const MainGoal = ({
     }
 
     const fetchData = async () => {
-      const response = await MainGoalsClient.getOneMainGoalReq(mainGoalData._id);
+      const response = await MainGoalsClient.getOneMainGoalReq(
+        mainGoalData._id
+      );
       setMainGoalData(response);
-    }
+    };
 
     fetchData();
-  }, [isSubGoalModalVisible, emptyAllSubGoals ,taskUpdated, taskClicked, isEditModalVisible]);
+  }, [
+    isSubGoalModalVisible,
+    emptyAllSubGoals,
+    taskUpdated,
+    taskClicked,
+    isEditModalVisible,
+  ]);
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">

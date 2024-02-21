@@ -15,7 +15,7 @@ const Header = () => {
       e.preventDefault();
       await AuthClient.signOutUser();
       onUserSignedOut();
-      router.push('/');
+      router.push("/");
     } catch (err) {
       console.log("Problem signin out user");
       console.error(err);

@@ -25,7 +25,9 @@ const ProgressionContainer = ({
 
   const handleRemoveOldTask = (taskClicked) => {
     const stageTasks = stage.tasks;
-    const updatedTasks = stageTasks.filter(task => task.id !== taskClicked.id);
+    const updatedTasks = stageTasks.filter(
+      (task) => task.id !== taskClicked.id
+    );
 
     stage.tasks = updatedTasks;
   };
