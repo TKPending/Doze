@@ -10,6 +10,7 @@ const EditSubGoal = ({
   setIsEditModalVisible,
   taskClicked,
   setTaskUpdated,
+  handleRemoveOldTask
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [subGoalData, setSubGoalData] = useState({
@@ -23,8 +24,6 @@ const EditSubGoal = ({
     description: taskClicked.description,
     id: taskClicked._id,
   });
-
-  console.log(subGoalData);
 
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
@@ -57,6 +56,7 @@ const EditSubGoal = ({
 
     await SubGoalsClient.editSubGoal(subGoalData);
     setTaskUpdated(true);
+    handleRemoveOldTask(taskClicked)
 
     closeModal();
   };

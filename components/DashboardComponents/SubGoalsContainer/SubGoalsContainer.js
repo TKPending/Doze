@@ -29,8 +29,8 @@ const SubGoalsContainer = () => {
 
   function pushTaskIfNotExists(task, taskArray) {
     // Check if the task already exists in the array
-    const taskExists = taskArray.some(subgoal => subgoal._id === task._id);
-  
+    const taskExists = taskArray.some((subgoal) => subgoal._id === task._id);
+
     // If the task doesn't exist, push it into the array
     if (!taskExists) {
       taskArray.push(task);
@@ -40,7 +40,7 @@ const SubGoalsContainer = () => {
   const fetchData = async () => {
     try {
       const goals = await SubGoalsClient.getAllSubGoals();
-      goals.forEach(item => {
+      goals.forEach((item) => {
         if (item.status === "To-do") {
           pushTaskIfNotExists(item, stages[0].tasks);
         } else if (item.status === "In progress") {
@@ -50,26 +50,21 @@ const SubGoalsContainer = () => {
         }
       });
 
-      setTaskUpdated(false)
-  } catch (error) {
-    console.log(error)
-  }} 
+      setTaskUpdated(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-fetchData();
-  
-useEffect (() => {
-  console.log(taskUpdated)
-  if (!taskUpdated) {
+  useEffect(() => {
     fetchData();
-  }
-}, [taskUpdated])
+  }, [taskUpdated, stages]);
 
   return (
     <div className="bg-opacity-30 w-full h-auto rounded-b-lg p-10 bg-neutral-100 shadow-md">
       <h1 className="text-3xl text-black font-semibold mb-2">Board</h1>
 
       <div className="flex gap-4 w-full shadow bg-indigo-600 bg-opacity-20 max-h-screen h-full rounded-lg p-4">
-
         {stages.map((section, index) => (
           <ProgressionContainer
             key={index}

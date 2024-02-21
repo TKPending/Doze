@@ -23,6 +23,13 @@ const ProgressionContainer = ({
 
   useEffect(() => {}, [isModalVisible, taskClicked, isEditModalVisible]);
 
+  const handleRemoveOldTask = (taskClicked) => {
+    const stageTasks = stage.tasks;
+    const updatedTasks = stageTasks.filter(task => task.id !== taskClicked.id);
+
+    stage.tasks = updatedTasks;
+  };
+
   return (
     <div
       className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2 bg-opacity-50`}
@@ -69,6 +76,7 @@ const ProgressionContainer = ({
             setIsEditModalVisible={setIsEditModalVisible}
             taskClicked={taskClicked}
             setTaskUpdated={setTaskUpdated}
+            handleRemoveOldTask={handleRemoveOldTask}
           />
         )}
 
