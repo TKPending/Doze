@@ -45,7 +45,7 @@ const SubGoalsContainer = () => {
           pushTaskIfNotExists(item, stages[0].tasks);
         } else if (item.status === "In progress") {
           pushTaskIfNotExists(item, stages[1].tasks);
-        } else if (item.status === "Complete") {
+        } else if (item.status === "Completed") {
           pushTaskIfNotExists(item, stages[2].tasks);
         }
       });

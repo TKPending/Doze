@@ -7,14 +7,14 @@ import SubGoalsClient from "@/util/clients/subGoalsClient";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import TagButtonColours from "./Components/TagColoursButtons";
 
-const SubGoal = ({ setIsModalVisible, setTaskUpdated }) => {
+const SubGoal = ({ setIsModalVisible, setTaskUpdated, stageName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mainGoalData, setMainGoalData] = useState([]);
   const [subGoalData, setSubGoalData] = useState({
     title: "",
     dateCreated: "",
     icon: "😁",
-    status: "",
+    status: stageName ? stageName : "",
     mainGoal: "",
     mainGoalId: "",
     tags: [],
@@ -159,7 +159,7 @@ const SubGoal = ({ setIsModalVisible, setTaskUpdated }) => {
             className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             onChange={handleSubGoalInput}
           >
-            <option value="">Select a status</option>
+            <option value="">{stageName ? stageName : "Select a status"}</option>
             <option value="To-do">To-do</option>
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>

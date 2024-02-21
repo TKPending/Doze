@@ -68,6 +68,7 @@ const ProgressionContainer = ({
           <SubGoal
             setIsModalVisible={setIsModalVisible}
             setTaskUpdated={setTaskUpdated}
+            stageName={stage.text}
           />
         )}
         {/* Display the subgoals edit modal, when task is clicked */}
