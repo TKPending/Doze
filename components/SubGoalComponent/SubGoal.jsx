@@ -7,7 +7,12 @@ import SubGoalsClient from "@/util/clients/subGoalsClient";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import TagButtonColours from "./Components/TagColoursButtons";
 
-const SubGoal = ({ setIsModalVisible, setTaskUpdated, stageName }) => {
+const SubGoal = ({
+  setIsModalVisible,
+  setTaskUpdated,
+  stageName,
+  goalTitle,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mainGoalData, setMainGoalData] = useState([]);
   const [subGoalData, setSubGoalData] = useState({
@@ -159,24 +164,35 @@ const SubGoal = ({ setIsModalVisible, setTaskUpdated, stageName }) => {
             className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             onChange={handleSubGoalInput}
           >
-            <option value="">{stageName ? stageName : "Select a status"}</option>
+            <option value="">
+              {stageName ? stageName : "Select a status"}
+            </option>
             <option value="To-do">To-do</option>
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>
           </select>
 
-          <select
-            name="mainGoal"
-            onChange={handleMainGoalChange}
-            className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
-          >
-            <option>Select a main goal</option>
-            {mainGoalData ? (
-              mapMainGoals()
-            ) : (
-              <option value="Untracked">Leave Untracked</option>
-            )}
-          </select>
+          {goalTitle ? (
+            <div className="flex overflow flex-row gap-4 mb-4 pr-2 items-center justify-center  h-auto w-auto text-center border bg-white rounded-lg outline-[#ff9796] border-[#ff9796]">
+              <div className="h-12 text-neutral-20  rounded-s-lg p-2 w-auto bg-neutral-200 flex justify-center items-center">
+                <p className="f">Goal: </p>
+              </div>
+              <p>{goalTitle}</p>
+            </div>
+          ) : (
+            <select
+              name="mainGoal"
+              onChange={handleMainGoalChange}
+              className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
+            >
+              <option>Select a main goal</option>
+              {mainGoalData ? (
+                mapMainGoals()
+              ) : (
+                <option value="Untracked">Leave Untracked</option>
+              )}
+            </select>
+          )}
 
           <TagButtonColours
             subGoalData={subGoalData}

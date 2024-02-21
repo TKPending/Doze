@@ -383,6 +383,7 @@ const MainGoal = ({
           <SubGoal
             setIsModalVisible={setSubGoalModalVisible}
             setTaskUpdated={setTaskUpdated}
+            goalTitle={mainGoalData.title}
           />
         )}
 
