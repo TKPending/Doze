@@ -165,6 +165,9 @@ exports.deleteAllSubGoalsFromMainGoal = async (req, res, next) => {
         }
     }
 
+    res.json({
+        message: `All sub goals in main goals, have been deleted`,
+      });
 
   } catch (err) {
     return next(createError(500, err.message));

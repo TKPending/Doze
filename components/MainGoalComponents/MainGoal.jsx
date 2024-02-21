@@ -123,6 +123,7 @@ const MainGoal = ({
 
   // Add logic to empty all Sub Goals
   const emptySubGoals = async () => {
+    console.log("Calling emptySubGoals")
     const response = await SubGoalsClient.deleteAllSubGoalsInMainGoals(mainGoalData._id);
 
     if (!response) {
@@ -136,7 +137,7 @@ const MainGoal = ({
     if (emptyAllSubGoals) {
       setEmptyAllSubGoals(false);
     }
-    
+
     const fetchData = async () => {
       const response = await MainGoalsClient.getOneMainGoalReq(mainGoalData._id);
       setMainGoalData(response);
@@ -144,8 +145,6 @@ const MainGoal = ({
 
     fetchData();
   }, [isSubGoalModalVisible, emptyAllSubGoals ,taskUpdated, taskClicked, isEditModalVisible]);
-
-  // Add useEffect which will re-render after adding sub tasks
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -337,7 +336,7 @@ const MainGoal = ({
                 <div className="w-2/4 h-8 flex items-center justify-between pr-2">
                   <p className="font-bold">Sub Goals:</p>
                   {mainGoalData.subGoals.length !== 0 && (
-                    <ClearSubGoals onClick={emptySubGoals} />
+                    <ClearSubGoals onClick={() => emptySubGoals()} />
                   )}
                 </div>
 
