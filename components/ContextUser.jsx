@@ -12,10 +12,12 @@ export function ContextUser({ children }) {
 
   const onUserSignedIn = async () => {
     const newUser = await AuthClient.getUser();
+    localStorage.setItem('user', newUser);
     setUser(newUser);
   };
-
+  
   const onUserSignedOut = async () => {
+    localStorage.removeItem("user", "");
     setUser(null);
   };
 

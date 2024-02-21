@@ -3,16 +3,19 @@ import Link from "next/link";
 import { useState, useContext } from "react";
 import { Context } from "./ContextUser";
 import AuthClient from "@/util/clients/authClient";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { user, onUserSignedOut } = useContext(Context);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
+  const router = useRouter();
 
   const signOutReq = async (e) => {
     try {
       e.preventDefault();
       await AuthClient.signOutUser();
       onUserSignedOut();
+      router.push('/');
     } catch (err) {
       console.log("Problem signin out user");
       console.error(err);

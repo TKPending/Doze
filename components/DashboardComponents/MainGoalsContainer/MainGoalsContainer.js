@@ -1,42 +1,40 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import AddGoal from "./components/AddGoal";
+import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
+import mainGoalsClient from "@/util/clients/mainGoalsClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const MainGoalsContainer = () => {
   // Replicate Database information
-  const [testGoals, setGoals] = useState([
-    {
-      uid: 1,
-      title: "Buy a house",
-      icon: "...",
-    },
-    {
-      uid: 2,
-      title: "Gain 5 kg",
-      icon: "...",
-    },
-    {
-      uid: 3,
-      title: "Finish the bootcamp",
-      icon: "...",
-    },
-  ]);
+  const [mainGoals, setMainGoals] = useState([]);
 
-  // Remove goal from database
-  const handleRemoveGoal = (goalToRemove) => {
-    const newGoals = testGoals.filter((goal) => goal.uid !== goalToRemove);
-    setGoals([...newGoals]);
+  const getAllMainGoals = async () => {
+    const mainGoalsData = await mainGoalsClient.getAllMainGoals();
+    setMainGoals(mainGoalsData);
   };
 
+  const deleteOneMainGoalFromDashboard = async (id) => {
+    if (!confirm("Do you want to delete this goal?")) {
+      return;
+    }
+    mainGoalsClient.deleteOneMainGoalReq(id);
+    getAllMainGoals();
+  };
+
+  useEffect(() => {
+    const user = localStorage.getItem('user')
+    if (user !== "") {
+      getAllMainGoals();
+    }
+  }, [mainGoals]);
   return (
     <div
       className={`${inter.className} bg-white flex flex-col w-full ${
-        testGoals.length > 5 ? "h-60" : "h-auto"
+        mainGoals.length > 5 ? "h-60" : "h-auto"
       } px-20 py-4 `}
     >
       <div className="flex items-center w-3/4 border-b border-b-black h-1/4 mb-2">
@@ -45,10 +43,10 @@ const MainGoalsContainer = () => {
 
       <div
         className={`flex flex-col ${
-          testGoals.length > 5 ? "overflow-y-auto" : ""
+          mainGoals.length > 5 ? "overflow-y-auto" : ""
         } p-4 w-1/2 h-3/4`}
       >
-        {testGoals.length === 0 ? (
+        {!mainGoals ? (
           <div className="w-full">
             <p className="text-black font-semibold">
               It's recommended to have between 3-5 goals
@@ -56,24 +54,40 @@ const MainGoalsContainer = () => {
           </div>
         ) : (
           <>
-            {testGoals.map((goals, index) => (
+            {mainGoals.map((goal, index) => (
               <Goal
                 key={index}
-                uid={goals.uid}
-                goals={goals.title}
-                handleRemoveGoal={handleRemoveGoal}
+                goal={goal}
+                deleteOneMainGoalFromDashboard={() => {
+                  deleteOneMainGoalFromDashboard(goal._id);
+                }}
               />
-            ))}{" "}
+            ))}
           </>
         )}
 
-        {testGoals.length === 5 && 
+        {mainGoals.length >= 5 && (
           <div className="h-14 flex items-center">
-            <p className="text-black">It's recommended to only have 3-5 goals</p>
+            <p className="text-black">
+              It's recommended to only have 3-5 goals
+            </p>
           </div>
-        }
+        )}
+        {mainGoals.length === 0 && (
+          <div className="h-14 flex items-center">
+            <p className="text-black">
+              It's recommended to have 3-5 goals. <br /> Press the button below
+              to start creating goals
+            </p>
+          </div>
+        )}
 
-        <AddGoal goals={testGoals} setGoals={setGoals} />
+        <Link
+          href={"/maingoal"}
+          className={`mt-4 ml-8 flex gap-4 items-center justify-center w-32 h-8 border border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-black hover:border hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
+        >
+          Add Goal +
+        </Link>
       </div>
     </div>
   );

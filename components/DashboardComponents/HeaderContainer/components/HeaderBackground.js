@@ -36,8 +36,8 @@ const HeaderBackground = ({
       onChange={(e) => handleValueChange(e, setHeaderImage)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          handleEnterOrBlur(e, "background");
           handleImageChange(e);
+          handleEnterOrBlur(e, "background");
         }
       }}
       onBlur={(e) =>

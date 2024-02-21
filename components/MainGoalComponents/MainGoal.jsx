@@ -16,13 +16,12 @@ const MainGoal = ({
     title: "Main Goal Title",
     description: "",
     status: "to-do",
-    startDate: "",
+    startDate: new Date().toLocaleDateString("en-CA"),
     tags: [],
     icon: "😁",
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
-
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +60,7 @@ const MainGoal = ({
   };
 
   const toggleEmojiPicker = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setIsOpen(!isOpen);
   };
 
@@ -110,6 +109,11 @@ const MainGoal = ({
     router.push("/dashboard");
   };
 
+  // Add logic to empty all Sub Goals
+  const emptySubGoals = () => {
+    // Goes into line 315 in th onClick
+  }
+
   useEffect(() => {
     const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
 
@@ -117,6 +121,8 @@ const MainGoal = ({
       setSubGoalModalVisible(true);
     }
   }, [subGoalClicked]);
+
+  // Add useEffect which will re-render after adding sub tasks
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
@@ -303,39 +309,43 @@ const MainGoal = ({
             </div>
 
             {/* Sub Goals */}
-            <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
-              <div className="w-2/4 h-8 flex items-center justify-between pr-2">
-                <p className="font-bold">Sub Goals:</p>
-                {tempSubGoals.length !== 0 && (
-                  <ClearSubGoals onClick={() => setTempSubGoals([])} />
-                )}
-              </div>
+            {mainGoalData._id && (
+              <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
+                <div className="w-2/4 h-8 flex items-center justify-between pr-2">
+                  <p className="font-bold">Sub Goals:</p>
+                  {mainGoalData.subGoals.length !== 0 && (
+                    <ClearSubGoals onClick={() => setTempSubGoals([])} />
+                  )}
+                </div>
 
-              <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
-                {tempSubGoals.map((subGoal, index) => (
-                  <SubGoalComponent
-                    key={index}
+                <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
+                  {mainGoalData.subGoals.map((subGoal, index) => (
+                    <SubGoalComponent
+                      key={index}
+                      subGoals={tempSubGoals}
+                      setSubGoals={setTempSubGoals}
+                      task={subGoal}
+                      onClick={() => setSubGoalClicked(subGoal)}
+                    />
+                  ))}
+
+                  {mainGoalData.subGoals.length === 0 && (
+                    <div>
+                      <p className="font-bold text-center text-neutral-400">
+                        Add goals which will help with achieving your mains
+                        goals!
+                      </p>
+                    </div>
+                  )}
+
+                  <AddSubGoal
                     subGoals={tempSubGoals}
                     setSubGoals={setTempSubGoals}
-                    task={subGoal}
-                    onClick={() => setSubGoalClicked(subGoal)}
                   />
-                ))}
-
-                {tempSubGoals.length === 0 && (
-                  <div>
-                    <p className="font-bold text-center text-neutral-400">
-                      Add goals which will help with achieving your mains goals!
-                    </p>
-                  </div>
-                )}
-
-                <AddSubGoal
-                  subGoals={tempSubGoals}
-                  setSubGoals={setTempSubGoals}
-                />
+                </div>
               </div>
-            </div>
+            )}
+
             <div className="flex justify-between">
               {mainGoalData._id && (
                 <button

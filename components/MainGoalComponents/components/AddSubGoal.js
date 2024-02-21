@@ -1,8 +1,9 @@
 // For the main goals page
-const AddSubGoal = ({ subGoals, setSubGoals }) => {
-  const handleAddSubTask = () => {
-    subGoals.push(subGoals.length + 1);
-    setSubGoals([...subGoals]);
+const AddSubGoal = ({ subGoals, setSubGoals }) => { // Empty parameters
+  const handleAddSubTask = async () => {
+    subGoals.push(subGoals.length + 1);  // Remove
+    setSubGoals([...subGoals]); // Remove
+    // Replace with logic to add Sub Goals from Sub Goals Client
   };
 
   return (

@@ -1,5 +1,4 @@
 require("dotenv").config();
-const axios = require("axios");
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -65,8 +64,7 @@ exports.signOut = async (req, res, next) => {
 
 exports.addOneGoal = async (req, res, next) => {
   try {
-    const userEmail = req.user.email;
-    const user = await User.findOne({ email: userEmail });
+    const userId = req.user._id;
     const maxDate = new Date(req.body.startDate);
     maxDate.setMonth(maxDate.getMonth() + 3);
 
@@ -78,7 +76,7 @@ exports.addOneGoal = async (req, res, next) => {
       status: req.body.status,
       tags: req.body.tags,
       description: req.body.description,
-      userId: req.user._id,
+      userId: userId,
     });
     await goal.save();
     res.json({ message: goal });
@@ -108,6 +106,9 @@ exports.changeOneMainGoal = async (req, res, next) => {
     const mainGoalId = req.params.id;
     const goal = await MainGoals.findById(mainGoalId);
 
+    if (!goal) {
+      return next(createError(404, "No such goal"));
+    }
     const maxDate = new Date(req.body.startDate);
     maxDate.setMonth(maxDate.getMonth() + 3);
 
@@ -141,6 +142,7 @@ exports.deleteOneMainGoal = async (req, res, next) => {
   }
 };
 
+
 exports.getSubGoals = async (req, res, next) => {
   try {
       const userId = req.user._id.toString();
@@ -151,5 +153,17 @@ exports.getSubGoals = async (req, res, next) => {
       }
   } catch (error) {
       return next(createError(500, error.message));
+
+exports.getAllMainGoalsForDashboard = async (req, res, next) => {
+  try {
+    const userId = req.user._id.toString();
+    const goals = await MainGoals.find({ userId: userId });
+    if (!goals) {
+      return next(createError(404, "No goals were found"));
+    }
+    res.json(goals);
+  } catch (error) {
+    return next(createError(500, error.message));
+
   }
 };

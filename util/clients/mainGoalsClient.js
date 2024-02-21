@@ -3,6 +3,7 @@ class MainGoalsClient {
   //POST
   async createNewMainGoalReq(mainGoalData) {
     try {
+      console.log("Here");
       await axios.post("http://localhost:3001/mainGoal", mainGoalData);
     } catch (error) {
       console.log(error);
@@ -36,6 +37,11 @@ class MainGoalsClient {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async getAllMainGoals() {
+    const response = await axios.get("http://localhost:3001/mainGoal");
+    return response.data;
   }
 }
 
