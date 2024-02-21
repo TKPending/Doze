@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
+import MainGoalsClient from "@/util/clients/mainGoalsClient";
 
 
 const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
@@ -24,10 +25,9 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     id: "",
   });
 
-  //once merged, change this function to call MainGoalsClient instead
   const fetchMainGoals = async () => {
     try {
-  const mainGoalData = await SubGoalsClient.getSubGoals();
+  const mainGoalData = await MainGoalsClient.getAllMainGoals();
   setMainGoalData(mainGoalData)
     } catch(error) {
       console.log(error, "error fetching maingoals");
@@ -80,6 +80,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
   const saveSubGoal = async () => {
     //send request to backend to add sub goal
       await SubGoalsClient.addSubGoal(subGoalData);
+      setTaskAdded(true);
 }
 
   const subGoalFormHandler = async (e) => {
@@ -87,7 +88,6 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     // Send request to backend to add sub goal to main goal
     saveSubGoal(subGoalData);
     closeModal();
-    setTaskAdded(true);
   }
 
   //setting Emoji 
