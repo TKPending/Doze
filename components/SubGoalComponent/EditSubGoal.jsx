@@ -198,6 +198,7 @@ const newTags = subGoalData.tags;
 
           <select name="status" className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2" 
           onChange={handleSubGoalInput}
+          data-testid="status-select"
           value={subGoalData.status}
           >
             <option value="">Select a status</option>

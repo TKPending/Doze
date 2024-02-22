@@ -1,10 +1,12 @@
 "use client";
 import axios from 'axios';
+import React from "react";
 import { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
+
 
 
 const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
@@ -78,16 +80,24 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
  
 
   const saveSubGoal = async () => {
-    //send request to backend to add sub goal
+    if (!subGoalData.title || !subGoalData.icon || !subGoalData.status){
+      alert("Please fill in title, status and add an icon");
+      return
+    } else {
+       //send request to backend to add sub goal
       await SubGoalsClient.addSubGoal(subGoalData);
       setTaskAdded(true);
+      closeModal();
+    }
+   
+    
 }
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
     // Send request to backend to add sub goal to main goal
     saveSubGoal(subGoalData);
-    closeModal();
+    
   }
 
   //setting Emoji 
@@ -175,7 +185,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
           className="flex flex-col items-center w-full h-full"
           onSubmit={subGoalFormHandler}
         >
-          <a 
+          <a data-testid="emoji-icon"
           onClick={toggleEmojiPicker} 
           className="mb-5 hover:cursor-pointer">
             <span className="text-6xl">{subGoalData.icon}</span>
@@ -186,6 +196,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
               onEmojiSelect={handleEmoji}
               onClickOutside={toggleEmojiPicker}
               maxFrequentRows={0}
+              data-testid="emoji-picker"
             />
           )}
 
@@ -196,7 +207,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
           ></input>
 
           <select name="status" className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2" 
-          onChange={handleSubGoalInput}
+          onChange={handleSubGoalInput} data-testid="status-select"
           >
             <option value="">Select a status</option>
             <option value="To-do">To-do</option>
@@ -308,6 +319,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
                 <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                   {tag.text}
                   <a
+                    data-testid="remove-tag"
                     onClick={() => handleRemoveTag(index)}
                     className="inline-block cursor-pointer w-2.5"
                   >
