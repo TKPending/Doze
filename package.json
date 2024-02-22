@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "nodemon server/index.js",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test:jsdom": "jest --config jest.config.js",
+    "test:node": "jest --config jest.node.config.js",
+    "test": "npm run test:jsdom && npm run test:node --watch"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
@@ -32,6 +34,7 @@
     "passport-jwt": "^4.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "supertest": "^6.3.4",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {

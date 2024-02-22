@@ -3,10 +3,17 @@ const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const MainGoals = require("../models/maingoal");
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 exports.signUp = async (req, res, next) => {
   try {
+    const email = req.body.email;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       username: req.body.username,
