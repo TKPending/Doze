@@ -1,18 +1,17 @@
-// import React from "react";
-// import { render, screen, fireEvent } from "@testing-library/react";
-// import "@testing-library/jest-dom";
-// import SubGoal from "../../components/SubGoalComponent/SubGoal";
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import SubGoal from "../../components/SubGoalComponent/SubGoal";
 
 
-// //Mock Axios module
-// jest.mock('axios');
+//Mock Axios module
+jest.mock('axios');
 
 
-// describe(SubGoal, () => {
-
-//     it("renders SubGoal component without crashing", () => {
-//         render(<SubGoal />);
-//     });
+describe(SubGoal, () => {
+    it("renders SubGoal component without crashing", () => {
+        render(<SubGoal />);
+    });
 
 
 //     it("updates value when something is typed into the input field", () => {
@@ -128,4 +127,4 @@
 //     //     })
 
 
-// })
+})

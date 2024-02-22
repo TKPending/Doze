@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test:jsdom": "jest --config jest.config.js",
     "test:node": "jest --config jest.node.config.js",
-    "test": "npm run test:jsdom && npm run test:node --watch"
+    "test": "jest "
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",

@@ -1,15 +1,26 @@
-// import React, { experimental_useEffectEvent } from "react";
-// import { render, screen, fireEvent } from "@testing-library/react";
-// import "@testing-library/jest-dom";
-// import EditSubGoal from "../../components/SubGoalComponent/EditSubGoal";
+import React, { experimental_useEffectEvent } from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import EditSubGoal from "../../components/SubGoalComponent/EditSubGoal";
 
-// jest.mock('axios');
+jest.mock('axios');
 
-// describe(EditSubGoal, () => {
+const tempData = {
+    title: "",
+    dateCreated: "",
+    icon: "",
+    status: "",
+    mainGoal: "",
+    mainGoalId: "",
+    tags: [],
+    description: "",
+    id: "",
+}
 
-//     it("Renders the EditSubGoal component without crashing", () => {
-//         render(<EditSubGoal/>);
-//     })
+describe(EditSubGoal, () => {
+    it("Renders the EditSubGoal component without crashing", () => {
+        render(<EditSubGoal taskClicked={tempData}/>);
+    })
 
 //     it("Updates the value when something is typed into the input field", () => {
 //         render(<EditSubGoal/>);
@@ -109,4 +120,4 @@
 //         expect(mockAlert).toHaveBeenCalledWith("Please fill in title, status and add an icon");
 
 //     })
-// })
+})
