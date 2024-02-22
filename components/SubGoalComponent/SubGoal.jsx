@@ -1,25 +1,27 @@
 "use client";
-import axios from 'axios';
+import axios from "axios";
 import { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
+import TagButtonColours from "./Components/TagColoursButtons";
 
-
-const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
-  
-  const [tagInput, setTagInput] = useState("");
-  const [selectedColour, setSelectedColour] = useState("");
+const SubGoal = ({
+  setIsModalVisible,
+  setTaskUpdated,
+  stageName,
+  goalTitle,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mainGoalData, setMainGoalData] = useState([]);
   const [subGoalData, setSubGoalData] = useState({
     title: "",
     dateCreated: "",
     icon: "😁",
-    status: "", 
-    mainGoal: "",
-    mainGoalId: "",
+    status: stageName ? stageName : "",
+    mainGoal: goalTitle ? goalTitle : "",
+    mainGoalId: mainGoalData ? mainGoalData._id : "",
     tags: [],
     description: "",
     id: "",
@@ -27,46 +29,41 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
 
   const fetchMainGoals = async () => {
     try {
-  const mainGoalData = await MainGoalsClient.getAllMainGoals();
-  setMainGoalData(mainGoalData)
-    } catch(error) {
+      const mainGoalData = await MainGoalsClient.getAllMainGoals();
+      setMainGoalData(mainGoalData);
+    } catch (error) {
       console.log(error, "error fetching maingoals");
       setMainGoalData([]);
     }
-  }
-
-
- 
+  };
 
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
-        setSubGoalData({...subGoalData, title: e.target.value})
-        console.log("Sub Data", subGoalData)
-      }
-    if (e.target.name === "status") {  
-     setSubGoalData({...subGoalData, status: e.target.value})
+      setSubGoalData({ ...subGoalData, title: e.target.value });
+    }
+    if (e.target.name === "status") {
+      setSubGoalData({ ...subGoalData, status: e.target.value });
     }
     if (e.target.name === "description") {
-     setSubGoalData({...subGoalData, description: e.target.value})
+      setSubGoalData({ ...subGoalData, description: e.target.value });
     }
     if (e.target.name === "icon") {
-        setSubGoalData({...subGoalData, icon: e.target.value})
+      setSubGoalData({ ...subGoalData, icon: e.target.value });
     }
-    };
+  };
 
-    const handleMainGoalChange = (e) => {
-      const selectedGoal = JSON.parse(e.target.value);
-      setSubGoalData({
-        ...subGoalData, 
-        mainGoal: selectedGoal.title,
-        mainGoalId: selectedGoal._id
-      })
-    }
-
+  const handleMainGoalChange = (e) => {
+    const selectedGoal = JSON.parse(e.target.value);
+    setSubGoalData({
+      ...subGoalData,
+      mainGoal: selectedGoal.title,
+      mainGoalId: selectedGoal._id,
+    });
+  };
 
   const closeModal = () => {
     setIsModalVisible(false);
-  }
+  };
 
   //close modal when user clicks outside the modal
   const handleOffModalClick = (e) => {
@@ -75,22 +72,32 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     }
   };
 
- 
-
   const saveSubGoal = async () => {
-    //send request to backend to add sub goal
+    // Adding main goal from Main Goal
+    if (goalTitle) {
+      const mainGoal = mainGoalData.find((goal) => goal.title == goalTitle);
+      const mainGoalId = mainGoal._id;
+
+      const goalData = {...subGoalData, mainGoalId}
+      await SubGoalsClient.addSubGoal(goalData);
+    } else {
+      console.log(subGoalData)
       await SubGoalsClient.addSubGoal(subGoalData);
-      setTaskAdded(true);
-}
+    }
+    setTaskUpdated(true);
+  };
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
-    // Send request to backend to add sub goal to main goal
+    if (!subGoalData.title || !subGoalData.mainGoal) {
+      alert("Pleae fill in form! Check Title and Main Goal");
+      return
+    }
     saveSubGoal(subGoalData);
     closeModal();
-  }
+  };
 
-  //setting Emoji 
+  //setting Emoji
   const handleEmoji = (e) => {
     handleSubGoalInput({ target: { name: "icon", value: e.native } });
   };
@@ -100,61 +107,29 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
     setIsOpen(!isOpen);
   };
 
-
-  //handle colour change of the tag
-  const handleColourChange = (colour) => {
-    setSelectedColour(colour);
-  };
-
-  //handle tag input change and set tag text
-  const handleTagInputChange = (e) => {
-    setTagInput(e.target.value);
-  };
-
- 
-
   //remove tag from tag list
   const handleRemoveTag = (index) => {
-   const newTags = subGoalData.tags;
+    const newTags = subGoalData.tags;
     newTags.splice(index, 1);
     setSubGoalData({
       ...subGoalData,
       tags: newTags,
     });
-  }
+  };
 
-    const mapMainGoals = () => {
-      return mainGoalData.map((goal) => {
-        return <option key={goal._id} value={JSON.stringify(goal)}>{goal.title}</option>
-      })  
-    
-    }
-    const handleAddTag = (e) => {
-      e.preventDefault();
-      try {
-        if (tagInput !== "" && selectedColour !== "") {
-          setSubGoalData({
-          ...subGoalData, 
-          tags: [...subGoalData.tags, {text:tagInput, colour: selectedColour }]
-         })
-          setTagInput("");
-         setSelectedColour("");
-        } else {
-          alert("Please enter a tag and select a colour");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    
-    useEffect(() => {
-      fetchMainGoals();
-    }, []);
+  const mapMainGoals = () => {
+    return mainGoalData.map((goal) => {
+      return (
+        <option key={goal._id} value={JSON.stringify(goal)}>
+          {goal.title}
+        </option>
+      );
+    });
+  };
 
-
-   
-
- 
+  useEffect(() => {
+    fetchMainGoals();
+  }, []);
 
   return (
     <div
@@ -175,9 +150,7 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
           className="flex flex-col items-center w-full h-full"
           onSubmit={subGoalFormHandler}
         >
-          <a 
-          onClick={toggleEmojiPicker} 
-          className="mb-5 hover:cursor-pointer">
+          <a onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
             <span className="text-6xl">{subGoalData.icon}</span>
           </a>
           {isOpen && (
@@ -189,121 +162,57 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
             />
           )}
 
-          <input name="title" id="title"
+          <input
+            name="title"
+            id="title"
             type="text"
-            className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]" placeholder="Title" 
+            className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            placeholder="Title"
             onChange={handleSubGoalInput}
           ></input>
 
-          <select name="status" className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2" 
-          onChange={handleSubGoalInput}
+          <select
+            name="status"
+            className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
+            onChange={handleSubGoalInput}
           >
-            <option value="">Select a status</option>
+            <option value={stageName ? stageName : ""}>
+              {stageName ? stageName : "Select a status"}
+            </option>
             <option value="To-do">To-do</option>
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>
           </select>
 
-          <select name="mainGoal"
-           onChange={handleMainGoalChange} 
-           className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2">
-            <option>Select a main goal</option>
-           {mainGoalData ? mapMainGoals() : <option value="Untracked">Leave Untracked</option>}
-          
-          </select>
-
-          <div className="flex justify-center items-center mb-2.5">
-            <input
-            id="tags"
-              name="tag"
-              type="text"
-              value={tagInput}
-              onChange={handleTagInputChange}
-              className="input focus:border-[#FF9796] focus:outline-[#FF9796] w-64 border-[#FF9796]"
-              placeholder="Tags"
-            ></input>
-
-            <button
-              className="bg-[#FF9796] text-white rounded-md w-12 hover:bg-red-500 transition duration-200 p-2.5 ml-4"
-              onClick={handleAddTag}
+          {goalTitle ? (
+            <div className="flex overflow flex-row gap-4 mb-4 pr-2 items-center justify-center  h-auto w-auto text-center border bg-white rounded-lg outline-[#ff9796] border-[#ff9796]">
+              <div className="h-12 text-neutral-20  rounded-s-lg p-2 w-auto bg-neutral-200 flex justify-center items-center">
+                <p className="f">Goal: </p>
+              </div>
+              <p>{goalTitle}</p>
+            </div>
+          ) : (
+            <select
+              name="mainGoal"
+              onChange={handleMainGoalChange}
+              className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             >
-              +
-            </button>
-          </div>
+              <option>Select a main goal</option>
+              {mainGoalData ? (
+                mapMainGoals()
+              ) : (
+                <option value="Untracked">Leave Untracked</option>
+              )}
+            </select>
+          )}
 
-          <div className="mb-5">
-            <input
-              type="radio"
-              id="blue"
-              name="tagColour"
-              value="blue"
-              defaultChecked={selectedColour === "blue"}
-              onChange={() => handleColourChange("blue")}
-              className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 ml-2 mt-1"
-            />
+          <TagButtonColours
+            subGoalData={subGoalData}
+            setSubGoalData={setSubGoalData}
+          />
 
-            <input
-              type="radio"
-              id="red"
-              name="tagColour"
-              value="red"
-              checked={selectedColour === "red"}
-              onChange={() => handleColourChange("red")}
-              className="radio border-red-400 checked:bg-red-400 bg-red-400 ml-2 mt-1"
-            />
-
-            <input
-              type="radio"
-              id="lime"
-              name="tagColour"
-              value="lime"
-              checked={selectedColour === "lime"}
-              onChange={() => handleColourChange("lime")}
-              className="radio border-lime-400 checked:bg-lime-400 bg-lime-400 ml-2 mt-1"
-            />
-
-            <input
-              type="radio"
-              id="purple"
-              name="tagColour"
-              value="purple"
-              checked={selectedColour === "purple"}
-              onChange={() => handleColourChange("purple")}
-              className="radio border-purple-400 checked:bg-purple-400 bg-purple-400 ml-2 mt-1"
-            />
-
-            <input
-              type="radio"
-              id="yellow"
-              name="tagColour"
-              value="yellow"
-              checked={selectedColour === "yellow"}
-              onChange={() => handleColourChange("yellow")}
-              className="radio border-yellow-400 checked:bg-yellow-400 bg-yellow-400 ml-2 mt-1"
-            />
-
-            <input
-              type="radio"
-              id="orange"
-              name="tagColour"
-              value="orange"
-              checked={selectedColour === "orange"}
-              onChange={() => handleColourChange("orange")}
-              className="radio border-orange-400 checked:bg-orange-400 bg-orange-400 ml-2 mt-1"
-            />
-
-            <input
-              type="radio"
-              id="pink"
-              name="tagColour"
-              value="pink"
-              checked={selectedColour === "pink"}
-              onChange={() => handleColourChange("pink")}
-              className="radio border-pink-400 checked:bg-pink-400 bg-pink-400 ml-2 mt-1"
-            />
-          </div>
           <div className="mt-2.5 mb-2.5">
-           { subGoalData.tags.map((tag, index) => (
+            {subGoalData.tags.map((tag, index) => (
               <span key={index}>
                 <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                   {tag.text}
@@ -314,18 +223,22 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
                     x
                   </a>
                 </div>
-              </span> 
+              </span>
             ))}
           </div>
 
-          <textarea name="description"
+          <textarea
+            name="description"
             className="textarea h-72 input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
-            placeholder="Additional information" 
+            placeholder="Additional information"
             onChange={handleSubGoalInput}
           ></textarea>
 
           <div className="w-full h-full flex justify-end items-end pb-[5%] pr-[5%]">
-            <button type="submit" className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
+            <button
+              type="submit"
+              className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
+            >
               Save
             </button>
           </div>
@@ -333,7 +246,6 @@ const SubGoal = ({ setIsModalVisible, setTaskAdded }) => {
       </div>
     </div>
   );
-
 };
 
 export default SubGoal;
