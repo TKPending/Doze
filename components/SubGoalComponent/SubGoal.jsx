@@ -1,5 +1,8 @@
 "use client";
-import axios from "axios";
+
+import axios from 'axios';
+import React from "react";
+
 import { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -73,6 +76,11 @@ const SubGoal = ({
   };
 
   const saveSubGoal = async () => {
+    if (!subGoalData.title || !subGoalData.icon || !subGoalData.status){
+      alert("Please fill in title, status and add an icon");
+      return;
+    }
+  
     // Adding main goal from Main Goal
     if (goalTitle) {
       const mainGoal = mainGoalData.find((goal) => goal.title == goalTitle);
@@ -81,7 +89,6 @@ const SubGoal = ({
       const goalData = {...subGoalData, mainGoalId}
       await SubGoalsClient.addSubGoal(goalData);
     } else {
-      console.log(subGoalData)
       await SubGoalsClient.addSubGoal(subGoalData);
     }
     setTaskUpdated(true);
@@ -150,7 +157,8 @@ const SubGoal = ({
           className="flex flex-col items-center w-full h-full"
           onSubmit={subGoalFormHandler}
         >
-          <a onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
+
+          <a data-testid="emoji-icon" onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
             <span className="text-6xl">{subGoalData.icon}</span>
           </a>
           {isOpen && (
@@ -159,6 +167,7 @@ const SubGoal = ({
               onEmojiSelect={handleEmoji}
               onClickOutside={toggleEmojiPicker}
               maxFrequentRows={0}
+              data-testid="emoji-picker"
             />
           )}
 
@@ -175,6 +184,7 @@ const SubGoal = ({
             name="status"
             className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             onChange={handleSubGoalInput}
+            data-testid="status-select"
           >
             <option value={stageName ? stageName : ""}>
               {stageName ? stageName : "Select a status"}
@@ -217,6 +227,7 @@ const SubGoal = ({
                 <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                   {tag.text}
                   <a
+                    data-testid="remove-tag"
                     onClick={() => handleRemoveTag(index)}
                     className="inline-block cursor-pointer w-2.5"
                   >
