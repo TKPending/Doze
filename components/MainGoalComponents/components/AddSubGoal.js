@@ -1,8 +1,7 @@
 // For the main goals page
-const AddSubGoal = ({ subGoals, setSubGoals }) => { // Empty parameters
+const AddSubGoal = ({ setIsModalVisible }) => { // Empty parameters
   const handleAddSubTask = async () => {
-    subGoals.push(subGoals.length + 1);  // Remove
-    setSubGoals([...subGoals]); // Remove
+    setIsModalVisible(true);
     // Replace with logic to add Sub Goals from Sub Goals Client
   };
 
