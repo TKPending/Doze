@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SubGoal from "../../components/SubGoalComponent/SubGoal";
 
-//Mock Axios module
 jest.mock("axios");
 
 describe(SubGoal, () => {
@@ -105,7 +104,7 @@ describe(SubGoal, () => {
   });
 
   it("Shows an alert when the 'Save' button is clicked when nothing in title, icon or status.", () => {
-    render(<SubGoal />);
+    render(<SubGoal setIsModalVisible={s => setIsModalVisible = s} />);
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
 
     const saveButton = screen.getByText("Save");

@@ -52,6 +52,10 @@ const EditSubGoal = ({
 
   const saveSubGoal = async (e) => {
     e.preventDefault();
+    if (!subGoalData.title || !subGoalData.mainGoal || !subGoalData.icon || !subGoalData.status){
+      alert("Please fill in title, status and add an icon");
+      return;
+    }
 
     await SubGoalsClient.editSubGoal(subGoalData);
     setTaskUpdated(true);
@@ -156,6 +160,7 @@ const EditSubGoal = ({
             className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
             onChange={handleSubGoalInput}
             value={subGoalData.status}
+            data-testid="status-select"
           >
             <option value="">Select a status</option>
             <option value="To-do">To-do</option>
@@ -176,6 +181,7 @@ const EditSubGoal = ({
                   <a
                     onClick={() => handleRemoveTag(index)}
                     className="inline-block cursor-pointer w-2.5"
+                    data-testid={"remove-tag"}
                   >
                     x
                   </a>

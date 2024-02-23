@@ -1,6 +1,5 @@
 "use client";
 
-import axios from 'axios';
 import React from "react";
 
 import { useState, useEffect } from "react";
@@ -76,7 +75,7 @@ const SubGoal = ({
   };
 
   const saveSubGoal = async () => {
-    if (!subGoalData.title || !subGoalData.icon || !subGoalData.status){
+    if (!subGoalData.title || !subGoalData.mainGoal || !subGoalData.icon || !subGoalData.status){
       alert("Please fill in title, status and add an icon");
       return;
     }
@@ -96,10 +95,6 @@ const SubGoal = ({
 
   const subGoalFormHandler = async (e) => {
     e.preventDefault();
-    if (!subGoalData.title || !subGoalData.mainGoal) {
-      alert("Pleae fill in form! Check Title and Main Goal");
-      return
-    }
     saveSubGoal(subGoalData);
     closeModal();
   };
