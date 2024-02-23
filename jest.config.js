@@ -6,5 +6,9 @@ module.exports = {
         '^@/components/SubGoalComponent/SubGoal': '<rootDir>components/SubGoalComponent/SubGoal',
         '^@/components/SubGoalComponent/EditSubGoal': '<rootDir>/components/SubGoalComponent/EditSubGoal'
     },
-    testEnvironment: 'jsdom'
+
+    testEnvironment: 'jsdom',
+    transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+      },
 }
