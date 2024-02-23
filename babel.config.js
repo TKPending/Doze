@@ -9,8 +9,10 @@ module.exports = {
           "styled-jsx": {},
           "class-properties": {},
         },
-        "next/font"
       ],
     ],
+    plugins: [
+      "next/font" // Add the next/font plugin here
+    ]
   };
   
