@@ -1,6 +1,6 @@
 require("dotenv").config();
+
 const createError = require("http-errors");
-const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Header = require("../models/header");
 
@@ -25,7 +25,6 @@ exports.dashboardHeaderData = async (req, res, next) => {
     }
 
     if (!userDB.header_data) {
-        console.log("New User Checking Dashboard!");
         const newHeaderData = new Header({
             dashboard_background: HEADER_DEFAULT,
             dashboard_title: TITLE_DEFAULT,
@@ -80,8 +79,12 @@ exports.updateDashboardTitle = async (req, res, next) => {
         console.log(`Couldn't find header data for ${userUid}`);
         return;
     }
-    headerDB.dashboard_title = userInputValue == "" ? TITLE_DEFAULT : userInputValue;
+
+    const titleValue = userInputValue == "" ? TITLE_DEFAULT : userInputValue;
+
+    headerDB.dashboard_title = titleValue;
     await headerDB.save();
+    res.status(200).json({dashboard_title: titleValue})
   } catch (err) {
     return (next(createError(500, "Internal Server Error! (Dashboard Title)")));
   }
@@ -114,8 +117,12 @@ exports.updateDashboardQuote = async (req, res, next) => {
         return;
     }
 
-    headerDB.dashboard_quote = userInputValue == "" ? QUOTE_DEFAULT : userInputValue;
+    const quoteValue = userInputValue == "" ? QUOTE_DEFAULT : userInputValue;
+
+    headerDB.dashboard_quote = quoteValue;
     await headerDB.save();
+    return res.status(200).json({dashboard_quote: quoteValue});
+
   } catch (err) {
     return (next(createError(400, "Internal Server Error! (Dashboard Quote)")));
   }
@@ -149,8 +156,12 @@ exports.updateDashboardBackground = async (req, res, next) => {
         return;
     }
 
-    headerDB.dashboard_background = userInputValue == "" || !validHeader ? HEADER_DEFAULT : userInputValue;
+    const backgroundValue = userInputValue == "" || !validHeader ? HEADER_DEFAULT : userInputValue;
+
+    headerDB.dashboard_background = backgroundValue;
     await headerDB.save();
+    return res.status(200).json({dashboard_background: backgroundValue});
+    
   } catch (err) {
     return (next(createError(400, "Internal Server Error! (Dashboard Quote)")));
   }
