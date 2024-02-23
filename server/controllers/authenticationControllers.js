@@ -47,7 +47,10 @@ exports.signIn = async (req, res, next) => {
       );
       res.cookie("jwt", accessToken, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        sameSite: "None",
+        path: "/",
+        secure: true,
       });
     }
     res.json({ message: "Sign in" });
@@ -67,7 +70,12 @@ exports.getUser = async (req, res, next) => {
 
 exports.signOut = async (req, res, next) => {
   try {
-    res.clearCookie("jwt");
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "None",
+      path: "/",
+      secure: true,
+    });
     res.json({ message: "Sign out" });
   } catch (error) {
     return next(createError(500, error.message));
