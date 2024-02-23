@@ -3,6 +3,27 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SubGoal from "../../components/SubGoalComponent/SubGoal";
 
+const subGoals = [
+  {
+    title: "Broccoli",
+    dateCreated: "",
+    icon: "🥦",
+    status: "Complete",
+    mainGoalId: "65d3cd4bb68bf88577ed9131",
+    mainGoal: "Testing Goal",
+    tags: [
+      {
+        text: "Food",
+        colour: "purple",
+        _id: "65d761944a6fea0b1d7e9f9a",
+      },
+    ],
+    description: "test",
+    _id: "65d761944a6fea0b1d7e9f99",
+  },
+  // Add other subGoals as needed
+];
+
 //Mock Axios module
 jest.mock("axios");
 
@@ -34,6 +55,7 @@ describe(SubGoal, () => {
     expect(descriptionInput.value).toBe("a");
   });
 
+  // NEED TO FIX
   it("Renders the tags in the component after clicking the button for handleAddTag", async () => {
     render(<SubGoal />);
     const tagsInput = screen.getByPlaceholderText("Tags");
@@ -82,6 +104,7 @@ describe(SubGoal, () => {
     );
   });
 
+  // NEED TO FIX
   it("Deletes the tag from the screen when the 'x' button on the tags is clicked", async () => {
     render(<SubGoal />);
     const tagsInput = screen.getByPlaceholderText("Tags");
@@ -105,7 +128,7 @@ describe(SubGoal, () => {
   });
 
   it("Shows an alert when the 'Save' button is clicked when nothing in title, icon or status.", () => {
-    render(<SubGoal />);
+    render(<SubGoal setIsModalVisible={s => s} />);
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
 
     const saveButton = screen.getByText("Save");

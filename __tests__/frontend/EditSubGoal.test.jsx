@@ -23,21 +23,21 @@ describe(EditSubGoal, () => {
   });
 
   it("Updates the value when something is typed into the input field", () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData}/>);
     const titleInput = screen.getByPlaceholderText("Title");
     fireEvent.change(titleInput, { target: { value: "Testing" } });
     expect(titleInput.value).toBe("Testing");
   });
 
   it("Updates value when an option is selected on the status dropdown", () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const statusSelect = screen.getByTestId("status-select");
     fireEvent.change(statusSelect, { target: { value: "To-do" } });
     expect(statusSelect.value).toBe("To-do");
   });
 
   it("Updates value when 'a' is typed into the textarea field", () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const descriptionInput = screen.getByPlaceholderText(
       "Additional information"
     );
@@ -46,7 +46,7 @@ describe(EditSubGoal, () => {
   });
 
   it("Renders the tags in component after clicking the button for handleAddTag", async () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const tagsInput = screen.getByPlaceholderText("Tags");
     fireEvent.change(tagsInput, { target: { value: "Food" } });
 
@@ -63,7 +63,7 @@ describe(EditSubGoal, () => {
 
   it("alerts when trying to add a tag with nothing in the input field but a colour radio button is checked", () => {
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const tagsInput = screen.getByPlaceholderText("Tags");
     fireEvent.change(tagsInput, { target: { value: "" } });
 
@@ -80,7 +80,7 @@ describe(EditSubGoal, () => {
 
   it("alerts when trying to add a tag with no colour radio button selected but with text in the input field", () => {
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const tagsInput = screen.getByPlaceholderText("Tags");
     fireEvent.change(tagsInput, { target: { value: "Travel" } });
 
@@ -92,8 +92,9 @@ describe(EditSubGoal, () => {
     );
   });
 
+  // NEED TO FIX
   it("Deletes the tag from the screen when the 'x' button on the tags is clicked", async () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal taskClicked={tempData} />);
     const tagsInput = screen.getByPlaceholderText("Tags");
 
     fireEvent.change(tagsInput, { target: { value: "Travel" } });
@@ -115,7 +116,7 @@ describe(EditSubGoal, () => {
   });
 
   it("Shows an alert when the 'Save' button is clicked when nothing in title, icon or status.", () => {
-    render(<EditSubGoal />);
+    render(<EditSubGoal setIsEditModalVisible={(e) => e} taskClicked={tempData} setTaskUpdated={(result) => result} handleRemoveOldTask={(oldTask) => oldTask} />);
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
 
     const saveButton = screen.getByText("Save");
