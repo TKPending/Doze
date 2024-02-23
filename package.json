@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "nodemon server/index.js",
     "lint": "next lint",
+    "test:jsdom": "jest --config jest.config.js",
+    "test:node": "jest --config jest.node.config.js",
     "test": "jest"
   },
   "dependencies": {
@@ -33,6 +35,7 @@
     "passport-jwt": "^4.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "supertest": "^6.3.4",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
