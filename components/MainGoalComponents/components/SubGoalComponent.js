@@ -1,6 +1,3 @@
-import { IonIcon } from "@ionic/react";
-import { trashBinOutline } from "ionicons/icons";
-
 const SubGoalComponent = ({ subGoals, setSubGoals, subGoal, onClick }) => {
   const handleRemoveTask = () => {
     const newSubGoals = subGoals.filter(

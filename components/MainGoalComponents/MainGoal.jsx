@@ -29,7 +29,6 @@ const MainGoal = ({
   const [subGoalClicked, setSubGoalClicked] = useState(false);
   const [tempSubGoals, setTempSubGoals] = useState([1, 2, 3, 4, 5]);
   const router = useRouter();
-
   const handleInputValue = (e) => {
     if (e.target.name === "title") {
       setMainGoalData({ ...mainGoalData, title: e.target.value });
@@ -112,7 +111,7 @@ const MainGoal = ({
   // Add logic to empty all Sub Goals
   const emptySubGoals = () => {
     // Goes into line 315 in th onClick
-  }
+  };
 
   useEffect(() => {
     const isSubGoalExists = tempSubGoals.includes(subGoalClicked);
@@ -129,6 +128,7 @@ const MainGoal = ({
       <div className="md:w-1/2 h-full relative">
         <form id="goalForm" onSubmit={submitHandler}>
           <input
+            data-testid="title"
             name="title"
             type="text"
             className="input text-3xl mb-5"
@@ -155,6 +155,7 @@ const MainGoal = ({
                 Start Date:
               </label>
               <input
+                data-testid="startDate"
                 name="startDate"
                 type="date"
                 className="input focus:border-[#ff9796] focus:outline-[#ff9796] ml-7"
@@ -274,7 +275,7 @@ const MainGoal = ({
 
               <div className="mt-2.5">
                 {mainGoalData.tags.map((tag, index) => (
-                  <span key={index}>
+                  <span data-testid="tag" key={index}>
                     <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                       {tag.text}
                       <a onClick={() => handleRemoveTag(index)}>
@@ -301,6 +302,7 @@ const MainGoal = ({
             <div className="flex items-center mt-2.5">
               <span className="font-bold mr-2.5">Description:</span>
               <textarea
+                data-testid="description"
                 className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"
                 name="description"
                 onChange={handleInputValue}
@@ -349,6 +351,7 @@ const MainGoal = ({
             <div className="flex justify-between">
               {mainGoalData._id && (
                 <button
+                  data-testid="delete"
                   className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
                   onClick={onDeleteMainGoal}
                 >
