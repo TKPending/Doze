@@ -5,7 +5,6 @@ class SubGoalsClient {
   async addSubGoal(subGoalData) {
     try {
       const mainGoalId = subGoalData.mainGoalId;
-      console.log(mainGoalId)
       await axios.post(
         `http://localhost:3001/mainGoal/${mainGoalId}/subgoals`,
         subGoalData

@@ -104,7 +104,7 @@ describe(SubGoal, () => {
   });
 
   it("Shows an alert when the 'Save' button is clicked when nothing in title, icon or status.", () => {
-    render(<SubGoal setIsModalVisible={s => setIsModalVisible = s} />);
+    render(<SubGoal setIsModalVisible={s => s} />);
     const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
 
     const saveButton = screen.getByText("Save");
