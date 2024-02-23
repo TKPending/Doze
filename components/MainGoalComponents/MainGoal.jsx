@@ -118,8 +118,6 @@ const MainGoal = ({
       mainGoalData._id
     );
     router.push("/dashboard");
-
-    setMainGoalData(response);
   };
 
   // Add logic to empty all Sub Goals
