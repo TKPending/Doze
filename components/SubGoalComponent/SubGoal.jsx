@@ -143,11 +143,11 @@ const SubGoal = ({
       onClick={handleOffModalClick}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div className="bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-[#FF9796]">
+      <div className=" relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 rounded-lg mt-24 outline outline-indigo-600">
         <div className="w-full flex justify-end pr-[3%]">
           <p
             onClick={closeModal}
-            className="text-[#ff9796] hover:text-white hover:bg-red-400 border border-[#ff9796] rounded-full w-12 h-12 flex items-center justify-center text-2xl"
+            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border hover:cursor-pointer border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
           >
             x
           </p>
@@ -158,31 +158,34 @@ const SubGoal = ({
           onSubmit={subGoalFormHandler}
         >
 
-          <a data-testid="emoji-icon" onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
+          <a data-testid="emoji-icon" onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer mt-6">
             <span className="text-6xl">{subGoalData.icon}</span>
           </a>
+          
           {isOpen && (
+            <div className="absolute">
             <Picker
               data={data}
               onEmojiSelect={handleEmoji}
               onClickOutside={toggleEmojiPicker}
               maxFrequentRows={0}
-              data-testid="emoji-picker"
+              
             />
+            </div>
           )}
 
           <input
             name="title"
             id="title"
             type="text"
-            className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="input input-bordered h-8 md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Title"
             onChange={handleSubGoalInput}
           ></input>
 
           <select
             name="status"
-            className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
+            className="mb-4 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2 w-48"
             onChange={handleSubGoalInput}
             data-testid="status-select"
           >
@@ -195,7 +198,7 @@ const SubGoal = ({
           </select>
 
           {goalTitle ? (
-            <div className="flex overflow flex-row gap-4 mb-4 pr-2 items-center justify-center  h-auto w-auto text-center border bg-white rounded-lg outline-[#ff9796] border-[#ff9796]">
+            <div className="flex overflow flex-row gap-4 mb-4 pr-2 items-center justify-center  h-auto w-auto text-center border bg-white rounded-lg outline-indigo-600 border-indigo-600">
               <div className="h-12 text-neutral-20  rounded-s-lg p-2 w-auto bg-neutral-200 flex justify-center items-center">
                 <p className="f">Goal: </p>
               </div>
@@ -205,7 +208,7 @@ const SubGoal = ({
             <select
               name="mainGoal"
               onChange={handleMainGoalChange}
-              className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
+              className="mb-4 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2 w-48"
             >
               <option>Select a main goal</option>
               {mainGoalData ? (
@@ -224,12 +227,12 @@ const SubGoal = ({
           <div className="mt-2.5 mb-2.5">
             {subGoalData.tags.map((tag, index) => (
               <span key={index}>
-                <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
+                <div className={`badge bg-${tag.colour}-400 gap-2 p-4 text-white`}>
                   {tag.text}
                   <a
                     data-testid="remove-tag"
                     onClick={() => handleRemoveTag(index)}
-                    className="inline-block cursor-pointer w-2.5"
+                    className="inline-block cursor-pointer w-2.5 opacity-0 hover:opacity-100 hover:text-white"
                   >
                     x
                   </a>
@@ -240,15 +243,15 @@ const SubGoal = ({
 
           <textarea
             name="description"
-            className="textarea h-72 input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Additional information"
             onChange={handleSubGoalInput}
           ></textarea>
 
-          <div className="w-full h-full flex justify-end items-end pb-[5%] pr-[5%]">
+          <div className="absolute bottom-4 right-4">
             <button
               type="submit"
-              className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
+              className="h-12 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
             >
               Save
             </button>

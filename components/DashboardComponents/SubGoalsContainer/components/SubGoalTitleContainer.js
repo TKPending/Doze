@@ -45,7 +45,7 @@ const SubGoalTitleContainer = ({
             style={{ backgroundColor: backgroundColor }}
             className="rounded-full border h-6 w-6 bg-[${color}]"
           ></div>
-          <p style={{ color: stageText }} className="font-bold">
+          <p style={{ color: stageText }} className="font-medium">
             {title}
           </p>
         </div>

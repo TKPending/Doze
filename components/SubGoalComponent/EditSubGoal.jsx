@@ -115,11 +115,11 @@ const EditSubGoal = ({
       onClick={handleOffModalClick}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div className="bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-[#FF9796]">
+      <div className="relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-indigo-600">
         <div className="w-full flex justify-end pr-[3%]">
           <p
             onClick={closeModal}
-            className="text-[#ff9796] hover:text-white hover:bg-red-400 border border-[#ff9796] rounded-full w-12 h-12 flex items-center justify-center text-2xl"
+            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
           >
             x
           </p>
@@ -145,7 +145,7 @@ const EditSubGoal = ({
             name="title"
             id="title"
             type="text"
-            className="input input-bordered h-40 w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="input input-bordered h-8 md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Title"
             onChange={handleSubGoalInput}
             defaultValue={subGoalData.title}
@@ -153,7 +153,7 @@ const EditSubGoal = ({
 
           <select
             name="status"
-            className="mb-4 outline-[#ff9796] border rounded-md focus:border-[#ff9796] p-2"
+            className="mb-4 w-48 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2"
             onChange={handleSubGoalInput}
             value={subGoalData.status}
           >
@@ -162,6 +162,8 @@ const EditSubGoal = ({
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>
           </select>
+
+          <h2 className="bg-white p-2 w-48 rounded-md mb-4 shadow-sm border">{subGoalData.mainGoal}</h2>
 
           <TagButtonColours
             subGoalData={subGoalData}
@@ -186,14 +188,14 @@ const EditSubGoal = ({
 
           <textarea
             name="description"
-            className="textarea h-72 input-bordered w-1/2 mb-5 border-[#FF9796] focus:border-[#FF9796] focus:outline-[#FF9796]"
+            className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Additional information"
             onChange={handleSubGoalInput}
             defaultValue={subGoalData.description}
           ></textarea>
           <a
             onClick={() => deleteSubGoal(subGoalData)}
-            className="hover:cursor-pointer"
+            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-indigo-600 p-2 hover:bg-indigo-600 hover:text-white text-indigo-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -213,10 +215,10 @@ const EditSubGoal = ({
             </svg>
           </a>
 
-          <div className="w-full h-full flex justify-end items-end pb-[5%] pr-[5%]">
+          <div className="absolute bottom-4 right-4">
             <button
               type="submit"
-              className="h-12 text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
+              className="h-12 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
             >
               Save
             </button>

@@ -9,9 +9,9 @@ const AddSubGoal = ({ setIsModalVisible }) => { // Empty parameters
     <div className="w-full h-12 flex justify-center">
       <div
         onClick={handleAddSubTask}
-        className="w-2/4 border text-white border-indigo-600 bg-indigo-600 hover:scale-105 transition duration-300 hover:bg-white hover:text-black h-full rounded-lg flex justify-center items-center hover:cursor-pointer"
+        className="h-16 border border-indigo-600 hover:bg-indigo-600 hover:text-white hover:scale-105 transition duration-200 rounded-2xl flex items-center justify-center p-4 cursor-pointer"
       >
-        <p className="font-semibold">+ New Sub Task</p>
+        <p className="font-medium font-sm text-center">+ New Sub Task</p>
       </div>
     </div>
   );
