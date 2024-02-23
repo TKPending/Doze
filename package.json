@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "nodemon server/index.js",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
