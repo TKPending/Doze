@@ -3,10 +3,21 @@ const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const MainGoals = require("../models/maingoal");
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 exports.signUp = async (req, res, next) => {
   try {
+    const email = req.body.email;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    if (req.body.username == "") {
+      return res.status(400).json({ error: 'Invalid username' });
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       username: req.body.username,
@@ -41,7 +52,8 @@ exports.signIn = async (req, res, next) => {
     }
     res.json({ message: "Sign in" });
   } catch (error) {
-    return next(createError(500, error.message));
+    return res.status(400).json({ error: "Failure to sign in. User doesn't exist" });
+    // return next(createError(500, error.message));
   }
 };
 

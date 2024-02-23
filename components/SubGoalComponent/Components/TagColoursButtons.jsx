@@ -32,6 +32,7 @@ const TagButtonColours = ({subGoalData, setSubGoalData}) => {
           id="tags"
           name="tag"
           type="text"
+          data-testid="Tags"
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
           className="input focus:border-indigo-600 focus:outline-indigo-600 w-40 border-indigo-600 h-8"
@@ -53,7 +54,7 @@ const TagButtonColours = ({subGoalData, setSubGoalData}) => {
           name="tagColour"
           value="blue"
           defaultChecked={selectedColour === "blue"}
-          onChange={() => setSelectedColourhandleColourChange("blue")}
+          onChange={() => setSelectedColour("blue")}
           className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 ml-2 mt-1"
         />
 

@@ -33,7 +33,6 @@ const MainGoal = ({
   const [taskUpdated, setTaskUpdated] = useState(false);
   const [emptyAllSubGoals, setEmptyAllSubGoals] = useState(false);
   const router = useRouter();
-
   const handleInputValue = (e) => {
     if (e.target.name === "title") {
       setMainGoalData({ ...mainGoalData, title: e.target.value });
@@ -119,8 +118,6 @@ const MainGoal = ({
       mainGoalData._id
     );
     router.push("/dashboard");
-
-    setMainGoalData(response);
   };
 
   // Add logic to empty all Sub Goals
@@ -165,6 +162,7 @@ const MainGoal = ({
       <div className="md:w-1/2 h-full relative">
         <form id="goalForm" onSubmit={submitHandler}>
           <input
+            data-testid="title"
             name="title"
             type="text"
             className="input text-3xl mb-5"
@@ -189,6 +187,7 @@ const MainGoal = ({
             <p className="text-center mb-2.5 text-gray-800">Select a start date</p>
             
               <input
+                data-testid="startDate"
                 name="startDate"
                 type="date"
                 className="input border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600 mb-8 p-2 w-56 h-8"
@@ -305,7 +304,7 @@ const MainGoal = ({
 
               <div className={`mt-2.5 mb-2.5 ${mainGoalData.tags.length > 3 ? 'grid grid-cols-4 gap-1' : 'flex'}`}>
                 {mainGoalData.tags.map((tag, index) => (
-                  <span key={index}>
+                  <span data-testid="tag"  key={index}>
                     <div className={`badge bg-${tag.colour}-400 gap-2 p-4 text-white`}>
                       {tag.text}
                       <a onClick={() => handleRemoveTag(index)} className="inline-block cursor-pointer w-2.5 opacity-0 hover:opacity-100 hover:text-white ">
@@ -320,7 +319,7 @@ const MainGoal = ({
             
             {/* Description input */}
               <textarea
-                className="textarea h-18 md:w-60 w-60 input-bordered border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600 mt-8"
+                data-testid="description"
                 name="description"
                 onChange={handleInputValue}
                 value={mainGoalData.description}
@@ -363,6 +362,7 @@ const MainGoal = ({
               {mainGoalData._id && (
                 <button
                   className="absolute left-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
+                  data-testid="delete"
                   onClick={onDeleteMainGoal}
                 >
                   Delete

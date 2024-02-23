@@ -52,6 +52,10 @@ const EditSubGoal = ({
 
   const saveSubGoal = async (e) => {
     e.preventDefault();
+    if (!subGoalData.title || !subGoalData.mainGoal || !subGoalData.icon || !subGoalData.status){
+      alert("Please fill in title, status and add an icon");
+      return;
+    }
 
     await SubGoalsClient.editSubGoal(subGoalData);
     setTaskUpdated(true);
@@ -156,6 +160,7 @@ const EditSubGoal = ({
             className="mb-4 w-48 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2"
             onChange={handleSubGoalInput}
             value={subGoalData.status}
+            data-testid="status-select"
           >
             <option value="">Select a status</option>
             <option value="To-do">To-do</option>
@@ -178,6 +183,7 @@ const EditSubGoal = ({
                   <a
                     onClick={() => handleRemoveTag(index)}
                     className="inline-block cursor-pointer w-2.5"
+                    data-testid={"remove-tag"}
                   >
                     x
                   </a>
@@ -204,10 +210,10 @@ const EditSubGoal = ({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-delete"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-delete"
             >
               <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" />
               <line x1="18" x2="12" y1="9" y2="15" />
