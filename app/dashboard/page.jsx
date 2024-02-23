@@ -12,9 +12,9 @@ const DashboardPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const userTest = localStorage.getItem('user');
+    const user = localStorage.getItem('user');
 
-    if (userTest == "") {
+    if (!user) {
       router.push("/")
     }
   }, [user])
