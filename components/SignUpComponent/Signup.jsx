@@ -139,6 +139,7 @@ const Signup = () => {
             Username
           </label>
           <input
+            required
             type="text"
             placeholder=""
             name="username"

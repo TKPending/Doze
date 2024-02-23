@@ -5,6 +5,7 @@ import AddSubGoal from "./AddSubGoal";
 import SubGoalTitleContainer from "./SubGoalTitleContainer";
 import SmallSubGoals from "./SmallSubGoals";
 import SubGoal from "../../../SubGoalComponent/SubGoal";
+import EditSubGoal from "../../../SubGoalComponent/EditSubGoal";
 
 const ProgressionContainer = ({
   title,
@@ -14,11 +15,22 @@ const ProgressionContainer = ({
   stage,
   stages,
   setStages,
+  setTaskUpdated,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [taskClicked, setTaskClicked] = useState({});
 
-  useEffect(() => {}, [isModalVisible, taskClicked]);
+  useEffect(() => {}, [isModalVisible, taskClicked, isEditModalVisible]);
+
+  const handleRemoveOldTask = (taskClicked) => {
+    const stageTasks = stage.tasks;
+    const updatedTasks = stageTasks.filter(
+      (task) => task.id !== taskClicked.id
+    );
+
+    stage.tasks = updatedTasks;
+  };
 
   return (
     <div
@@ -46,15 +58,29 @@ const ProgressionContainer = ({
             <SmallSubGoals
               key={index}
               task={task}
-              setIsModalVisible={setIsModalVisible}
+              setIsEditModalVisible={setIsEditModalVisible}
+              setTaskUpdated={setTaskUpdated}
               setTaskClicked={setTaskClicked}
             />
           ))}
         </div>
 
-        {/* Display the sub goals, when a sub task is clicked */}
+        {/* Display the sub goals add modal, when add sub goals is clicked */}
         {isModalVisible && (
-            <SubGoal setIsModalVisible={setIsModalVisible} />
+          <SubGoal
+            setIsModalVisible={setIsModalVisible}
+            setTaskUpdated={setTaskUpdated}
+            stageName={stage.text}
+          />
+        )}
+        {/* Display the subgoals edit modal, when task is clicked */}
+        {isEditModalVisible && (
+          <EditSubGoal
+            setIsEditModalVisible={setIsEditModalVisible}
+            taskClicked={taskClicked}
+            setTaskUpdated={setTaskUpdated}
+            handleRemoveOldTask={handleRemoveOldTask}
+          />
         )}
 
         {/* If no task, display no task */}
@@ -66,7 +92,12 @@ const ProgressionContainer = ({
       </div>
 
       {/* Allow user to add task */}
-      <AddSubGoal stage={stage} stages={stages} setStages={setStages} />
+      <AddSubGoal
+        stage={stage}
+        stages={stages}
+        setStages={setStages}
+        setIsModalVisible={setIsModalVisible}
+      />
     </div>
   );
 };

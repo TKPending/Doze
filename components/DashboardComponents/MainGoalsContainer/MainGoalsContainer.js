@@ -1,12 +1,9 @@
 "use client";
 
-import { Inter } from "next/font/google";
 import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const MainGoalsContainer = () => {
   // Replicate Database information
@@ -33,9 +30,9 @@ const MainGoalsContainer = () => {
   }, [mainGoals]);
   return (
     <div
-      className={`${inter.className} bg-white flex flex-col w-full ${
+      className={`bg-white flex flex-col w-full ${
         mainGoals.length > 5 ? "h-60" : "h-auto"
-      } px-20 py-4 `}
+      } md:px-20 py-4 `}
     >
       <div className="flex items-center w-3/4 border-b border-b-black h-1/4 mb-2">
         <h1 className="text-2xl text-black font-semibold mb-2">Goals</h1>
@@ -44,7 +41,7 @@ const MainGoalsContainer = () => {
       <div
         className={`flex flex-col ${
           mainGoals.length > 5 ? "overflow-y-auto" : ""
-        } p-4 w-1/2 h-3/4`}
+        } p-4 w-full h-3/4`}
       >
         {!mainGoals ? (
           <div className="w-full">

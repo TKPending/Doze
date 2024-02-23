@@ -1,44 +1,29 @@
 "use client";
 
-import React from "react";
-
 import { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
-import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import TagButtonColours from "./Components/TagColoursButtons";
 
-const SubGoal = ({
-  setIsModalVisible,
+const EditSubGoal = ({
+  setIsEditModalVisible,
+  taskClicked,
   setTaskUpdated,
-  stageName,
-  goalTitle,
+  handleRemoveOldTask
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [mainGoalData, setMainGoalData] = useState([]);
   const [subGoalData, setSubGoalData] = useState({
-    title: "",
-    dateCreated: "",
-    icon: "😁",
-    status: stageName ? stageName : "",
-    mainGoal: goalTitle ? goalTitle : "",
-    mainGoalId: mainGoalData ? mainGoalData._id : "",
-    tags: [],
-    description: "",
-    id: "",
+    title: taskClicked.title,
+    dateCreated: taskClicked.dateCreated,
+    icon: taskClicked.icon,
+    status: taskClicked.status,
+    mainGoal: taskClicked.mainGoal,
+    mainGoalId: taskClicked.mainGoalId,
+    tags: taskClicked.tags,
+    description: taskClicked.description,
+    id: taskClicked._id,
   });
-
-  const fetchMainGoals = async () => {
-    try {
-      const mainGoalData = await MainGoalsClient.getAllMainGoals();
-      setMainGoalData(mainGoalData);
-    } catch (error) {
-      console.log(error, "error fetching maingoals");
-      setMainGoalData([]);
-    }
-  };
-
   const handleSubGoalInput = (e) => {
     if (e.target.name === "title") {
       setSubGoalData({ ...subGoalData, title: e.target.value });
@@ -54,17 +39,8 @@ const SubGoal = ({
     }
   };
 
-  const handleMainGoalChange = (e) => {
-    const selectedGoal = JSON.parse(e.target.value);
-    setSubGoalData({
-      ...subGoalData,
-      mainGoal: selectedGoal.title,
-      mainGoalId: selectedGoal._id,
-    });
-  };
-
   const closeModal = () => {
-    setIsModalVisible(false);
+    setIsEditModalVisible(false);
   };
 
   //close modal when user clicks outside the modal
@@ -74,28 +50,30 @@ const SubGoal = ({
     }
   };
 
-  const saveSubGoal = async () => {
+  const saveSubGoal = async (e) => {
+    e.preventDefault();
     if (!subGoalData.title || !subGoalData.mainGoal || !subGoalData.icon || !subGoalData.status){
       alert("Please fill in title, status and add an icon");
       return;
     }
-  
-    // Adding main goal from Main Goal
-    if (goalTitle) {
-      const mainGoal = mainGoalData.find((goal) => goal.title == goalTitle);
-      const mainGoalId = mainGoal._id;
 
-      const goalData = {...subGoalData, mainGoalId}
-      await SubGoalsClient.addSubGoal(goalData);
-    } else {
-      await SubGoalsClient.addSubGoal(subGoalData);
-    }
+    await SubGoalsClient.editSubGoal(subGoalData);
     setTaskUpdated(true);
+    handleRemoveOldTask(taskClicked)
+
+    closeModal();
   };
 
-  const subGoalFormHandler = async (e) => {
-    e.preventDefault();
-    saveSubGoal(subGoalData);
+  const deleteSubGoal = async (subGoalData) => {
+    const mainGoalId = subGoalData.mainGoalId;
+    const id = subGoalData.id;
+    if (!confirm("Do you want to delete this sub goal?")) {
+      return;
+    }
+    await SubGoalsClient.deleteSubGoal(mainGoalId, id);
+    console.log("Deleted Task");
+    setTaskUpdated(true);
+    console.log("State changed to true");
     closeModal();
   };
 
@@ -119,30 +97,33 @@ const SubGoal = ({
     });
   };
 
-  const mapMainGoals = () => {
-    return mainGoalData.map((goal) => {
-      return (
-        <option key={goal._id} value={JSON.stringify(goal)}>
-          {goal.title}
-        </option>
-      );
-    });
-  };
-
   useEffect(() => {
-    fetchMainGoals();
-  }, []);
+    if (taskClicked.task !== undefined) {
+      console.log(taskClicked.task);
+      setSubGoalData({
+        title: taskClicked.task.title,
+        dateCreated: taskClicked.task.dateCreated || "",
+        icon: taskClicked.task.icon,
+        status: taskClicked.task.status,
+        mainGoalId: taskClicked.task.mainGoalId,
+        mainGoal: taskClicked.task.mainGoal,
+        tags: taskClicked.task.tags,
+        description: taskClicked.task.description,
+        id: taskClicked.task._id,
+      });
+    }
+  }, [taskClicked]);
 
   return (
     <div
       onClick={handleOffModalClick}
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div className=" relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 rounded-lg mt-24 outline outline-indigo-600">
+      <div className="relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-indigo-600">
         <div className="w-full flex justify-end pr-[3%]">
           <p
             onClick={closeModal}
-            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border hover:cursor-pointer border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
+            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
           >
             x
           </p>
@@ -150,23 +131,18 @@ const SubGoal = ({
 
         <form
           className="flex flex-col items-center w-full h-full"
-          onSubmit={subGoalFormHandler}
+          onSubmit={saveSubGoal}
         >
-
-          <a data-testid="emoji-icon" onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer mt-6">
+          <a onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
             <span className="text-6xl">{subGoalData.icon}</span>
           </a>
-          
           {isOpen && (
-            <div className="absolute">
             <Picker
               data={data}
               onEmojiSelect={handleEmoji}
               onClickOutside={toggleEmojiPicker}
               maxFrequentRows={0}
-              
             />
-            </div>
           )}
 
           <input
@@ -176,43 +152,23 @@ const SubGoal = ({
             className="input input-bordered h-8 md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Title"
             onChange={handleSubGoalInput}
+            defaultValue={subGoalData.title}
           ></input>
 
           <select
             name="status"
-            className="mb-4 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2 w-48"
+            className="mb-4 w-48 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2"
             onChange={handleSubGoalInput}
+            value={subGoalData.status}
             data-testid="status-select"
           >
-            <option value={stageName ? stageName : ""}>
-              {stageName ? stageName : "Select a status"}
-            </option>
+            <option value="">Select a status</option>
             <option value="To-do">To-do</option>
             <option value="In progress">In progress</option>
             <option value="Complete">Complete</option>
           </select>
 
-          {goalTitle ? (
-            <div className="flex overflow flex-row gap-4 mb-4 pr-2 items-center justify-center  h-auto w-auto text-center border bg-white rounded-lg outline-indigo-600 border-indigo-600">
-              <div className="h-12 text-neutral-20  rounded-s-lg p-2 w-auto bg-neutral-200 flex justify-center items-center">
-                <p className="f">Goal: </p>
-              </div>
-              <p>{goalTitle}</p>
-            </div>
-          ) : (
-            <select
-              name="mainGoal"
-              onChange={handleMainGoalChange}
-              className="mb-4 outline-indigo-600 border rounded-md focus:border-indigo-600 p-2 w-48"
-            >
-              <option>Select a main goal</option>
-              {mainGoalData ? (
-                mapMainGoals()
-              ) : (
-                <option value="Untracked">Leave Untracked</option>
-              )}
-            </select>
-          )}
+          <h2 className="bg-white p-2 w-48 rounded-md mb-4 shadow-sm border">{subGoalData.mainGoal}</h2>
 
           <TagButtonColours
             subGoalData={subGoalData}
@@ -222,12 +178,12 @@ const SubGoal = ({
           <div className="mt-2.5 mb-2.5">
             {subGoalData.tags.map((tag, index) => (
               <span key={index}>
-                <div className={`badge bg-${tag.colour}-400 gap-2 p-4 text-white`}>
+                <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
                   {tag.text}
                   <a
-                    data-testid="remove-tag"
                     onClick={() => handleRemoveTag(index)}
-                    className="inline-block cursor-pointer w-2.5 opacity-0 hover:opacity-100 hover:text-white"
+                    className="inline-block cursor-pointer w-2.5"
+                    data-testid={"remove-tag"}
                   >
                     x
                   </a>
@@ -241,7 +197,29 @@ const SubGoal = ({
             className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
             placeholder="Additional information"
             onChange={handleSubGoalInput}
+            defaultValue={subGoalData.description}
           ></textarea>
+          <a
+            onClick={() => deleteSubGoal(subGoalData)}
+            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-indigo-600 p-2 hover:bg-indigo-600 hover:text-white text-indigo-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-delete"
+            >
+              <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" />
+              <line x1="18" x2="12" y1="9" y2="15" />
+              <line x1="12" x2="18" y1="9" y2="15" />
+            </svg>
+          </a>
 
           <div className="absolute bottom-4 right-4">
             <button
@@ -257,4 +235,4 @@ const SubGoal = ({
   );
 };
 
-export default SubGoal;
+export default EditSubGoal;

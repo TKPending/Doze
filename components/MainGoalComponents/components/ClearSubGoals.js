@@ -2,9 +2,9 @@ const ClearSubGoals = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="w-20 flex text-white hover:text-[#ff9796]  items-center justify-center border border-[#ff9796] bg-[#ff9796] hover:bg-white transition duration-200 rounded-2xl"
+      className="hover:cursor-pointer w-auto flex text-indigo-600 hover:text-white  items-center justify-center border border-indigo-600 hover:bg-indigo-600 bg-white transition duration-200 rounded-xl p-2.5"
     >
-      <p className="font-bold">Clear</p>
+      <p className="text-center">Delete All Sub Tasks</p>
     </div>
   );
 };

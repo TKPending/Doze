@@ -18,7 +18,7 @@ export default function Home() {
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
-              href="/"
+              href="/dashboard"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Set your goals
@@ -45,9 +45,8 @@ export default function Home() {
                   What sets Doze apart
                 </p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Maiores impedit perferendis suscipit eaque, iste dolor
-                  cupiditate blanditiis ratione.
+                  Doze is a task management tool. It's innovative approach is centered around a 12-week goal concept. Unlike traditional task managers, Doze doesn't just focus on day-to-day tasks; it encourages users to set overall goals for a defined period.
+                  With the ability to create main goals and break them down into manageable subtasks, Doze empowers users to tackle their goals more effectively. 
                 </p>
                 <div className="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
                   <div className="pl-4">

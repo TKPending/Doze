@@ -1,6 +1,7 @@
 import tinycolor from "tinycolor2";
 import { IonIcon } from "@ionic/react";
 import { trashBinOutline } from "ionicons/icons";
+import SubGoalsClient from "@/util/clients/subGoalsClient";
 
 const SubGoalTitleContainer = ({
   stage,
@@ -14,9 +15,11 @@ const SubGoalTitleContainer = ({
   const stageText = tinycolor(color).darken(5).toString();
   const backgroundColor = tinycolor(taskAmountColor).lighten(30).toString();
 
-  const handleRemoveAllTasks = () => {
+  const handleRemoveAllTasks = async () => {
     // Find the stage you want to empty (Todo, In Progress, Completed)
     const stageIndex = stages.findIndex((s) => s.text === stage.text);
+
+    await SubGoalsClient.deleteAllSubGoalsInStages(stage.text);
 
     // Create a new array and empty stage tasks
     const newStages = [...stages];
@@ -42,7 +45,7 @@ const SubGoalTitleContainer = ({
             style={{ backgroundColor: backgroundColor }}
             className="rounded-full border h-6 w-6 bg-[${color}]"
           ></div>
-          <p style={{ color: stageText }} className="font-bold">
+          <p style={{ color: stageText }} className="font-medium">
             {title}
           </p>
         </div>
