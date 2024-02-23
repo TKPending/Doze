@@ -11,8 +11,5 @@ module.exports = {
         },
       ],
     ],
-    plugins: [
-      "next/font" // Add the next/font plugin here
-    ]
   };
   
