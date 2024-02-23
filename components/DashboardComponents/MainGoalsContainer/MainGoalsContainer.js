@@ -1,12 +1,9 @@
 "use client";
 
-import { Inter } from "next/font/google";
 import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const MainGoalsContainer = () => {
   // Replicate Database information
@@ -33,7 +30,7 @@ const MainGoalsContainer = () => {
   }, [mainGoals]);
   return (
     <div
-      className={`${inter.className} bg-white flex flex-col w-full ${
+      className={`bg-white flex flex-col w-full ${
         mainGoals.length > 5 ? "h-60" : "h-auto"
       } px-20 py-4 `}
     >

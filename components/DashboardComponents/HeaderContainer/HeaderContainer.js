@@ -1,12 +1,10 @@
 "use client";
 
-import { Inter } from "next/font/google";
 import { useState, useEffect, useRef, useContext } from "react";
 import HeaderBackground from "./components/HeaderBackground";
 import { Context } from "@/components/ContextUser";
 import DashboardClient from "@/util/clients/dashboardClient";
 
-const inter = Inter({ subsets: ["latin"] });
 
 const HeaderContainer = () => {
   const { user } = useContext(Context);
@@ -130,7 +128,7 @@ const HeaderContainer = () => {
 
         <input
           type="text"
-          className={`${inter.className} underline h-16 w-full text-black font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`underline h-16 w-full text-black font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
           value={title}
           onChange={(e) => handleValueChange(e, setTitle)}
           onKeyDown={(e) =>
@@ -142,7 +140,7 @@ const HeaderContainer = () => {
         />
         <input
           type="text"
-          className={`ml-[2%] ${inter.className} italic h-8 w-full font-bold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`ml-[2%] italic h-8 w-full font-bold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
           value={quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>
