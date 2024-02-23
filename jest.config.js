@@ -4,6 +4,9 @@ module.exports = {
         '^@/util/clients/mainGoalsClient': '<rootDir>/util/clients/mainGoalsClient',
         '^@emoji-mart/react': '<rootDir>/node_modules/@emoji-mart/react',
     },
-    testEnvironment: 'jsdom'
+    testEnvironment: 'jsdom',
+    transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+      },
     
 }
