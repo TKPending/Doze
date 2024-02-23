@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = "https://dozebackend.onrender.com" // "http://localhost:3001";
+const SERVER = "http://localhost:3001";
 
 const TITLE_DEFAULT = "12 Weeks Goals";
 const QUOTE_DEFAULT =
@@ -10,7 +10,7 @@ const HEADER_DEFAULT = `Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)`;
 class DashboardClient {
   async getDashboardHeaderData() {
     try {
-      const response = await axios.get(`${serverUrl}/headerData`);
+      const response = await axios.get(`${SERVER}/headerData`);
 
       if (!response) {
         console.log(`Response from DashboardHeaderData, is invalid!`);
@@ -34,7 +34,7 @@ class DashboardClient {
   }
 
   async changeDashboardTitle(userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateTitle`, userInputValue);
+    await this.patchRequest(`${SERVER}/headerData/updateTitle`, userInputValue);
 
     if (userInputValue == "") {
       return TITLE_DEFAULT;
@@ -44,7 +44,7 @@ class DashboardClient {
   }
 
   async changeDashboardQuote(userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateQuote`, userInputValue);
+    await this.patchRequest(`${SERVER}/headerData/updateQuote`, userInputValue);
 
     if (userInputValue == "") {
       return QUOTE_DEFAULT;
@@ -54,7 +54,7 @@ class DashboardClient {
   }
 
   async changeDashboardBackground(validHeader, userInputValue) {
-    await this.patchRequest(`${serverUrl}/headerData/updateBackground`, userInputValue, validHeader);
+    await this.patchRequest(`${SERVER}/headerData/updateBackground`, userInputValue, validHeader);
 
     if (!validHeader || userInputValue == "") {
         return HEADER_DEFAULT;
