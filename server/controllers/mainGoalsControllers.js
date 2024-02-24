@@ -8,6 +8,10 @@ exports.addOneGoal = async (req, res, next) => {
     const maxDate = new Date(req.body.startDate);
     maxDate.setMonth(maxDate.getMonth() + 3);
 
+    if (!req.body.title || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "Invalid request body or empty title" });
+    }
+
     const goal = new MainGoals({
       title: req.body.title,
       startDate: req.body.startDate,
@@ -70,6 +74,11 @@ exports.deleteOneMainGoal = async (req, res, next) => {
   try {
     const mainGoalId = req.params.id;
     const userId = req.user._id.toString();
+    const goal = await MainGoals.findById(mainGoalId);
+
+    if (goal.userId !== userId) {
+      return next(createError(404, "No such goal"));
+    }
 
     await MainGoals.deleteMany({
       _id: mainGoalId,
