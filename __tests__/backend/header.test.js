@@ -43,7 +43,6 @@ const BACKGROUND_DEFAULT = "Enter URL has to end in (JPEG, JPG, PNG, BMP, SVG)";
 const makeRequest = async (method, url, payload = {}) => {
   const requestObject = request(app)[method](url).set("Cookie", jwtToken);
 
-  // Add payload to the request if it's not empty
   if (Object.keys(payload).length > 0) {
     requestObject.send(payload);
   }
@@ -53,7 +52,7 @@ const makeRequest = async (method, url, payload = {}) => {
 
 describe("Dashboard data is retrieved", () => {
   // Connect to headers DB
-  test.concurrent("GET /connect to headers database", async () => {
+  test.concurrent("GET /connect to Headers Collection", async () => {
     const response = await makeRequest("get", "/headerData");
 
     expect(response.status).toBe(200);
