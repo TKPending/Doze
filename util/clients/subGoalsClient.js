@@ -1,7 +1,7 @@
 import axios from "axios";
 import MainGoalsClient from "./mainGoalsClient";
 
-const SERVER = "https://dozebackend.onrender.com";
+const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
 
 class SubGoalsClient {

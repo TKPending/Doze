@@ -204,7 +204,6 @@ const Signin = () => {
             onChange={handleInputValue}
           />
           <div>
-            {/* <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Continue</button> */}
             <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">
               Sign In
             </button>

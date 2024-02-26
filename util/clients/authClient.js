@@ -24,14 +24,12 @@ class AuthClient {
     try {
       const response = await axios.post(`${SERVER}/signin`, userData);
 
-      console.log(response.data);
-
       if (response.data.error) {
         return { success: false, error: response.data.error}
       }
       return {success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message}
     }
   }
 
@@ -43,7 +41,6 @@ class AuthClient {
       }
       return { success: true};
     } catch (err) {
-      console.log(err);
       return { success: false, error: err.message };
     }
   };

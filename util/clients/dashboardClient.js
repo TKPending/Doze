@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER = "https://dozebackend.onrender.com";
+const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
 const TITLE_DEFAULT = "12 Weeks Goals";
 const QUOTE_DEFAULT =
