@@ -202,6 +202,7 @@ const MainGoal = ({
                   />
                 </div>
               )}
+            </div>
            
             <p className="text-center mb-2.5 text-gray-800">Select a start date</p>
             
