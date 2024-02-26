@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
 
+const SERVER = "https://doze-pink.vercel.app"
+
 const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
   return (
     <div className="flex items-center gap-4 w-2/4">
       <Link
-        href={`http://localhost:3000/maingoal/${goal._id}`}
+        href={`${SERVER}/maingoal/${goal._id}`}
         className="flex items-center gap-4"
       >
         <div className="text-2xl  hover:cursor-pointer flex justify-center items-center">{goal.icon}</div>
