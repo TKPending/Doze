@@ -24,6 +24,7 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
+  console.log(mainGoalData, "26");
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -118,8 +119,6 @@ const MainGoal = ({
       mainGoalData._id
     );
     router.push("/dashboard");
-
-    setMainGoalData(response);
   };
 
   // Add logic to empty all Sub Goals
@@ -171,6 +170,23 @@ const MainGoal = ({
             value={mainGoalData.title}
             onChange={handleInputValue}
           />
+          {mainGoalData._id && (
+            <>
+              {/* <ProgressBar /> */}
+
+              <div
+                className="radial-progress text-primary circle-progress font-bold "
+                style={{
+                  "--value": `${mainGoalData.completed}`,
+                  "--size": "8rem",
+                  "--thickness": "1rem",
+                }}
+                role="progressbar"
+              >
+                {mainGoalData.completed}%
+              </div>
+            </>
+          )}
           <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
             <div className="">
               <button onClick={toggleEmojiPicker} className="">

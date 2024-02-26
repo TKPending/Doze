@@ -8,7 +8,7 @@ import mainGoalsClient from "@/util/clients/mainGoalsClient";
 const MainGoalsContainer = () => {
   // Replicate Database information
   const [mainGoals, setMainGoals] = useState([]);
-
+  console.log(mainGoals, "mainGoals");
   const getAllMainGoals = async () => {
     const mainGoalsData = await mainGoalsClient.getAllMainGoals();
     setMainGoals(mainGoalsData);
@@ -23,11 +23,11 @@ const MainGoalsContainer = () => {
   };
 
   useEffect(() => {
-    const user = localStorage.getItem('user')
+    const user = localStorage.getItem("user");
     if (user !== "") {
       getAllMainGoals();
     }
-  }, [mainGoals]);
+  }, []);
   return (
     <div
       className={`bg-white flex flex-col w-full ${

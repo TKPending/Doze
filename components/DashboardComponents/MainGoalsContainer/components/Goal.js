@@ -14,8 +14,17 @@ const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
         </h2>
       </Link>
       {/* <ProgressBar /> */}
+      <label className="flex flex-col justify-center items-center">
+        {goal.completed}%
+        <progress
+          value={goal.completed}
+          max="100"
+          className="progress progress-primary w-56"
+        ></progress>
+      </label>
+      {/* <Delete /> */}
       <h2
-        className="hover:text-black text-transparent hover:cursor-pointer"
+        className=" hover:cursor-pointer"
         onClick={() => {
           deleteOneMainGoalFromDashboard(goal._id);
         }}
