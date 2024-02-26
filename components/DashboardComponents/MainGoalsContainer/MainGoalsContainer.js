@@ -27,7 +27,7 @@ const MainGoalsContainer = () => {
     if (user !== "") {
       getAllMainGoals();
     }
-  }, [mainGoals]);
+  }, []);
   return (
     <div
       className={`bg-white flex flex-col w-full ${
