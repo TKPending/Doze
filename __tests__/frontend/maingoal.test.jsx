@@ -44,8 +44,8 @@ describe("MainGoal", () => {
       const tags = screen.queryAllByTestId("tag");
 
       expect(tags.length).toBe(2);
-      expect(tags[0].textContent).toBe("cats");
-      expect(tags[1].textContent).toBe("dogs");
+      expect(tags[0].textContent).toBe("catsx");
+      expect(tags[1].textContent).toBe("dogsx");
     });
   });
 

@@ -35,19 +35,19 @@ const TagButtonColours = ({subGoalData, setSubGoalData}) => {
           data-testid="Tags"
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
-          className="input focus:border-[#FF9796] focus:outline-[#FF9796] w-64 border-[#FF9796]"
+          className="input focus:border-indigo-600 focus:outline-indigo-600 w-40 border-indigo-600 h-8"
           placeholder="Tags"
         ></input>
 
         <button
-          className="bg-[#FF9796] text-white rounded-md w-12 hover:bg-red-500 transition duration-200 p-2.5 ml-4"
+          className="flex items-center border bg-indigo-600 text-white rounded-md hover:bg-white hover:border-indigo-600 hover:text-black transition duration-200 p-2.5 ml-4 h-8 w-8"
           onClick={handleAddTag}
         >
           +
         </button>
       </div>
 
-      <div className="mb-5">
+      <div className="">
         <input
           type="radio"
           id="blue"

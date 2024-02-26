@@ -1,12 +1,15 @@
 import axios from "axios";
 import MainGoalsClient from "./mainGoalsClient";
 
+const SERVER = "https://dozebackend.onrender.com";
+
+
 class SubGoalsClient {
   async addSubGoal(subGoalData) {
     try {
       const mainGoalId = subGoalData.mainGoalId;
       await axios.post(
-        `http://localhost:3001/mainGoal/${mainGoalId}/subgoals`,
+        `${SERVER}/mainGoal/${mainGoalId}/subgoals`,
         subGoalData
       );
     } catch (err) {
@@ -36,7 +39,7 @@ class SubGoalsClient {
       const mainGoalId = subGoalData.mainGoalId;
       const subGoalId = subGoalData.id;
       await axios.put(
-        `http://localhost:3001/mainGoal/${mainGoalId}/subGoals/${subGoalId}`,
+        `${SERVER}/mainGoal/${mainGoalId}/subGoals/${subGoalId}`,
         subGoalData
       );
       return null;
@@ -48,7 +51,7 @@ class SubGoalsClient {
   async deleteSubGoal(mainGoalId, id) {
     try {
       await axios.delete(
-        `http://localhost:3001/mainGoal/${mainGoalId}/subGoals/${id}`
+        `${SERVER}/mainGoal/${mainGoalId}/subGoals/${id}`
       );
       return null;
     } catch (err) {
@@ -60,7 +63,7 @@ class SubGoalsClient {
   async deleteAllSubGoalsInStages(stage) {
     try {
       await axios.delete(
-        `http://localhost:3001/mainGoal/stages_delete_all/${stage}`
+        `${SERVER}/mainGoal/stages_delete_all/${stage}`
       );
     } catch (err) {
       console.log("Error: Problem deleting all sub goals from stages");
@@ -71,7 +74,7 @@ class SubGoalsClient {
   async deleteAllSubGoalsInMainGoals(mainGoalId) {
     try {
       await axios.delete(
-        `http://localhost:3001/mainGoal/${mainGoalId}/mainGoal_delete_all`
+        `${SERVER}/mainGoal/${mainGoalId}/mainGoal_delete_all`
       );
 
       return true;

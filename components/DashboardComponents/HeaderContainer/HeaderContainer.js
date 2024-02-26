@@ -115,7 +115,7 @@ const HeaderContainer = () => {
         backgroundPosition: "center",
       }}
     >
-      <form className="flex flex-col w-full pl-[5%] mb-2">
+      <form className="flex flex-col w-auto pl-[5%] mb-2">
         {isHeader && (
           <HeaderBackground
             setValidHeader={setValidHeader}
@@ -128,7 +128,7 @@ const HeaderContainer = () => {
 
         <input
           type="text"
-          className={`underline h-16 w-full text-black font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`underline h-16  ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"} px-2 rounded-md text-black font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
           value={title}
           onChange={(e) => handleValueChange(e, setTitle)}
           onKeyDown={(e) =>
@@ -140,7 +140,7 @@ const HeaderContainer = () => {
         />
         <input
           type="text"
-          className={`ml-[2%] italic h-8 w-full font-bold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`ml-[2%] italic h-8 rounded-md px-2 font-semibold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold mt-1 ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"}`}
           value={quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>

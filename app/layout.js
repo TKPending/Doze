@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Doze",
-  description: "A to-do app, with a difference. Built using MERN stack.",
+  description: "A to-do app with a difference",
 };
 
 export default function RootLayout({ children }) {

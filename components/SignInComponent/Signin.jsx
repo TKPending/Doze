@@ -31,7 +31,7 @@ const Signin = () => {
     }
   };
   return (
-    <div className="w-screen h-auto">
+    <div className="w-screen h-auto ">
       <form onSubmit={onSignInSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>

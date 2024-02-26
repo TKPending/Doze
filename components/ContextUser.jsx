@@ -17,7 +17,7 @@ export function ContextUser({ children }) {
   };
   
   const onUserSignedOut = async () => {
-    localStorage.removeItem("user", "");
+    localStorage.removeItem("user");
     setUser(null);
   };
 

@@ -12,15 +12,15 @@ const DashboardPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const userTest = localStorage.getItem('user');
+    const user = localStorage.getItem('user');
 
-    if (userTest == "") {
+    if (!user) {
       router.push("/")
     }
   }, [user])
 
   return (
-    <div className="h-min-screen w-screen bg-white flex flex-col overscroll-none px-40 py-6 h-full">
+    <div className="h-min-screen w-full bg-white flex flex-col overscroll-none md:px-40 px-5 py-6 h-full">
       <HeaderContainer />
       <MainGoalsContainer />
       <SubGoalsContainer />

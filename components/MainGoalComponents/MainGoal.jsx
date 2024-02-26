@@ -173,7 +173,6 @@ const MainGoal = ({
           {mainGoalData._id && (
             <>
               {/* <ProgressBar /> */}
-
               <div
                 className="radial-progress text-primary circle-progress font-bold "
                 style={{
@@ -189,7 +188,9 @@ const MainGoal = ({
           )}
           <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
             <div className="">
-              <button onClick={toggleEmojiPicker} className="">
+            
+              <button onClick={toggleEmojiPicker} className="mb-5 mt-6">
+
                 <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
@@ -201,59 +202,54 @@ const MainGoal = ({
                   />
                 </div>
               )}
-            </div>
-            <div>
-              <label htmlFor="startDate" className="font-bold">
-                Start Date:
-              </label>
+           
+            <p className="text-center mb-2.5 text-gray-800">Select a start date</p>
+            
               <input
                 data-testid="startDate"
                 name="startDate"
                 type="date"
-                className="input focus:border-[#ff9796] focus:outline-[#ff9796] ml-7"
+                className="input border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600 mb-8 p-2 w-56 h-8"
                 onChange={handleInputValue}
                 value={mainGoalData.startDate}
               />
-            </div>
+          
 
             {/* Button for changing Status */}
-            <div>
-              <span className="font-bold mr-2.5">Status:</span>
+            
               <select
-                className="outline-[#ff9796] border-indigo-600 border rounded-md focus:border-[#ff9796] p-2"
+                className="outline-indigo-600 border-indigo-600 border rounded-md focus:border-indigo-600 p-2 mb-8 w-56"
                 name="status"
                 onChange={handleInputValue}
                 value={mainGoalData.status}
               >
+                <option value="">Select a status</option>
                 <option value="to-do">To-do</option>
                 <option value="in-progress">In progress</option>
                 <option value="complete">Complete</option>
               </select>
-            </div>
 
             {/* Tag input and colour changer */}
-            <div>
-              <label htmlFor="tag" className="font-bold">
-                Tags:
-              </label>
+            <div className="flex justify-center items-center mb-2.5">
+              
               <input
                 name="tag"
                 type="text"
                 value={tagInput}
                 onChange={handleTagInputChange}
-                className="input border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796] m-2.5 md:ml-14"
-                placeholder="e.g Travel"
+                className="input border border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600 w-44 h-8"
+                placeholder="Tags"
               />
               <button
-                className="bg-[#7899D4] hover:bg-blue-400 text-white rounded-md pr-5 pl-5 m-2.5 pt-2.5 pb-2.5"
+                className="flex items-center border bg-indigo-600 text-white rounded-md hover:bg-white hover:border-indigo-600 hover:text-black transition duration-200 p-2.5 ml-4 h-8 w-8"
                 onClick={handleAddTag}
               >
                 +
               </button>
+              </div>
 
               {/* Buttons for changing tag colour */}
-              <div className="flex items-center mt-2">
-                <span className="font-bold">Tag Colour:</span>
+              <div className="flex justify-center items-center">
                 <input
                   type="radio"
                   id="blue"
@@ -261,7 +257,7 @@ const MainGoal = ({
                   value="blue"
                   defaultChecked={selectedColour === "blue"}
                   onChange={() => handleColourChange("blue")}
-                  className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 ml-2 mt-1"
+                  className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 mt-1"
                 />
 
                 <input
@@ -325,54 +321,40 @@ const MainGoal = ({
                 />
               </div>
 
-              <div className="mt-2.5">
+              <div className={`mt-2.5 mb-2.5 ${mainGoalData.tags.length > 3 ? 'grid grid-cols-4 gap-1' : 'flex'}`}>
                 {mainGoalData.tags.map((tag, index) => (
-                  <span data-testid="tag" key={index}>
-                    <div className={`badge bg-${tag.colour}-400 gap-2 p-4`}>
+                  <span data-testid="tag"  key={index}>
+                    <div className={`badge bg-${tag.colour}-400 gap-2 p-4 text-white`}>
                       {tag.text}
-                      <a onClick={() => handleRemoveTag(index)}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          className="inline-block w-4 h-4 stroke-current cursor-pointer"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          ></path>
-                        </svg>
+                      <a onClick={() => handleRemoveTag(index)} className="inline-block cursor-pointer w-2.5 opacity-0 hover:opacity-100 hover:text-white ">
+                        x
                       </a>
                     </div>
                   </span>
                 ))}
               </div>
-            </div>
+            
 
-            <div className="flex items-center mt-2.5">
-              <span className="font-bold mr-2.5">Description:</span>
+            
+            {/* Description input */}
               <textarea
                 data-testid="description"
-                className="textarea w-1/3 border border-indigo-600 focus:border-[#ff9796] focus:outline-[#ff9796]"
                 name="description"
                 onChange={handleInputValue}
                 value={mainGoalData.description}
               ></textarea>
-            </div>
-
+           
+<span className="h-0.5 bg-indigo-600 opacity-25 mt-10 w-5/6"></span>
             {/* Sub Goals */}
             {mainGoalData._id && (
-              <div className="flex mt-2 flex-col gap-4 h-auto mb-20">
-                <div className="w-2/4 h-8 flex items-center justify-between pr-2">
-                  <p className="font-bold">Sub Goals:</p>
+              <div className="flex mt-8 flex-col gap-4 h-auto mb-20">
+                <div className="h-8 flex items-center justify-center mt-8 mb-5">
                   {mainGoalData.subGoals.length !== 0 && (
                     <ClearSubGoals onClick={() => emptySubGoals()} />
                   )}
                 </div>
 
-                <div className="p-2 flex flex-col gap-4 h-auto w-2/4">
+                <div className="p-2 grid grid-cols-3 gap-4 h-auto mb-8">
                   {mainGoalData.subGoals.map((subGoal, index) => (
                     <SubGoalComponent
                       key={index}
@@ -398,14 +380,14 @@ const MainGoal = ({
             <div className="flex justify-between">
               {mainGoalData._id && (
                 <button
+                  className="absolute left-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
                   data-testid="delete"
-                  className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5"
                   onClick={onDeleteMainGoal}
                 >
                   Delete
                 </button>
               )}
-              <button className=" text-[#ff9796] hover:text-white hover:bg-[#ff9796] border border-[#ff9796] rounded-md p-2 pl-5 pr-5">
+              <button className="absolute right-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5">
                 Save
               </button>
             </div>
