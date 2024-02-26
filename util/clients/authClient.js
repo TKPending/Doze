@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER = "https://dozebackend.onrender.com";
+const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
 class AuthClient {
   async getUser() {
@@ -31,10 +31,11 @@ class AuthClient {
   async signUpReq(userData) {
     try {
       await axios.post(`${SERVER}/signup`, userData);
+      return { success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message };
     }
-  }
+  };
 
   async signOutUser() {
     try {

@@ -1,7 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/authClient";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/util/messages";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
 
 const Signup = () => {
   const router = useRouter();
@@ -10,31 +13,121 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [signupCheck, setSignupCheck] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("Failure to do something!");
+  const [successStatus, setSuccessStatus] = useState(false);
 
   const handleInputValue = (e) => {
     if (e.target.name === "username") {
-      setUserData({ ...userData, username: e.target.value });
+      setUserData({ ...userData, username: e.target.value.toLowerCase() });
     }
     if (e.target.name === "email") {
-      setUserData({ ...userData, email: e.target.value });
+      setUserData({ ...userData, email: e.target.value.toLowerCase() });
     }
     if (e.target.name === "password") {
       setUserData({ ...userData, password: e.target.value });
     }
   };
 
+  const validUsernameCheck = (username) => {
+    const spaceRegex = /\s/;
+    const numericRegex = /^\d+$/;
+    if (
+      username.length < 3 ||
+      spaceRegex.test(username) ||
+      numericRegex.test(username) ||
+      username === ""
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const validEmailCheck = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email || email === "")) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const validPasswordCheck = (password) => {
+    if (
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /\d/.test(password) &&
+      !/\s/.test(password || password === "")
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   const onSignUpSubmit = async (e) => {
     e.preventDefault();
+
+    const usernameCheck = validUsernameCheck(userData.username);
+    const emailCheck = validEmailCheck(userData.email);
+    const passwordCheck = validPasswordCheck(userData.password);
+
+    if (!usernameCheck || !emailCheck || !passwordCheck) {
+      setSignupCheck(false);
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
+      return;
+    }
+
     try {
-      await AuthClient.signUpReq(userData);
-      router.push("/signin");
+      const signUpResult = await AuthClient.signUpReq(userData);
+
+      if (signUpResult.success) {
+        setSignupCheck(true);
+        setSuccessStatus(true);
+      } else {
+        handleSignUpError(signUpResult.error);
+      }
     } catch (err) {
-      console.log(err);
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.DATABASE_ERROR);
+      setSignupCheck(false);
     }
   };
 
+  const handleSignUpError = (error) => {
+    if (error.includes("Invalid email format")) {
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
+    } else if (error.includes("Invalid username")) {
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
+    } else if (error.includes("User already exists")) {
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.USER_EXISTS);
+    } else {
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.DATABASE_ERROR);
+    }
+    setSignupCheck(false);
+  };
+
+  useEffect(() => {
+    if (!signupCheck) {
+      setTimeout(() => {
+        setSignupCheck(true);
+        return;
+      }, 3000);
+    }
+
+    if (successStatus) {
+      setTimeout(() => {
+        router.push("/signin");
+        setSuccessStatus(false);
+      }, 1500);
+    }
+  }, [signupCheck, successStatus]);
+
   return (
     <div className="w-screen h-auto">
+      {!signupCheck && <ErrorMessage message={errorMessage} />}
+      {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNUP_SUCCESS} />}
+
       <form onSubmit={onSignUpSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
@@ -139,7 +232,6 @@ const Signup = () => {
             Username
           </label>
           <input
-            required
             type="text"
             placeholder=""
             name="username"
@@ -154,7 +246,6 @@ const Signup = () => {
             name="email"
             type="email"
             autoComplete="email"
-            required
             className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
             onChange={handleInputValue}
           />
