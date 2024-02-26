@@ -30,9 +30,13 @@ class AuthClient {
 
   async signUpReq(userData) {
     try {
-      await axios.post(`${SERVER}/signup`, userData);
+      const response = await axios.post(`${SERVER}/signup`, userData);
+      if (response.data.error){
+        return { success: false, error: response.data.error}
+      }
       return { success: true};
     } catch (err) {
+      console.log(err);
       return { success: false, error: err.message };
     }
   };

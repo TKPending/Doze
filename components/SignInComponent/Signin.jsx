@@ -3,11 +3,16 @@ import { useState, useContext } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/authClient";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
 
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
   const { onUserSignedIn } = useContext(Context);
+  const [signinCheck, setSigninCheck] = useState(true);
+  const [successStatus, setSuccessStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong.");
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
@@ -32,6 +37,9 @@ const Signin = () => {
   };
   return (
     <div className="w-screen h-auto ">
+      {!signinCheck && <ErrorMessage message={errorMessage} />}
+      {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNUP_SUCCESS} />}
+
       <form onSubmit={onSignInSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>

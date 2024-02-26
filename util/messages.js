@@ -3,7 +3,7 @@ export const ERROR_MESSAGES = {
     STANDARD: "Unable to complete signup. Please ensure all information is entered correctly and try again.",
   },
   SIGNUP_BACKEND: {
-    USER_EXISTS: "This email is already associated with an existing account.",
+    USER_EXISTS: "Account already exists. Check information and try again",
     DATABASE_ERROR:
       "There was an issue with the database. Please try again later.",
   },

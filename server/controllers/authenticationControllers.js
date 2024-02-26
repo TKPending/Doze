@@ -11,11 +11,16 @@ exports.signUp = async (req, res, next) => {
     const email = req.body.email;
 
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: 'Invalid email format' });
+      return res.json({ error: 'Invalid email format' });
     }
 
     if (req.body.username == "") {
-      return res.status(400).json({ error: 'Invalid username' });
+      return res.json({ error: 'Invalid username' });
+    }
+
+    const existingUser = await User.findOne({ $or: [{ username: req.body.username }, { email }] });
+    if (existingUser) {
+      return res.json({ error: 'Username or email already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);

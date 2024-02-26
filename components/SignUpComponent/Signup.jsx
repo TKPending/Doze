@@ -16,6 +16,7 @@ const Signup = () => {
   const [signupCheck, setSignupCheck] = useState(true);
   const [errorMessage, setErrorMessage] = useState("Failure to do something!");
   const [successStatus, setSuccessStatus] = useState(false);
+  const [usernameCheck, setUsernameCheck] = useState(null);
 
   const handleInputValue = (e) => {
     if (e.target.name === "username") {
@@ -82,6 +83,8 @@ const Signup = () => {
     try {
       const signUpResult = await AuthClient.signUpReq(userData);
 
+    
+
       if (signUpResult.success) {
         setSignupCheck(true);
         setSuccessStatus(true);
@@ -99,7 +102,7 @@ const Signup = () => {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
     } else if (error.includes("Invalid username")) {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
-    } else if (error.includes("User already exists")) {
+    } else if (error.includes("Username or email already exists")) {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.USER_EXISTS);
     } else {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.DATABASE_ERROR);
@@ -112,7 +115,7 @@ const Signup = () => {
       setTimeout(() => {
         setSignupCheck(true);
         return;
-      }, 3000);
+      }, 3500);
     }
 
     if (successStatus) {
@@ -228,17 +231,19 @@ const Signup = () => {
 
           <h2 className="m-2.5">or</h2>
 
-          <label for="username" className="">
+          <label for="username" className="text-center">
+          {!signupCheck && <p className="text-red-500">Username must be more than 3 letters and should not include spaces.</p>}
             Username
           </label>
           <input
             type="text"
             placeholder=""
             name="username"
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${!signupCheck ? "border-red-500" : "border-[#7899D4]"} focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
-          <label for="email" className="">
+          <label for="email" className="text-center">
+          {!signupCheck && <p className="text-red-500">Please ensure the email is in the correct format.</p>}
             Email
           </label>
           <input
@@ -246,22 +251,24 @@ const Signup = () => {
             name="email"
             type="email"
             autoComplete="email"
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${!signupCheck ? "border-red-500" : "border-[#7899D4]"} focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
-          <label for="password" className="">
+          <label for="password" className="text-center">
+          {!signupCheck && <p className="text-red-500">Password must include a capital letter, a number and no spaces</p>}
             Password
           </label>
           <input
             type="password"
             placeholder=""
             name="password"
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${!signupCheck ? "border-red-500" : "border-[#7899D4]"} focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
           <div>
             <button
               type="submit"
+              disabled={!signupCheck}
               className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24"
             >
               Sign Up
