@@ -22,7 +22,14 @@ class AuthClient {
   // Signing in a user
   async signInReq(userData) {
     try {
-      await axios.post(`${SERVER}/signin`, userData);
+      const response = await axios.post(`${SERVER}/signin`, userData);
+
+      console.log(response.data);
+
+      if (response.data.error) {
+        return { success: false, error: response.data.error}
+      }
+      return {success: true};
     } catch (err) {
       console.log(err);
     }

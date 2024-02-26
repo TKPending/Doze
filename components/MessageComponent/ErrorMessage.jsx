@@ -4,7 +4,7 @@ const ErrorMessage = ({ message }) => {
         <div className="flex items-center justify-center rounded-full bg-red-500 h-[50%] w-10">
           <p className="text-white text-2xl">x</p>
         </div>
-        <p className="p-2 text-netural-400 min-w-0 overflow-hidden overflow-ellipsis">
+        <p className="p-2 mr-4 text-netural-400 min-w-0 overflow-hidden overflow-ellipsis">
           {message}
         </p>
       </div>

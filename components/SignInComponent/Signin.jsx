@@ -1,10 +1,13 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/authClient";
 import ErrorMessage from "../MessageComponent/ErrorMessage";
 import SuccessMessage from "../MessageComponent/SuccessMessage";
+import { ERROR_MESSAGES } from "@/util/messages";
+import { SUCCESS_MESSAGES } from "@/util/messages";
+import { validEmailCheck } from "@/util/authFunctions";
 
 const Signin = () => {
   const router = useRouter();
@@ -16,7 +19,7 @@ const Signin = () => {
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
-      setUserData({ ...userData, email: e.target.value });
+      setUserData({ ...userData, email: e.target.value.toLowerCase() });
     }
     if (e.target.name === "password") {
       setUserData({ ...userData, password: e.target.value });
@@ -25,20 +28,60 @@ const Signin = () => {
 
   const onSignInSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await AuthClient.signInReq(userData);
-      onUserSignedIn();
 
-      router.push("/");
+    const emailCheck = validEmailCheck(userData.email);
+
+    if (!emailCheck || userData.password === "") {
+      setSigninCheck(false);
+      setErrorMessage(ERROR_MESSAGES.SIGNIN.INVALID_DETAILS);
+      return;
+    }
+
+    try {
+      const signInResult = await AuthClient.signInReq(userData);
+
+      if (signInResult.success) {
+        setSuccessStatus(true);
+        setSigninCheck(true);
+      } else {
+        handleSignInError(signInResult.error)
+      }
     } catch (err) {
-      console.log("Problem authenticating user");
-      console.error(err);
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
+      setSigninCheck(false);
     }
   };
+
+  const handleSignInError = (err) => {
+    if (err.includes("User not found.")) {
+      setErrorMessage(ERROR_MESSAGES.SIGNIN.USER_NOT_FOUND)
+    } else {
+      setErrorMessage(ERROR_MESSAGES.DATABASE_ERROR)
+    }
+    setSigninCheck(false);
+  }
+
+  useEffect(() => {
+    if (!signinCheck) {
+      setTimeout(() => {
+        setSigninCheck(true);
+        return;
+      }, 3500);
+    }
+
+    if (successStatus) {
+      setTimeout(() => {
+        onUserSignedIn();
+        router.push("/");
+      }, 1500);
+    }
+  }, [signinCheck, successStatus]);
+
+
   return (
     <div className="w-screen h-auto ">
       {!signinCheck && <ErrorMessage message={errorMessage} />}
-      {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNUP_SUCCESS} />}
+      {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNIN_SUCCESS} />}
 
       <form onSubmit={onSignInSubmit}>
         <div className="flex flex-col items-center">
@@ -146,9 +189,7 @@ const Signin = () => {
           <input
             id="email"
             name="email"
-            type="email"
             autoComplete="email"
-            required
             className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
             onChange={handleInputValue}
           />
