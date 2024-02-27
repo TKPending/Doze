@@ -13,16 +13,23 @@ export const ERROR_MESSAGES = {
   },
   DASHBOARD: {
     MAIN_GOALS: "Unable to find Main Goals. Try again later."
+  }, 
+  MAIN_GOALS: {
+    GOAL_INVALID: "Problem re-fetching main goal. Redirecting to dashboard...",
+    DELETE_FAILED: "Problem deleting Goal. Try again later.",
+    SAVED_FAILED: "Problem saving goal. Try again later."
   }
 };
 
 // For console.log/error messages
 export const DEVELOPER_ERRORS = {
   ENDPOINT: "DEVELOPER: Problem with the endpoint. Check the endpoint url or check that the server is up and running.",
-  ROUTES: "DEVELOPER: Problem with the routes. Check the routes files"
+  ROUTES: "DEVELOPER: Problem with the routes. Check the routes files or anything related to routes and endpoints", 
+  MAIN_GOAL_ROUTE: "DEVELOPER: Problem with routes. Redirecting to Dashboard...", 
 }
 
 export const SUCCESS_MESSAGES = {
   SIGNUP_SUCCESS: "Account created successfully! Redirecting...",
-  SIGNIN_SUCCESS: "Signing in! Redirecting..."
+  SIGNIN_SUCCESS: "Signing in! Redirecting...", 
+  SAVED_MAIN_GOAL: "Goal has been saved!"
 }

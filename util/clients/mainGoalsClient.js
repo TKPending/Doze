@@ -16,9 +16,14 @@ class MainGoalsClient {
   async getOneMainGoalReq(id) {
     try {
       const response = await axios.get(`${SERVER}/mainGoal/${id}`);
-      return response.data;
+
+      if (!response) {
+        return {success: false, error: response.data.error};
+      }
+      return {success: true, data: response.data};
     } catch (error) {
-      console.log(error);
+      console.error(DEVELOPER_ERRORS.ROUTES);
+      return {success: false, error: error.message}
     }
   }
   //PUT
@@ -30,10 +35,10 @@ class MainGoalsClient {
       );
 
       if (!response) {
-        return { success: false, error: response.data.error}
+        return { success: false, error: response.data.error};
       }
 
-      return { success: true}
+      return { success: true, data: response.data};
 
     } catch (error) {
       console.log(DEVELOPER_ERRORS.ROUTES);

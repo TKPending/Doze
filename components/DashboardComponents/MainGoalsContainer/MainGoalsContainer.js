@@ -4,8 +4,9 @@ import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
-import { DEVELOPER_ERRORS, ERROR_MESSAGES } from "@/util/messages";
+import { ERROR_MESSAGES } from "@/util/messages";
 import MainGoalError from "./components/MainGoalError";
+import { handleDashboardMainGoalsError } from "@/util/handleErrors";
 
 const MainGoalsContainer = () => {
   // Replicate Database information
@@ -19,7 +20,7 @@ const MainGoalsContainer = () => {
 
       if (!mainGoalsData.success) {
         setSuccessStatus(false);
-        handleDashboardMainGoalsError(mainGoalsData.error);
+        handleDashboardMainGoalsError(setErrorMessage, mainGoalsData.error);
         setMainGoals([]);
         return;
       }
@@ -40,16 +41,6 @@ const MainGoalsContainer = () => {
     }
   }, [successStatus, errorMessage]);
 
-  const handleDashboardMainGoalsError = (err) => {
-    if (err.includes("Network Error")) {
-      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
-    } else if (err.includes("Request failed with status code 404")) {
-      setErrorMessage(DEVELOPER_ERRORS.ROUTES);
-    } else {
-      setErrorMessage(ERROR_MESSAGES.DASHBOARD.MAIN_GOALS);
-    }
-  };
-
   const deleteOneMainGoalFromDashboard = async (id) => {
     if (!confirm("Do you want to delete this goal?")) {
       return;
@@ -58,7 +49,7 @@ const MainGoalsContainer = () => {
       const response = await mainGoalsClient.deleteOneMainGoalReq(id);
 
       if (!response.success) {
-        handleDashboardMainGoalsError(response.error);
+        handleDashboardMainGoalsError(setErrorMessage, response.error);
         console.log(response)
       }
 

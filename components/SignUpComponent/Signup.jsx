@@ -6,6 +6,7 @@ import ErrorMessage from "../MessageComponent/ErrorMessage";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/util/messages";
 import SuccessMessage from "../MessageComponent/SuccessMessage";
 import { validEmailCheck, validPasswordCheck, validUsernameCheck } from "@/util/authFunctions";
+import { handleSignUpError } from "@/util/handleErrors";
 
 const Signup = () => {
   const router = useRouter();
@@ -51,28 +52,14 @@ const Signup = () => {
         setSuccessStatus(true);
       } else {
         console.log(signUpResult.error)
-        handleSignUpError(signUpResult.error);
+        handleSignUpError(setErrorMessage, signUpResult.error);
+        setSignupCheck(false);
       }
     } catch (err) {
       console.log("DEVELOPER 2")
       setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
       setSignupCheck(false);
     }
-  };
-
-  const handleSignUpError = (error) => {
-    if (error.includes("Invalid email format")) {
-      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
-    } else if (error.includes("Invalid username")) {
-      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
-    } else if (error.includes("Username or email already exists")) {
-      setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.USER_EXISTS);
-    } else if (error.includes("Network Error")) {
-      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
-    } else {
-      setErrorMessage(ERROR_MESSAGES.DATABASE_ERROR);
-    }
-    setSignupCheck(false);
   };
 
   useEffect(() => {

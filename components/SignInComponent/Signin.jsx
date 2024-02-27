@@ -8,6 +8,7 @@ import SuccessMessage from "../MessageComponent/SuccessMessage";
 import { ERROR_MESSAGES } from "@/util/messages";
 import { SUCCESS_MESSAGES } from "@/util/messages";
 import { validEmailCheck } from "@/util/authFunctions";
+import { handleSignInError } from "@/util/handleErrors";
 
 const Signin = () => {
   const router = useRouter();
@@ -44,24 +45,14 @@ const Signin = () => {
         setSuccessStatus(true);
         setSigninCheck(true);
       } else {
-        handleSignInError(signInResult.error)
+        handleSignInError(setErrorMessage, signInResult.error);
+        setSigninCheck(false);
       }
     } catch (err) {
       setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
       setSigninCheck(false);
     }
   };
-
-  const handleSignInError = (err) => {
-    if (err.includes("User not found.")) {
-      setErrorMessage(ERROR_MESSAGES.SIGNIN.USER_NOT_FOUND)
-    } else if (err.includes("Network Error")){ 
-      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
-    } else {
-      setErrorMessage(ERROR_MESSAGES.DATABASE_ERROR)
-    }
-    setSigninCheck(false);
-  }
 
   useEffect(() => {
     if (!signinCheck) {
