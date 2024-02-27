@@ -72,7 +72,7 @@ const Signin = () => {
 
 
   return (
-    <div className="w-screen h-auto ">
+    <div className="w-screen h-auto">
       {!signinCheck && <ErrorMessage message={errorMessage} />}
       {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNIN_SUCCESS} />}
 
