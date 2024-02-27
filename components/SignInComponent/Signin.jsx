@@ -120,7 +120,7 @@ const Signin = () => {
               width="1.5em"
               height="1.5em"
               viewBox="0 0 1024 1024"
-              className="dark:text-white text-black"
+              className=" text-black"
             >
               <path
                 fill="currentColor"

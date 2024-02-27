@@ -32,7 +32,7 @@ const MainGoalsContainer = () => {
     <div
       className={`bg-white flex flex-col w-full ${
         mainGoals.length > 5 ? "h-60" : "h-auto"
-      } md:px-20 py-4 `}
+      } lg:px-20 py-4 `}
     >
       <div className="flex items-center w-3/4 border-b border-b-black h-1/4 mb-2">
         <h1 className="text-2xl text-black font-semibold mb-2">Goals</h1>

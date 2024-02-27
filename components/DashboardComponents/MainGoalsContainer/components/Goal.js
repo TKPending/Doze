@@ -3,34 +3,50 @@ import Link from "next/link";
 
 const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
   return (
-    <div className="flex items-center gap-4 w-2/4">
+    <div className="relative flex items-center justify-between gap-4 md:w-5/6 w-full mt-2.5  p-2 rounded-lg">
       <Link
         href={`http://localhost:3000/maingoal/${goal._id}`}
         className="flex items-center gap-4"
       >
         <div className="text-2xl  hover:cursor-pointer flex justify-center items-center">{goal.icon}</div>
-        <h2 className="text-gray-800 md:text-xl text-lg font-medium hover:text-indigo-600 hover:cursor-pointer">
+        <h2 className="text-gray-800 md:text-xl text-lg font-medium hover:text-gray-400 hover:cursor-pointer">
           {goal.title}
         </h2>
       </Link>
       {/* <ProgressBar /> */}
-      <label className="flex flex-col justify-center items-center">
-        {goal.completed}%
+
+      <label className="lg:absolute lg:right-10 flex flex-col justify-center items-center w-1/4 md:w-1/4 font-medium">
+        {/* {goal.completed}% */}
         <progress
           value={goal.completed}
           max="100"
-          className="progress progress-primary w-56"
+          className="progress progress-primary opacity-75 md:w-full w-full"
         ></progress>
       </label>
       {/* <Delete /> */}
       <h2
-        className="hover:text-red-600 text-transparent hover:cursor-pointer"
+        className="text-red-600 hover:cursor-pointer lg:absolute lg:right-0"
         onClick={() => {
           deleteOneMainGoalFromDashboard(goal._id);
         }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-x"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
-      </h2>
+        <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-delete"
+            >
+              <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" />
+              <line x1="18" x2="12" y1="9" y2="15" />
+              <line x1="12" x2="18" y1="9" y2="15" />
+            </svg>
+             </h2>
     </div>
   );
 };
