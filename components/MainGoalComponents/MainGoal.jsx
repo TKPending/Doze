@@ -12,7 +12,12 @@ import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import EditSubGoal from "../SubGoalComponent/EditSubGoal";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 import ErrorMessage from "../MessageComponent/ErrorMessage";
-import { handleMainGoalsPageError } from "@/util/handleErrors";
+import {
+  handleMainGoalsPageError,
+  handleSubGoalError,
+} from "@/util/handleErrors";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
+import { SUCCESS_MESSAGES } from "@/util/messages";
 
 const MainGoal = ({
   onSave,
@@ -34,7 +39,9 @@ const MainGoal = ({
   const [taskClicked, setTaskClicked] = useState({});
   const [taskUpdated, setTaskUpdated] = useState(false);
   const [emptyAllSubGoals, setEmptyAllSubGoals] = useState(false);
+  // ERROR HANDLING
   const [errorMessage, setErrorMessage] = useState(false);
+  const [successStatus, setSuccessStatus] = useState(false);
   const router = useRouter();
   const handleInputValue = (e) => {
     if (e.target.name === "title") {
@@ -140,8 +147,10 @@ const MainGoal = ({
       mainGoalData._id
     );
 
-    if (!response) {
-      console.log("Problem emptying sub goals in main goals page!");
+    if (!response.success) {
+      const customErrorMessage = "Problem deleting all goals";
+      handleSubGoalError(setErrorMessage, customErrorMessage);
+      return;
     }
 
     setEmptyAllSubGoals(true);
@@ -149,7 +158,7 @@ const MainGoal = ({
 
   useEffect(() => {
     if (emptyAllSubGoals) {
-      setEmptyAllSubGoals(false);
+      setTimeout(() => {setEmptyAllSubGoals(false)}, 2500);
     }
 
     const fetchData = async () => {
@@ -216,6 +225,8 @@ const MainGoal = ({
               <ErrorMessage message={errorMessage} />
             </div>
           )}
+
+          {emptyAllSubGoals && <SuccessMessage message={SUCCESS_MESSAGES.REMOVE_ALL_SUBGOALS} />}
 
           <div className="md:w-1/2 h-full relative">
             <form id="goalForm" onSubmit={submitHandler}>

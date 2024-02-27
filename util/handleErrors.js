@@ -40,24 +40,44 @@ export const handleDashboardMainGoalsError = (setErrorMessage, err) => {
 
 // MAIN GOALS PAGE
 export const handleMainGoalsPageError = (setErrorMessage, err) => {
-    if (err.includes("Request failed with status code 404")) {
-        console.error("Problem: Most likely to do with an endpoint. Check routes, endpoints and data being sent to endpoints.")
-        setErrorMessage(DEVELOPER_ERRORS.MAIN_GOAL_ROUTE)
-    } else if (err.includes("Network Error")) {
-        console.error("Problem: Most likely to do with the server not running.")
-        setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
-    } else if (err.includes("Problem when re-fetching one main goal")) {
-        console.error("Problem: Most likely due to how it is coded or data being sent")
-        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.GOAL_INVALID)
-    } else if (err.includes("Failed to delete main goal")) {
-        console.error("Problem: Most likely to do with server not running or delete endpoint")
-        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.DELETE_FAILED)
-    } else if (err.includes("Request failed with status code 404")) {
-        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.SAVED_FAILED);
-    } else if (err.includes("Problem creating a goal")) {
-        console.error("Problem: Most likely to do with server endpoints or routes")
-        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.CREATING_FAILED);
-    } else (
-        setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
-    )
+  if (err.includes("Request failed with status code 404")) {
+    console.error(
+      "Problem: Most likely to do with an endpoint. Check routes, endpoints and data being sent to endpoints."
+    );
+    setErrorMessage(DEVELOPER_ERRORS.MAIN_GOAL_ROUTE);
+  } else if (err.includes("Network Error")) {
+    console.error("Problem: Most likely to do with the server not running.");
+    setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+  } else if (err.includes("Problem when re-fetching one main goal")) {
+    console.error(
+      "Problem: Most likely due to how it is coded or data being sent"
+    );
+    setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.GOAL_INVALID);
+  } else if (err.includes("Failed to delete main goal")) {
+    console.error(
+      "Problem: Most likely to do with server not running or delete endpoint"
+    );
+    setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.DELETE_FAILED);
+  } else if (err.includes("Request failed with status code 404")) {
+    setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.SAVED_FAILED);
+  } else if (err.includes("Problem creating a goal")) {
+    console.error("Problem: Most likely to do with server endpoints or routes");
+    setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.CREATING_FAILED);
+  } else setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+};
+
+// SUB GOALS
+export const handleSubGoalError = (setErrorMessage, err) => {
+    if (err.includes("Problem deleting all goals")) {
+        console.error("Problem: Most likely to do with server endpoints or routes (Check client)")
+        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.DELETE_SUBGOALS);
+    } else if (err.includes("Problem getting all main goals")) {
+        console.error("Problem: Most likely to 'getAllSubGoals' in SubGoalsClient")
+        setErrorMessage(ERROR_MESSAGES.SUB_GOALS.ALL_GOALS_FAILED);
+    } else if (err.includes("Problem adding Sub Goal from Main Goal")) {
+        setErrorMessage(ERROR_MESSAGES.SUB_GOALS.SAVED_FAILED);
+        console.log("HERE")
+    } else {
+        setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+    }
 };

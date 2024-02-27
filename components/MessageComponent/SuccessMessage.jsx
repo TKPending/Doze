@@ -2,7 +2,7 @@ const SuccessMessage = ({ message }) => {
   return (
     <div
       role="alert"
-      className="alert alert-success max-w-[20%] md:max-w-[30%] absolute right-4 mt-4 text-white text-center"
+      className="z-10 alert alert-success max-w-[20%] md:max-w-[30%] absolute right-4 mt-4 text-white text-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

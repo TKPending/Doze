@@ -18,7 +18,12 @@ export const ERROR_MESSAGES = {
     GOAL_INVALID: "Problem re-fetching main goal. Redirecting to dashboard...",
     DELETE_FAILED: "Problem deleting Goal. Try again later.",
     SAVED_FAILED: "Problem saving goal. Try again later.",
-    CREATING_FAILED: "Problem creating a goal. Try again later. Redirecting to dashboard..."
+    CREATING_FAILED: "Problem creating a goal. Try again later. Redirecting to dashboard...", 
+    DELETE_SUBGOALS: "Problem deleting all Sub-Goals. Try again later."
+  }, 
+  SUB_GOALS: {
+    ALL_GOALS_FAILED: "Problem with Sub Goals. Please try again later.",
+    SAVED_FAILED: "Problem saving this Sub Goal. Please try again later."
   }
 };
 
@@ -33,5 +38,7 @@ export const SUCCESS_MESSAGES = {
   SIGNUP_SUCCESS: "Account created successfully! Redirecting...",
   SIGNIN_SUCCESS: "Signing in! Redirecting...", 
   SAVED_MAIN_GOAL: "Goal has been saved!",
-  CREATED_MAIN_GOAL: "Goal has been created! Redirecting..."
+  CREATED_MAIN_GOAL: "Goal has been created! Redirecting...",
+  REMOVE_ALL_SUBGOALS:  "All Sub-Goals have successfully been removed.",
+  SAVED_SUBGOAL: "Sub-Goal has been saved!"
 }

@@ -8,21 +8,31 @@ class SubGoalsClient {
   async addSubGoal(subGoalData) {
     try {
       const mainGoalId = subGoalData.mainGoalId;
-      await axios.post(
+      const response = await axios.post(
         `${SERVER}/mainGoal/${mainGoalId}/subgoals`,
         subGoalData
       );
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+        
+      return { success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message}
     }
   }
 
   async getAllSubGoals() {
     const response = await MainGoalsClient.getAllMainGoals();
 
-    const allSubGoals = response?.data;
+    if (!response) {
+      return {success: false, error: "Problem getting all main goals"}
+    }
 
+    const allSubGoals = response.data;
     const subGoals = [];
+
     if (allSubGoals) {
       allSubGoals.forEach((goal) => {
         const subGoalsArray = goal.subGoals;
@@ -33,7 +43,7 @@ class SubGoalsClient {
         }
       });
     }
-    return subGoals;
+    return {success: true, data: subGoals};
   }
 
   async editSubGoal(subGoalData) {
@@ -75,15 +85,18 @@ class SubGoalsClient {
 
   async deleteAllSubGoalsInMainGoals(mainGoalId) {
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${SERVER}/mainGoal/${mainGoalId}/mainGoal_delete_all`
       );
 
-      return true;
+      if (!response) {
+        return { success: false, error: response.data.error};
+      }
+
+      return {success: true};
     } catch (err) {
-      console.log("Error: Problem deleting all sub goals from main goals page");
-      console.error(err);
-      return false;
+      console.error("Problem: Most likely to do with the endpoints or routes.")
+      return { succses: false, error: err.message};
     }
   }
 }
