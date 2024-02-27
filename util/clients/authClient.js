@@ -42,6 +42,7 @@ class AuthClient {
       }
       return { success: true};
     } catch (err) {
+      console.error("Problem connecting to database! Check endpoints. Ensure valid endpoint or Endpoint is up and running.")
       return { success: false, error: err.message };
     }
   };

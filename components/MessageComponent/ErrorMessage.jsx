@@ -1,15 +1,22 @@
 const ErrorMessage = ({ message }) => {
-    return (
-      <div className="absolute top-[10%] right-4 max-w-[20%] md:max-w-[30%] border border-2 items-center gap-4 flex pl-4 rounded-lg border-red-200">
-        <div className="flex items-center justify-center rounded-full bg-red-500 h-[50%] w-10">
-          <p className="text-white text-2xl">x</p>
-        </div>
-        <p className="p-2 mr-4 text-netural-400 min-w-0 overflow-hidden overflow-ellipsis">
-          {message}
-        </p>
-      </div>
-    );
-  };
-  
-  export default ErrorMessage;
-  
+  return (
+    <div role="alert" className="alert alert-error max-w-[20%] md:max-w-[30%] text-center text-white absolute mt-4 right-4">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span className="text-white">{message}</span>
+    </div>
+  );
+};
+
+export default ErrorMessage;

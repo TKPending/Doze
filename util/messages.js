@@ -1,6 +1,6 @@
 export const ERROR_MESSAGES = {
   DATABASE_ERROR: "There was an issue with the database. Please try again later",
-  DEVELOPER_DATABASE_ERROR: "Contact a developer!",
+  DEVELOPER_DATABASE_ERROR:  "An unexpected error occurred. Please contact support for assistance.",
   SIGNUP_FRONTEND: {
     STANDARD: "Unable to complete signup. Please ensure all information is entered correctly and try again.",
   },

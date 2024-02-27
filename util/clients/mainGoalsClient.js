@@ -42,8 +42,12 @@ class MainGoalsClient {
   }
 
   async getAllMainGoals() {
-    const response = await axios.get(`${SERVER}/mainGoal`);
-    return response.data;
+    try {
+      const response = await axios.get(`${SERVER}/mainGoal`);
+      return response.data;
+    } catch (err) {
+      console.log("Tried calling main goals when signed out.")
+    }
   }
 }
 

@@ -50,9 +50,11 @@ const Signup = () => {
         setSignupCheck(true);
         setSuccessStatus(true);
       } else {
+        console.log(signUpResult.error)
         handleSignUpError(signUpResult.error);
       }
     } catch (err) {
+      console.log("DEVELOPER 2")
       setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
       setSignupCheck(false);
     }
@@ -65,6 +67,8 @@ const Signup = () => {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
     } else if (error.includes("Username or email already exists")) {
       setErrorMessage(ERROR_MESSAGES.SIGNUP_BACKEND.USER_EXISTS);
+    } else if (error.includes("Network Error")) {
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
     } else {
       setErrorMessage(ERROR_MESSAGES.DATABASE_ERROR);
     }

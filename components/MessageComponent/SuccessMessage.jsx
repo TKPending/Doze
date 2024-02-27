@@ -1,12 +1,25 @@
 const SuccessMessage = ({ message }) => {
-    return (
-      <div className="absolute top-[10%] right-4 max-w-[20%] md:max-w-[30%] items-center gap-4 flex pl-4 rounded-lg bg-green-400">
-        <p className="p-2 text-white min-w-0 overflow-hidden overflow-ellipsis">
-          {message}
-        </p>
-      </div>
-    );
-  };
-  
-  export default SuccessMessage;
-  
+  return (
+    <div
+      role="alert"
+      className="alert alert-success max-w-[20%] md:max-w-[30%] absolute right-4 mt-4 text-white text-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="stroke-current shrink-0 h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span>{message}</span>
+    </div>
+  );
+};
+
+export default SuccessMessage;
