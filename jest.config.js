@@ -4,7 +4,8 @@ module.exports = {
         '^@/util/clients/mainGoalsClient': '<rootDir>/util/clients/mainGoalsClient',
         '^@emoji-mart/react': '<rootDir>/node_modules/@emoji-mart/react',
         '^@/components/SubGoalComponent/SubGoal': '<rootDir>components/SubGoalComponent/SubGoal',
-        '^@/components/SubGoalComponent/EditSubGoal': '<rootDir>/components/SubGoalComponent/EditSubGoal'
+        '^@/components/SubGoalComponent/EditSubGoal': '<rootDir>/components/SubGoalComponent/EditSubGoal',
+        '^@/util/handleErrors': '<rootDir>/util/handleErrors',
     },
 
     testEnvironment: 'jsdom',

@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import MainGoal from "../../components/MainGoalComponents/MainGoal";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
+import { handleMainGoalsPageError } from "@/util/handleErrors";
 
 jest.mock("next/navigation", () => ({
   useRouter() {
@@ -13,6 +14,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("@/util/clients/mainGoalsClient");
+jest.mock("@/util/handleErrors");
 
 describe("MainGoal", () => {
   it("renders MainGoal component without crashing", () => {

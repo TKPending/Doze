@@ -118,7 +118,7 @@ const MainGoal = ({
     e.preventDefault();
     try {
       const response = await MainGoalsClient.deleteOneMainGoalReq(
-        mainGoalData._i
+        mainGoalData._id
       );
 
       if (!response.success) {
@@ -189,7 +189,7 @@ const MainGoal = ({
   ]);
 
   useEffect(() => {
-    if (!mainGoalData._id) {
+    if (!mainGoalData.title) {
       handleMainGoalsPageError(setErrorMessage, mainGoalData.error);
       setTimeout(() => {
         router.push("/dashboard");
@@ -207,7 +207,7 @@ const MainGoal = ({
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
-      {Array.isArray(mainGoalData) || !mainGoalData._id ? (
+      {Array.isArray(mainGoalData) || !mainGoalData.title ? (
         <ErrorMessage message={errorMessage} />
       ) : (
         <>
