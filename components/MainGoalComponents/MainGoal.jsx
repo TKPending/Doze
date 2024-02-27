@@ -161,6 +161,7 @@ const MainGoal = ({
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
       <div className="md:w-1/2 h-full relative">
+      
         <form id="goalForm" onSubmit={submitHandler}>
           <input
             data-testid="title"
@@ -170,31 +171,35 @@ const MainGoal = ({
             value={mainGoalData.title}
             onChange={handleInputValue}
           />
-          {mainGoalData._id && (
-            <>
+          
+          <div className="flex items-center justify-center border border-[#7899D4] py-10 flex-col gap-4">
+            
+            {mainGoalData._id && (
+            <div className="md:absolute lg:absolute flex justify-center items-center md:left-2.5 lg:left-5 md:top-20 lg:top-24 mb-2.5">
+              <div className="flex items-center flex-col">
               {/* <ProgressBar /> */}
               <div
-                className="radial-progress text-primary circle-progress font-bold "
+                className="radial-progress text-indigo-400 circle-progress font-bold rounded-full"
                 style={{
                   "--value": `${mainGoalData.completed}`,
-                  "--size": "8rem",
+                  "--size": "5rem",
                   "--thickness": "1rem",
                 }}
                 role="progressbar"
               >
                 {mainGoalData.completed}%
               </div>
-            </>
+             </div>
+            </div>
           )}
-          <div className="flex border border-[#7899D4] p-10 flex-col gap-4">
+          
             <div className="">
-            
               <button onClick={toggleEmojiPicker} className="mb-5 mt-6">
 
                 <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
-                <div className="absolute">
+                <div className="absolute sm:left-5">
                   <Picker
                     data={data}
                     onEmojiSelect={handleEmoji}
@@ -343,6 +348,7 @@ const MainGoal = ({
                 name="description"
                 onChange={handleInputValue}
                 value={mainGoalData.description}
+                className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
               ></textarea>
            
 <span className="h-0.5 bg-indigo-600 opacity-25 mt-10 w-5/6"></span>
@@ -355,7 +361,7 @@ const MainGoal = ({
                   )}
                 </div>
 
-                <div className="p-2 grid grid-cols-3 gap-4 h-auto mb-8">
+                <div className="p-2 overflow-hidden grid lg:grid-cols-3 md:grid-cols-3 grid-rows-1 gap-4 h-auto mb-8">
                   {mainGoalData.subGoals.map((subGoal, index) => (
                     <SubGoalComponent
                       key={index}

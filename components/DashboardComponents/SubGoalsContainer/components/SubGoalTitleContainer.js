@@ -30,7 +30,7 @@ const SubGoalTitleContainer = ({
   };
 
   return (
-    <div className="flex justify-between w-full h-12 rounded-lg p-2 px-4">
+    <div className="flex justify-between w-full h-16 rounded-lg p-2 px-4">
       <div className="flex items-center gap-4">
         {/* Render the circle and stage title */}
         <div
@@ -45,7 +45,7 @@ const SubGoalTitleContainer = ({
             style={{ backgroundColor: backgroundColor }}
             className="rounded-full border h-6 w-6 bg-[${color}]"
           ></div>
-          <p style={{ color: stageText }} className="font-medium">
+          <p style={{ color: stageText }} className="md:text-base font-medium text-lg">
             {title}
           </p>
         </div>
