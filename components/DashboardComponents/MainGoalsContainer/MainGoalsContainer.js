@@ -4,14 +4,42 @@ import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
+import { ERROR_MESSAGES } from "@/util/messages";
+import MainGoalError from "./components/MainGoalError";
 
 const MainGoalsContainer = () => {
   // Replicate Database information
   const [mainGoals, setMainGoals] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successStatus, setSuccessStatus] = useState(false);
 
   const getAllMainGoals = async () => {
-    const mainGoalsData = await mainGoalsClient.getAllMainGoals();
-    setMainGoals(mainGoalsData);
+    try {
+      const mainGoalsData = await mainGoalsClient.getAllMainGoals();
+
+      if (!mainGoalsData.success) {
+        setSuccessStatus(false);
+        handleDashboardMainGoalsError(mainGoalsData.error);
+        setMainGoals([]);
+        return;
+      }
+
+      setSuccessStatus(true);
+      setMainGoals(mainGoalsData.data);
+    } catch (err) {
+      setMainGoals([]);
+      setSuccessStatus(false);
+    }
+  };
+
+  useEffect(() => {}, [successStatus, errorMessage])
+
+  const handleDashboardMainGoalsError = (err) => {
+    if (err.includes("Network Error")) {
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+    } else {
+      setErrorMessage(ERROR_MESSAGES.DASHBOARD.MAIN_GOALS);
+    }
   };
 
   const deleteOneMainGoalFromDashboard = async (id) => {
@@ -23,11 +51,11 @@ const MainGoalsContainer = () => {
   };
 
   useEffect(() => {
-    const user = localStorage.getItem('user')
+    const user = localStorage.getItem("user");
     if (user !== "") {
       getAllMainGoals();
     }
-  }, [mainGoals]);
+  }, []);
   return (
     <div
       className={`bg-white flex flex-col w-full ${
@@ -43,48 +71,54 @@ const MainGoalsContainer = () => {
           mainGoals.length > 5 ? "overflow-y-auto" : ""
         } p-4 w-full h-3/4`}
       >
-        {!mainGoals ? (
-          <div className="w-full">
-            <p className="text-black font-semibold">
-              It's recommended to have between 3-5 goals
-            </p>
-          </div>
+        {!successStatus ? (
+          <MainGoalError message={errorMessage} />
         ) : (
           <>
-            {mainGoals.map((goal, index) => (
-              <Goal
-                key={index}
-                goal={goal}
-                deleteOneMainGoalFromDashboard={() => {
-                  deleteOneMainGoalFromDashboard(goal._id);
-                }}
-              />
-            ))}
+            {!mainGoals ? (
+              <div className="w-full">
+                <p className="text-black font-semibold">
+                  It's recommended to have between 3-5 goals
+                </p>
+              </div>
+            ) : (
+              <>
+                {mainGoals.map((goal, index) => (
+                  <Goal
+                    key={index}
+                    goal={goal}
+                    deleteOneMainGoalFromDashboard={() => {
+                      deleteOneMainGoalFromDashboard(goal._id);
+                    }}
+                  />
+                ))}
+              </>
+            )}
+
+            {mainGoals.length >= 5 && (
+              <div className="h-14 flex items-center">
+                <p className="text-black">
+                  It's recommended to only have 3-5 goals
+                </p>
+              </div>
+            )}
+            {mainGoals.length === 0 && (
+              <div className="h-14 flex items-center">
+                <p className="text-black">
+                  It's recommended to have 3-5 goals. <br /> Press the button
+                  below to start creating goals
+                </p>
+              </div>
+            )}
+
+            <Link
+              href={"/maingoal"}
+              className={`mt-4 ml-8 flex gap-4 items-center justify-center w-32 h-8 border border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-black hover:border hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
+            >
+              Add Goal +
+            </Link>
           </>
         )}
-
-        {mainGoals.length >= 5 && (
-          <div className="h-14 flex items-center">
-            <p className="text-black">
-              It's recommended to only have 3-5 goals
-            </p>
-          </div>
-        )}
-        {mainGoals.length === 0 && (
-          <div className="h-14 flex items-center">
-            <p className="text-black">
-              It's recommended to have 3-5 goals. <br /> Press the button below
-              to start creating goals
-            </p>
-          </div>
-        )}
-
-        <Link
-          href={"/maingoal"}
-          className={`mt-4 ml-8 flex gap-4 items-center justify-center w-32 h-8 border border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-black hover:border hover:scale-105 transition duration-200 rounded-lg hover:cursor-pointer`}
-        >
-          Add Goal +
-        </Link>
       </div>
     </div>
   );

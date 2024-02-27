@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DEVELOPER_ERRORS } from "../messages";
 
 const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
@@ -44,9 +45,14 @@ class MainGoalsClient {
   async getAllMainGoals() {
     try {
       const response = await axios.get(`${SERVER}/mainGoal`);
-      return response.data;
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+      return {success: true, data: response.data};
     } catch (err) {
-      console.log("Tried calling main goals when signed out.")
+      console.error(DEVELOPER_ERRORS.ENDPOINT)
+      return { success: false, error: err.message}
     }
   }
 }

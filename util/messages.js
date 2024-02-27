@@ -10,8 +10,16 @@ export const ERROR_MESSAGES = {
   SIGNIN: {
     USER_NOT_FOUND: "Unable to find user. Check information and try again",
     INVALID_DETAILS: "Please ensure all information is enetered correctly and try again"
+  },
+  DASHBOARD: {
+    MAIN_GOALS: "Unable to find Main Goals. Try again later."
   }
 };
+
+// For console.log/error messages
+export const DEVELOPER_ERRORS = {
+  ENDPOINT: "Problem with the endpoint. Check the endpoint url or check that the server is up and running."
+}
 
 export const SUCCESS_MESSAGES = {
   SIGNUP_SUCCESS: "Account created successfully! Redirecting...",

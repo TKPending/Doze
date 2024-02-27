@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DEVELOPER_ERRORS } from "../messages";
 
 const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
@@ -29,7 +30,6 @@ class AuthClient {
       }
       return {success: true};
     } catch (err) {
-      console.log("DEVELOPER")
       return { success: false, error: err.message}
     }
   }
@@ -42,7 +42,7 @@ class AuthClient {
       }
       return { success: true};
     } catch (err) {
-      console.error("Problem connecting to database! Check endpoints. Ensure valid endpoint or Endpoint is up and running.")
+      console.error(DEVELOPER_ERRORS.ENDPOINT);
       return { success: false, error: err.message };
     }
   };
