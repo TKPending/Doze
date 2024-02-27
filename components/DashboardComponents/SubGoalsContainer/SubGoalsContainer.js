@@ -43,6 +43,7 @@ const SubGoalsContainer = () => {
   const fetchData = async () => {
     try {
       const goals = await SubGoalsClient.getAllSubGoals();
+      console.log(goals);
       goals.forEach((item) => {
         if (item.status === "To-do") {
           pushTaskIfNotExists(item, stages[0].tasks);

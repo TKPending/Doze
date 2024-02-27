@@ -20,9 +20,11 @@ class SubGoalsClient {
   async getAllSubGoals() {
     const response = await MainGoalsClient.getAllMainGoals();
 
+    const allSubGoals = response?.data;
+
     const subGoals = [];
-    if (response) {
-      response.forEach((goal) => {
+    if (allSubGoals) {
+      allSubGoals.forEach((goal) => {
         const subGoalsArray = goal.subGoals;
         if (subGoalsArray) {
           subGoalsArray.forEach((item) => {

@@ -28,17 +28,32 @@ class MainGoalsClient {
         `${SERVER}/mainGoal/${id}`,
         changedMainGoalData
       );
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+
+      return { success: true}
+
     } catch (error) {
-      console.log(error);
+      console.log(DEVELOPER_ERRORS.ROUTES);
+      return { success: false, error: error.message}
     }
   }
   //DELETE
   async deleteOneMainGoalReq(id) {
     try {
-      await axios.delete(`${SERVER}/mainGoal/${id}`);
-      alert("deleted");
+      const response = await axios.delete(`${SERVER}/mainGoal/${id}`);
+
+      if (!response) {
+        return {success: false, error: response.data.error}
+      }
+
+      return {success: true}
     } catch (error) {
-      console.log(error);
+      console.log(DEVELOPER_ERRORS.ROUTES);
+      return {success: false, error: error.message}
+
     }
   }
 

@@ -18,7 +18,8 @@ export const ERROR_MESSAGES = {
 
 // For console.log/error messages
 export const DEVELOPER_ERRORS = {
-  ENDPOINT: "Problem with the endpoint. Check the endpoint url or check that the server is up and running."
+  ENDPOINT: "DEVELOPER: Problem with the endpoint. Check the endpoint url or check that the server is up and running.",
+  ROUTES: "DEVELOPER: Problem with the routes. Check the routes files"
 }
 
 export const SUCCESS_MESSAGES = {

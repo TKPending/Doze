@@ -4,7 +4,7 @@ import Link from "next/link";
 import Goal from "./components/Goal";
 import { useState, useEffect } from "react";
 import mainGoalsClient from "@/util/clients/mainGoalsClient";
-import { ERROR_MESSAGES } from "@/util/messages";
+import { DEVELOPER_ERRORS, ERROR_MESSAGES } from "@/util/messages";
 import MainGoalError from "./components/MainGoalError";
 
 const MainGoalsContainer = () => {
@@ -32,11 +32,19 @@ const MainGoalsContainer = () => {
     }
   };
 
-  useEffect(() => {}, [successStatus, errorMessage])
+  useEffect(() => {
+    if (errorMessage && errorMessage != ERROR_MESSAGES.MAIN_GOALS) {
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000)
+    }
+  }, [successStatus, errorMessage]);
 
   const handleDashboardMainGoalsError = (err) => {
     if (err.includes("Network Error")) {
       setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+    } else if (err.includes("Request failed with status code 404")) {
+      setErrorMessage(DEVELOPER_ERRORS.ROUTES);
     } else {
       setErrorMessage(ERROR_MESSAGES.DASHBOARD.MAIN_GOALS);
     }
@@ -46,8 +54,16 @@ const MainGoalsContainer = () => {
     if (!confirm("Do you want to delete this goal?")) {
       return;
     }
-    mainGoalsClient.deleteOneMainGoalReq(id);
-    getAllMainGoals();
+    try {
+      const response = await mainGoalsClient.deleteOneMainGoalReq(id);
+
+      if (!response.success) {
+        handleDashboardMainGoalsError(response.error);
+        console.log(response)
+      }
+
+      getAllMainGoals();
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -71,7 +87,7 @@ const MainGoalsContainer = () => {
           mainGoals.length > 5 ? "overflow-y-auto" : ""
         } p-4 w-full h-3/4`}
       >
-        {!successStatus ? (
+        {errorMessage && errorMessage == ERROR_MESSAGES.MAIN_GOALS ? (
           <MainGoalError message={errorMessage} />
         ) : (
           <>
@@ -83,6 +99,13 @@ const MainGoalsContainer = () => {
               </div>
             ) : (
               <>
+                {errorMessage && errorMessage != ERROR_MESSAGES.MAIN_GOALS && (
+                  <div className="bg-red-800 my-2 py-2 rounded-lg flex justify-center items-center w-[60%]">
+                    <p className="text-white">
+                      {errorMessage}
+                    </p>
+                  </div>
+                )}
                 {mainGoals.map((goal, index) => (
                   <Goal
                     key={index}

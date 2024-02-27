@@ -114,10 +114,19 @@ const MainGoal = ({
   //DELETE - deleting main goal
   const onDeleteMainGoal = async (e) => {
     e.preventDefault();
-    const response = await MainGoalsClient.deleteOneMainGoalReq(
-      mainGoalData._id
-    );
-    router.push("/dashboard");
+    try {
+      const response = await MainGoalsClient.deleteOneMainGoalReq(
+        mainGoalData._id
+      );
+
+      if (!response.succes) {
+        console.log("DEVELOPER ERROR");
+        return;
+      }
+      router.push("/dashboard");
+    } catch (error) {
+
+    }
   };
 
   // Add logic to empty all Sub Goals
