@@ -55,6 +55,8 @@ const Signin = () => {
   const handleSignInError = (err) => {
     if (err.includes("User not found.")) {
       setErrorMessage(ERROR_MESSAGES.SIGNIN.USER_NOT_FOUND)
+    } else if (err.includes("Network Error")){ 
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
     } else {
       setErrorMessage(ERROR_MESSAGES.DATABASE_ERROR)
     }

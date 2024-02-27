@@ -29,6 +29,7 @@ class AuthClient {
       }
       return {success: true};
     } catch (err) {
+      console.log("DEVELOPER")
       return { success: false, error: err.message}
     }
   }
