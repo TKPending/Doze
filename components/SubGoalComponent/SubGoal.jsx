@@ -152,7 +152,7 @@ const SubGoal = ({
       setSuccessStatus(false);
       setErrorMessage(false);
       closeModal();
-    }, 2000);
+    }, 1200);
   };
 
   //setting Emoji
@@ -202,11 +202,7 @@ const SubGoal = ({
       ) : (
         <>
           <div className=" relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 rounded-lg mt-24 outline outline-indigo-600">
-            {errorMessage === ERROR_MESSAGES.SUB_GOALS.SAVED_FAILED && (
-              <div className="w-full">
-                <ErrorMessage message={errorMessage} />
-              </div>
-            )}
+            {errorMessage === ERROR_MESSAGES.SUB_GOALS.SAVED_FAILED && <ErrorMessage message={errorMessage} /> }
 
             {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SAVED_SUBGOAL} />}
             <div className="w-full flex justify-end pr-[3%]">

@@ -50,36 +50,52 @@ class SubGoalsClient {
     try {
       const mainGoalId = subGoalData.mainGoalId;
       const subGoalId = subGoalData.id;
-      await axios.put(
+      const response = await axios.put(
         `${SERVER}/mainGoal/${mainGoalId}/subGoals/${subGoalId}`,
         subGoalData
       );
-      return null;
+
+      if (!response) {
+        return { success: false, error: "Problem editing sub-goal"};
+      }
+
+      return { success: true}
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message};
     }
   }
 
   async deleteSubGoal(mainGoalId, id) {
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${SERVER}/mainGoal/${mainGoalId}/subGoals/${id}`
       );
-      return null;
+
+      if (!response) {
+        return { success: false, error: "Problem deleting sub-goal"}
+      }
+      return { success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message}
     }
   }
 
 
   async deleteAllSubGoalsInStages(stage) {
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${SERVER}/mainGoal/stages_delete_all/${stage}`
       );
+
+      if (!response) {
+        return { success: false, error: "Problem deleting all tasks from stages"}
+      }
+
+      return { success: true}
+        
     } catch (err) {
-      console.log("Error: Problem deleting all sub goals from stages");
-      console.error(err);
+      return { success: false, error: "Problem with deleting all Sub-Goals"}
+
     }
   }
 

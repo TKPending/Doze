@@ -76,6 +76,17 @@ export const handleSubGoalError = (setErrorMessage, err) => {
         setErrorMessage(ERROR_MESSAGES.SUB_GOALS.ALL_GOALS_FAILED);
     } else if (err.includes("Problem adding Sub Goal from Main Goal")) {
         setErrorMessage(ERROR_MESSAGES.SUB_GOALS.SAVED_FAILED);
+    } else if (err.includes("Problem editing sub-goal")) {
+        console.error("Problem: Most likely to do with the server or endpoints.")
+        setErrorMessage(ERROR_MESSAGES.SUB_GOALS.EDIT_FAILED);
+    } else if (err.includes("Request failed with status code 404")) {
+        console.error("Problem: Request unauthorised. Check server, endpoints or routes");
+        setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
+    } else if (err.includes("Problem deleting sub-goal")) {
+        console.error("Problem: Request unauthorised. Check server, endpoints or routes");
+        setErrorMessage(ERROR_MESSAGES.SUB_GOALS.DELETE_FAILED)
+    } else if (err.includes("Problem with deleting all Sub-Goals")) {
+        setErrorMessage(ERROR_MESSAGES.SUB_GOALS.DELETE_ALL)
     } else {
         setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
     }

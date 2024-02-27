@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import ProgressionContainer from "./components/ProgressionContainer";
 import SubGoalsClient from "../../../util/clients/subGoalsClient";
 import { handleSubGoalError } from "@/util/handleErrors";
 
 const SubGoalsContainer = () => {
   const [taskUpdated, setTaskUpdated] = useState(true);
-  // const [activeStageIndex, setActiveStageIndex] = useState("0")
   const [errorMessage, setErrorMessage] = useState(false);
   const [stages, setStages] = useState([
     {
@@ -38,20 +37,15 @@ const SubGoalsContainer = () => {
     }
   }
 
-  // const handleStageSwitch = (stageIndex) => {
-  //   setActiveStageIndex(stageIndex);
-  // }
-
   const fetchData = async () => {
     try {
       const goals = await SubGoalsClient.getAllSubGoals();
 
       if (!goals.success) {
-        console.log(goals.error);
-        handleSubGoalError(setErrorMessage, goals.error)
+        handleSubGoalError(setErrorMessage, goals.error);
         return;
       }
-      
+
       goals.data.forEach((item) => {
         if (item.status === "To-do") {
           pushTaskIfNotExists(item, stages[0].tasks);
@@ -72,44 +66,23 @@ const SubGoalsContainer = () => {
     fetchData();
   }, [taskUpdated, stages]);
 
-  useEffect(() => {
-
-  }, [errorMessage])
-
   return (
-    // <div className="bg-opacity-30 w-full h-auto rounded-b-lg p-10 bg-neutral-100 shadow-md">
-    //   <h1 className="text-3xl text-black font-semibold mb-2">Board</h1>
-    //   <div className="sm:hidden flex justify-center ">
-    //     {stages.map((stage, index) => {
-    //       <button 
-    //       key={index}
-    //       className="mr-2 px-4 py-2 bg-gray-200 rounded-lg"
-    //        onClick={() => handleStageSwitch(index)}>
-    //         {stage.text}
-    //         </button>
-    //     })}
-    //   </div>
-
-      <div className="flex sm:flex-row gap-4 w-full shadow bg-indigo-600 bg-opacity-20 max-h-screen h-full rounded-lg p-4">
-        {stages.map((section, index) => (
-          //  <div key={index} className={`sm:w-1/3 ${index === activeStageIndex ? 'sm:block' : 'sm:hidden'}`}>
-          <ProgressionContainer
-            key={index}
-            stages={stages}
-            stage={section}
-            setStages={setStages}
-            title={section.text}
-            color={section.color}
-            circleColor={section.circleColor}
-            tasks={section.tasks}
-            setTaskUpdated={setTaskUpdated}
-            error={errorMessage}
-          />
-          // </div>
-      
-        ))}
-      </div>
-    // </div>
+    <div className="flex sm:flex-row gap-4 w-full shadow bg-indigo-600 bg-opacity-20 max-h-screen h-full rounded-lg p-4">
+      {stages.map((section, index) => (
+        <ProgressionContainer
+          key={index}
+          stages={stages}
+          stage={section}
+          setStages={setStages}
+          title={section.text}
+          color={section.color}
+          circleColor={section.circleColor}
+          tasks={section.tasks}
+          setTaskUpdated={setTaskUpdated}
+          error={errorMessage}
+        />
+      ))}
+    </div>
   );
 };
 

@@ -23,7 +23,10 @@ export const ERROR_MESSAGES = {
   }, 
   SUB_GOALS: {
     ALL_GOALS_FAILED: "Problem with Sub Goals. Please try again later.",
-    SAVED_FAILED: "Problem saving this Sub Goal. Please try again later."
+    EDIT_FAILED: "Problem editing this Sub-Goal. Please try again later",
+    SAVED_FAILED: "Problem saving this Sub-Goal. Please try again later.",
+    DELETE_FAILED: "Problem deleting this Sub-Goal. Please try again later",
+    DELETE_ALL: "Problem trying to delete all Sub-Goals. Please try again later"
   }
 };
 
@@ -40,5 +43,7 @@ export const SUCCESS_MESSAGES = {
   SAVED_MAIN_GOAL: "Goal has been saved!",
   CREATED_MAIN_GOAL: "Goal has been created! Redirecting...",
   REMOVE_ALL_SUBGOALS:  "All Sub-Goals have successfully been removed.",
-  SAVED_SUBGOAL: "Sub-Goal has been saved!"
+  SAVED_SUBGOAL: "Sub-Goal has been saved!",
+  EDITED_SUBGOAL: "Sub-Goal has been edited!",
+  DELETED_SUBGOAL: "Sub-Goal has been deleted!"
 }
