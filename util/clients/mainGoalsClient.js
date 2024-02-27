@@ -7,9 +7,16 @@ class MainGoalsClient {
   //POST
   async createNewMainGoalReq(mainGoalData) {
     try {
-      await axios.post(`${SERVER}/mainGoal`, mainGoalData);
+      const response = await axios.post(`${SERVER}/mainGoa`, mainGoalData);
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+
+      return { success: true}
     } catch (error) {
       console.log(error);
+      return { succes: false, error: error.message};
     }
   }
   //GET

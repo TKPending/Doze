@@ -54,6 +54,9 @@ export const handleMainGoalsPageError = (setErrorMessage, err) => {
         setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.DELETE_FAILED)
     } else if (err.includes("Request failed with status code 404")) {
         setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.SAVED_FAILED);
+    } else if (err.includes("Problem creating a goal")) {
+        console.error("Problem: Most likely to do with server endpoints or routes")
+        setErrorMessage(ERROR_MESSAGES.MAIN_GOALS.CREATING_FAILED);
     } else (
         setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
     )

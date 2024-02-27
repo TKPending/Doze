@@ -17,7 +17,8 @@ export const ERROR_MESSAGES = {
   MAIN_GOALS: {
     GOAL_INVALID: "Problem re-fetching main goal. Redirecting to dashboard...",
     DELETE_FAILED: "Problem deleting Goal. Try again later.",
-    SAVED_FAILED: "Problem saving goal. Try again later."
+    SAVED_FAILED: "Problem saving goal. Try again later.",
+    CREATING_FAILED: "Problem creating a goal. Try again later. Redirecting to dashboard..."
   }
 };
 
@@ -31,5 +32,6 @@ export const DEVELOPER_ERRORS = {
 export const SUCCESS_MESSAGES = {
   SIGNUP_SUCCESS: "Account created successfully! Redirecting...",
   SIGNIN_SUCCESS: "Signing in! Redirecting...", 
-  SAVED_MAIN_GOAL: "Goal has been saved!"
+  SAVED_MAIN_GOAL: "Goal has been saved!",
+  CREATED_MAIN_GOAL: "Goal has been created! Redirecting..."
 }
