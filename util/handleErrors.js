@@ -76,7 +76,6 @@ export const handleSubGoalError = (setErrorMessage, err) => {
         setErrorMessage(ERROR_MESSAGES.SUB_GOALS.ALL_GOALS_FAILED);
     } else if (err.includes("Problem adding Sub Goal from Main Goal")) {
         setErrorMessage(ERROR_MESSAGES.SUB_GOALS.SAVED_FAILED);
-        console.log("HERE")
     } else {
         setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
     }

@@ -6,6 +6,7 @@ module.exports = {
         '^@/components/SubGoalComponent/SubGoal': '<rootDir>components/SubGoalComponent/SubGoal',
         '^@/components/SubGoalComponent/EditSubGoal': '<rootDir>/components/SubGoalComponent/EditSubGoal',
         '^@/util/handleErrors': '<rootDir>/util/handleErrors',
+        '^@/util/messages': '<rootDir>/util/messages',
     },
 
     testEnvironment: 'jsdom',
