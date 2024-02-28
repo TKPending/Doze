@@ -1,7 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/authClient";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/util/messages";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
+import { validEmailCheck, validPasswordCheck, validUsernameCheck } from "@/util/authFunctions";
+import { handleSignUpError } from "@/util/handleErrors";
 
 const Signup = () => {
   const router = useRouter();
@@ -10,13 +15,16 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [signupCheck, setSignupCheck] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("Failure to do something!");
+  const [successStatus, setSuccessStatus] = useState(false);
 
   const handleInputValue = (e) => {
     if (e.target.name === "username") {
-      setUserData({ ...userData, username: e.target.value });
+      setUserData({ ...userData, username: e.target.value.toLowerCase() });
     }
     if (e.target.name === "email") {
-      setUserData({ ...userData, email: e.target.value });
+      setUserData({ ...userData, email: e.target.value.toLowerCase() });
     }
     if (e.target.name === "password") {
       setUserData({ ...userData, password: e.target.value });
@@ -25,16 +33,58 @@ const Signup = () => {
 
   const onSignUpSubmit = async (e) => {
     e.preventDefault();
+
+    const usernameCheck = validUsernameCheck(userData.username);
+    const emailCheck = validEmailCheck(userData.email);
+    const passwordCheck = validPasswordCheck(userData.password);
+
+    if (!usernameCheck || !emailCheck || !passwordCheck) {
+      setSignupCheck(false);
+      setErrorMessage(ERROR_MESSAGES.SIGNUP_FRONTEND.STANDARD);
+      return;
+    }
+
     try {
-      await AuthClient.signUpReq(userData);
-      router.push("/signin");
+      const signUpResult = await AuthClient.signUpReq(userData);
+
+      if (signUpResult.success) {
+        setSignupCheck(true);
+        setSuccessStatus(true);
+      } else {
+        console.log(signUpResult.error)
+        handleSignUpError(setErrorMessage, signUpResult.error);
+        setSignupCheck(false);
+      }
     } catch (err) {
-      console.log(err);
+      console.log("DEVELOPER 2")
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR);
+      setSignupCheck(false);
     }
   };
 
+  useEffect(() => {
+    if (!signupCheck) {
+      setTimeout(() => {
+        setSignupCheck(true);
+        return;
+      }, 3500);
+    }
+
+    if (successStatus) {
+      setTimeout(() => {
+        router.push("/signin");
+        setSuccessStatus(false);
+      }, 1500);
+    }
+  }, [signupCheck, successStatus]);
+
   return (
     <div className="w-screen h-auto">
+      {!signupCheck && <ErrorMessage message={errorMessage} />}
+      {successStatus && (
+        <SuccessMessage message={SUCCESS_MESSAGES.SIGNUP_SUCCESS} />
+      )}
+
       <form onSubmit={onSignUpSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
@@ -135,18 +185,30 @@ const Signup = () => {
 
           <h2 className="m-2.5">or</h2>
 
-          <label for="username" className="">
+          <label for="username" className="text-center">
+            {!signupCheck && (
+              <p className="text-red-500">
+                Username must be more than 3 letters and should not include
+                spaces.
+              </p>
+            )}
             Username
           </label>
           <input
-            required
             type="text"
             placeholder=""
             name="username"
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${
+              !signupCheck ? "border-red-500" : "border-[#7899D4]"
+            } focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
-          <label for="email" className="">
+          <label for="email" className="text-center">
+            {!signupCheck && (
+              <p className="text-red-500">
+                Please ensure the email is in the correct format.
+              </p>
+            )}
             Email
           </label>
           <input
@@ -154,23 +216,32 @@ const Signup = () => {
             name="email"
             type="email"
             autoComplete="email"
-            required
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${
+              !signupCheck ? "border-red-500" : "border-[#7899D4]"
+            } focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
-          <label for="password" className="">
+          <label for="password" className="text-center">
+            {!signupCheck && (
+              <p className="text-red-500">
+                Password must include a capital letter, a number and no spaces
+              </p>
+            )}
             Password
           </label>
           <input
             type="password"
             placeholder=""
             name="password"
-            className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
+            className={`input input-bordered ${
+              !signupCheck ? "border-red-500" : "border-[#7899D4]"
+            } focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5`}
             onChange={handleInputValue}
           />
           <div>
             <button
               type="submit"
+              disabled={!signupCheck}
               className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24"
             >
               Sign Up

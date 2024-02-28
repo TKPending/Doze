@@ -1,28 +1,40 @@
 import axios from "axios";
 import MainGoalsClient from "./mainGoalsClient";
 
-const SERVER = "https://dozebackend.onrender.com";
+const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
 
 class SubGoalsClient {
   async addSubGoal(subGoalData) {
     try {
       const mainGoalId = subGoalData.mainGoalId;
-      await axios.post(
+      const response = await axios.post(
         `${SERVER}/mainGoal/${mainGoalId}/subgoals`,
         subGoalData
       );
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+        
+      return { success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message}
     }
   }
 
   async getAllSubGoals() {
     const response = await MainGoalsClient.getAllMainGoals();
 
+    if (!response) {
+      return {success: false, error: "Problem getting all main goals"}
+    }
+
+    const allSubGoals = response.data;
     const subGoals = [];
-    if (response) {
-      response.forEach((goal) => {
+
+    if (allSubGoals) {
+      allSubGoals.forEach((goal) => {
         const subGoalsArray = goal.subGoals;
         if (subGoalsArray) {
           subGoalsArray.forEach((item) => {
@@ -31,57 +43,76 @@ class SubGoalsClient {
         }
       });
     }
-    return subGoals;
+    return {success: true, data: subGoals};
   }
 
   async editSubGoal(subGoalData) {
     try {
       const mainGoalId = subGoalData.mainGoalId;
       const subGoalId = subGoalData.id;
-      await axios.put(
+      const response = await axios.put(
         `${SERVER}/mainGoal/${mainGoalId}/subGoals/${subGoalId}`,
         subGoalData
       );
-      return null;
+
+      if (!response) {
+        return { success: false, error: "Problem editing sub-goal"};
+      }
+
+      return { success: true}
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message};
     }
   }
 
   async deleteSubGoal(mainGoalId, id) {
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${SERVER}/mainGoal/${mainGoalId}/subGoals/${id}`
       );
-      return null;
+
+      if (!response) {
+        return { success: false, error: "Problem deleting sub-goal"}
+      }
+      return { success: true};
     } catch (err) {
-      console.log(err);
+      return { success: false, error: err.message}
     }
   }
 
 
   async deleteAllSubGoalsInStages(stage) {
     try {
-      await axios.delete(
-        `${SERVER}/mainGoal/stages_delete_all/${stage}`
+      const response = await axios.delete(
+        `${SERVER}/mainGoal/stages_delete_al/${stage}`
       );
+
+      if (!response) {
+        return { success: false, error: "Problem deleting all tasks from stages"}
+      }
+
+      return { success: true}
+        
     } catch (err) {
-      console.log("Error: Problem deleting all sub goals from stages");
-      console.error(err);
+      return { success: false, error: "Problem with deleting all Sub-Goals"}
+
     }
   }
 
   async deleteAllSubGoalsInMainGoals(mainGoalId) {
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${SERVER}/mainGoal/${mainGoalId}/mainGoal_delete_all`
       );
 
-      return true;
+      if (!response) {
+        return { success: false, error: response.data.error};
+      }
+
+      return {success: true};
     } catch (err) {
-      console.log("Error: Problem deleting all sub goals from main goals page");
-      console.error(err);
-      return false;
+      console.error("Problem: Most likely to do with the endpoints or routes.")
+      return { succses: false, error: err.message};
     }
   }
 }

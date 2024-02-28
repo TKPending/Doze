@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DEVELOPER_ERRORS } from "../messages";
 
 const SERVER = "http://localhost:3001" // "https://dozebackend.onrender.com";
 
@@ -6,18 +7,30 @@ class MainGoalsClient {
   //POST
   async createNewMainGoalReq(mainGoalData) {
     try {
-      await axios.post(`${SERVER}/mainGoal`, mainGoalData);
+      const response = await axios.post(`${SERVER}/mainGoal`, mainGoalData);
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+
+      return { success: true}
     } catch (error) {
       console.log(error);
+      return { succes: false, error: error.message};
     }
   }
   //GET
   async getOneMainGoalReq(id) {
     try {
       const response = await axios.get(`${SERVER}/mainGoal/${id}`);
-      return response.data;
+
+      if (!response) {
+        return {success: false, error: response.data.error};
+      }
+      return {success: true, data: response.data};
     } catch (error) {
-      console.log(error);
+      console.error(DEVELOPER_ERRORS.ROUTES);
+      return {success: false, error: error.message}
     }
   }
   //PUT
@@ -27,23 +40,47 @@ class MainGoalsClient {
         `${SERVER}/mainGoal/${id}`,
         changedMainGoalData
       );
+
+      if (!response) {
+        return { success: false, error: response.data.error};
+      }
+
+      return { success: true, data: response.data};
+
     } catch (error) {
-      console.log(error);
+      console.log(DEVELOPER_ERRORS.ROUTES);
+      return { success: false, error: error.message}
     }
   }
   //DELETE
   async deleteOneMainGoalReq(id) {
     try {
-      await axios.delete(`${SERVER}/mainGoal/${id}`);
-      alert("deleted");
+      const response = await axios.delete(`${SERVER}/mainGoal/${id}`);
+
+      if (!response) {
+        return {success: false, error: response.data.error}
+      }
+
+      return {success: true}
     } catch (error) {
-      console.log(error);
+      console.log(DEVELOPER_ERRORS.ROUTES);
+      return {success: false, error: error.message}
+
     }
   }
 
   async getAllMainGoals() {
-    const response = await axios.get(`${SERVER}/mainGoal`);
-    return response.data;
+    try {
+      const response = await axios.get(`${SERVER}/mainGoal`);
+
+      if (!response) {
+        return { success: false, error: response.data.error}
+      }
+      return {success: true, data: response.data};
+    } catch (err) {
+      console.error(DEVELOPER_ERRORS.ENDPOINT)
+      return { success: false, error: err.message}
+    }
   }
 }
 

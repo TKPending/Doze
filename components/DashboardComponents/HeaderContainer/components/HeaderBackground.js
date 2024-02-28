@@ -44,7 +44,7 @@ const HeaderBackground = ({
         e.type === "blur" &&
         handleEnterOrBlur(e, "background")
       }
-      className="text-black text-xl w-3/4 border-none bg-transparent focus:border-none outline-none"
+      className={`text-black text-xl w-3/4 border-none bg-transparent focus:border-none outline-none`}
       value={headerImage}
     />
   );

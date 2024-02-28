@@ -23,6 +23,9 @@ export function ContextUser({ children }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!localStorage.getItem("user")){
+        return;
+      }
       const newUser = await AuthClient.getUser();
       setUser(newUser);
     };
