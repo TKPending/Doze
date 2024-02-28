@@ -62,7 +62,7 @@ const Information = () => {
     {/* Developer Information */}
         <div>
             <h2 className="md:text-5xl lg:text-5xl text-3xl font-bold text-center">The <span className="text-indigo-600">Team</span> Behind <span className="text-indigo-600">Doze</span></h2>
-            <div className="flex md:flex-col justify-center items-center mx-5 lg:flex-row flex-col gap-4 my-16 w-screen">
+            <div className="flex md:flex-col justify-center items-center mx-5 px-4 lg:flex-row flex-col gap-4 my-16 w-screen">
             <div className="card w-5/6 bg-base-100 shadow-xl">
   <div className="card-body">
     <h2 className="card-title">Ilona Beshchuk</h2>
