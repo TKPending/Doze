@@ -67,22 +67,22 @@ const SubGoalsContainer = () => {
   }, [taskUpdated, stages]);
 
   return (
-    <div className="flex sm:flex-row gap-4 w-full shadow bg-indigo-600 bg-opacity-20 max-h-screen h-full rounded-lg p-4">
-      {stages.map((section, index) => (
-        <ProgressionContainer
-          key={index}
-          stages={stages}
-          stage={section}
-          setStages={setStages}
-          title={section.text}
-          color={section.color}
-          circleColor={section.circleColor}
-          tasks={section.tasks}
-          setTaskUpdated={setTaskUpdated}
-          error={errorMessage}
-        />
-      ))}
-    </div>
+      <div className="flex md:flex-row flex-col gap-4 w-full shadow bg-indigo-600 bg-opacity-20 h-full rounded-lg p-4">
+        {stages.map((section, index) => (
+          <ProgressionContainer
+            key={index}
+            stages={stages}
+            stage={section}
+            setStages={setStages}
+            title={section.text}
+            color={section.color}
+            circleColor={section.circleColor}
+            tasks={section.tasks}
+            setTaskUpdated={setTaskUpdated}
+            error={errorMessage}
+          />
+        ))}
+      </div>
   );
 };
 

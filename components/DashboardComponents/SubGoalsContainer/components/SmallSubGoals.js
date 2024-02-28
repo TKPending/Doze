@@ -12,7 +12,7 @@ const SmallSubGoals = ({ task, setTaskClicked, setIsEditModalVisible }) => {
     >
       <div className="flex flex-row">
       <span className="text-xl px-1">{task.icon}</span>
-      <h1 className="text-black text-lg font-medium px-2">{task.title}</h1>
+      <h1 className="text-black md:text-base text-lg font-medium px-2">{task.title}</h1>
       </div>
       <h2 className="text-sm py-1 px-1 ">{task.mainGoal}</h2>
     </div>

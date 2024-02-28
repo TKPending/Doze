@@ -35,7 +35,7 @@ const ProgressionContainer = ({
 
   return (
     <div
-      className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2 bg-opacity-50`}
+      className={`h-auto max-h-screen md:w-1/3 lg:w-1/3 w-full rounded-lg ${color} p-2 bg-opacity-50`}
     >
       {/* Renders the header of subsection, Todo, In Progress and Done */}
       <SubGoalTitleContainer

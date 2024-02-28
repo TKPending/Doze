@@ -31,6 +31,7 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
+  console.log(mainGoalData, "26");
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -226,7 +227,39 @@ const MainGoal = ({
             </div>
           )}
 
-          {emptyAllSubGoals && <SuccessMessage message={SUCCESS_MESSAGES.REMOVE_ALL_SUBGOALS} />}
+        {emptyAllSubGoals && <SuccessMessage message={SUCCESS_MESSAGES.REMOVE_ALL_SUBGOALS} />}
+      <div className="md:w-1/2 h-full relative">
+      
+        <form id="goalForm" onSubmit={submitHandler}>
+          <input
+            data-testid="title"
+            name="title"
+            type="text"
+            className="input text-3xl mb-5"
+            value={mainGoalData.title}
+            onChange={handleInputValue}
+          />
+          
+          <div className="flex items-center justify-center border border-[#7899D4] py-10 flex-col gap-4">
+            
+            {mainGoalData._id && (
+            <div className="md:absolute lg:absolute flex justify-center items-center md:left-2.5 lg:left-5 md:top-20 lg:top-24 mb-2.5">
+              <div className="flex items-center flex-col">
+              {/* <ProgressBar /> */}
+              <div
+                className="radial-progress text-indigo-400 circle-progress font-bold rounded-full"
+                style={{
+                  "--value": `${mainGoalData.completed}`,
+                  "--size": "5rem",
+                  "--thickness": "1rem",
+                }}
+                role="progressbar"
+              >
+                {mainGoalData.completed}%
+              </div>
+             </div>
+            </div>
+          )}
 
           <div className="md:w-1/2 h-full relative">
             <form id="goalForm" onSubmit={submitHandler}>
@@ -377,6 +410,7 @@ const MainGoal = ({
                   />
                 </div>
 
+
                 <div
                   className={`mt-2.5 mb-2.5 ${
                     mainGoalData?.tags?.length > 3
@@ -398,35 +432,37 @@ const MainGoal = ({
                         </a>
                       </div>
                     </span>
-                  ))}
+
+
+            
+            {/* Description input */}
+              <textarea
+                data-testid="description"
+                name="description"
+                onChange={handleInputValue}
+                value={mainGoalData.description}
+                className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
+              ></textarea>
+                  
+<span className="h-0.5 bg-indigo-600 opacity-25 mt-10 w-5/6"></span>
+            {/* Sub Goals */}
+            {mainGoalData._id && (
+              <div className="flex mt-8 flex-col gap-4 h-auto mb-20">
+                <div className="h-8 flex items-center justify-center mt-8 mb-5">
+                  {mainGoalData.subGoals.length !== 0 && (
+                    <ClearSubGoals onClick={() => emptySubGoals()} />
+                  )}
                 </div>
 
-                {/* Description input */}
-                <textarea
-                  data-testid="description"
-                  name="description"
-                  onChange={handleInputValue}
-                  value={mainGoalData.description}
-                ></textarea>
-
-                <span className="h-0.5 bg-indigo-600 opacity-25 mt-10 w-5/6"></span>
-                {/* Sub Goals */}
-                {mainGoalData._id && (
-                  <div className="flex mt-8 flex-col gap-4 h-auto mb-20">
-                    <div className="h-8 flex items-center justify-center mt-8 mb-5">
-                      {mainGoalData.subGoals.length !== 0 && (
-                        <ClearSubGoals onClick={() => emptySubGoals()} />
-                      )}
-                    </div>
-
-                    <div className="p-2 grid grid-cols-3 gap-4 h-auto mb-8">
-                      {mainGoalData.subGoals.map((subGoal, index) => (
-                        <SubGoalComponent
-                          key={index}
-                          subGoal={subGoal}
-                          onClick={handleOnClick}
-                        />
-                      ))}
+                <div className="p-2 overflow-hidden grid lg:grid-cols-3 md:grid-cols-3 grid-rows-1 gap-4 h-auto mb-8">
+                  {mainGoalData.subGoals.map((subGoal, index) => (
+                    <SubGoalComponent
+                      key={index}
+                      subGoal={subGoal}
+                      onClick={handleOnClick}
+                    />
+                  ))}
+                </div>
 
                       {mainGoalData.subGoals.length === 0 && (
                         <div>

@@ -158,7 +158,7 @@ const EditSubGoal = ({
         <div className="w-full flex justify-end pr-[3%]">
           <p
             onClick={closeModal}
-            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
+            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl hover:cursor-pointer"
           >
             x
           </p>
@@ -236,7 +236,7 @@ const EditSubGoal = ({
           ></textarea>
           <a
             onClick={() => deleteSubGoal(subGoalData)}
-            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-indigo-600 p-2 hover:bg-indigo-600 hover:text-white text-indigo-600"
+            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-red-600 p-2 hover:bg-red-600 hover:text-white text-red-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
