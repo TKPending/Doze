@@ -27,6 +27,12 @@ export const ERROR_MESSAGES = {
     SAVED_FAILED: "Problem saving this Sub-Goal. Please try again later.",
     DELETE_FAILED: "Problem deleting this Sub-Goal. Please try again later",
     DELETE_ALL: "Problem trying to delete all Sub-Goals. Please try again later"
+  }, 
+  HEADER: {
+    FETCH_HEADER: "Problem fetching header data",
+    UPDATE_TITLE: "Problem updating title. Please try again later", 
+    UPDATE_QUOTE: "Problem with updating quote. Please try again later", 
+    UPDATE_BACKGROUND: "Problem updating the background image. please try again later"
   }
 };
 

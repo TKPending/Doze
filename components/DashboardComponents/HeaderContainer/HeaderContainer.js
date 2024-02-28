@@ -4,6 +4,10 @@ import { useState, useEffect, useRef, useContext } from "react";
 import HeaderBackground from "./components/HeaderBackground";
 import { Context } from "@/components/ContextUser";
 import DashboardClient from "@/util/clients/dashboardClient";
+import { handleDashboardHeaderError } from "@/util/handleErrors";
+import ErrorMessage from "@/components/MessageComponent/ErrorMessage";
+
+const failMessage = "Failed to update!"
 
 
 const HeaderContainer = () => {
@@ -16,6 +20,10 @@ const HeaderContainer = () => {
   const [isHeader, setIsHeader] = useState(false); // Displays text to edit header
   const [headerImage, setHeaderImage] = useState(""); // Changing of header value
   const [validHeader, setValidHeader] = useState(false); // Valid image
+
+  const [sectionError, setSectionError] = useState(undefined);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successStatus, setSuccessStatus] = useState(false);
 
   const headerRef = useRef(null);
 
@@ -39,16 +47,34 @@ const HeaderContainer = () => {
     if (section == "title") {
       const titleResponse = await DashboardClient.changeDashboardTitle(inputValue);
 
-      handleHeader(setTitle, titleResponse);
+      if (!titleResponse.success) {
+        handleDashboardHeaderError(setErrorMessage, titleResponse.error);
+        setSectionError(titleResponse.title);
+        return;
+      }
+
+      handleHeader(setTitle, titleResponse.data);
     } else if (section == "quote") {
       const quoteResponse = await DashboardClient.changeDashboardQuote(inputValue);
 
-      handleHeader(setQuote, quoteResponse)
+      if (!quoteResponse.success) {
+        handleDashboardHeaderError(setErrorMessage, quoteResponse.error);
+        setSectionError(quoteResponse.quote);
+        return;
+      }
+
+      handleHeader(setQuote, quoteResponse.data)
     } else {
       const backgroundResponse = await DashboardClient.changeDashboardBackground(validHeader, inputValue);
 
-      handleHeader(setImageLink, backgroundResponse);
-      setHeaderImage(backgroundResponse);
+      if (!backgroundResponse.success) {
+        handleDashboardHeaderError(setErrorMessage, backgroundResponse.error);
+        setSectionError(backgroundResponse.background);
+        return;
+      }
+
+      handleHeader(setImageLink, backgroundResponse.data);
+      setHeaderImage(backgroundResponse.data);
     }
 
     // Close header input
@@ -79,12 +105,15 @@ const HeaderContainer = () => {
         }
         const response = await DashboardClient.getDashboardHeaderData();
 
-        if (!response) {
-          console.log("Invalid Data Received From Call To Backend");
+        if (!response.success) {
+          handleDashboardHeaderError(setErrorMessage, response.error);
+          setSectionError(response.title)
           return;
         }
 
-        const { dashboard_background, dashboard_title, dashboard_quote } = response;
+        setSuccessStatus(true);
+
+        const { dashboard_background, dashboard_title, dashboard_quote } = response.data;
 
         setTitle(dashboard_title);
         setQuote(dashboard_quote);
@@ -104,6 +133,20 @@ const HeaderContainer = () => {
 
   }, [user, imageLink]);
 
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(false);
+        setSectionError(false)
+      }, 2500)
+    }
+
+    if (errorMessage) {
+      setTimeout(() => {
+
+      }, 2500)
+    }
+  }, [errorMessage, successStatus, sectionError])
   return (
     <div
       ref={headerRef}
@@ -115,6 +158,8 @@ const HeaderContainer = () => {
         backgroundPosition: "center",
       }}
     >
+      {errorMessage && <ErrorMessage message={errorMessage} />}
+
       <form className="flex flex-col w-auto pl-[5%] mb-2">
         {isHeader && (
           <HeaderBackground
@@ -123,13 +168,15 @@ const HeaderContainer = () => {
             handleValueChange={handleValueChange}
             handleEnterOrBlur={handleEnterOrBlur}
             headerImage={headerImage}
+            sectionError={sectionError}
+            errorMessage={errorMessage}
           />
         )}
 
         <input
           type="text"
-          className={`underline h-16  ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"} px-2 rounded-md text-black font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
-          value={title}
+          className={`underline h-16  ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"} px-2 rounded-md ${sectionError == "title" ? "text-red-500" : "text-black"} ${sectionError == "title" && "w-auto"} font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          value={errorMessage && sectionError == "title" ? errorMessage : title}
           onChange={(e) => handleValueChange(e, setTitle)}
           onKeyDown={(e) =>
             e.key === "Enter" && handleEnterOrBlur(e, "title")
@@ -140,8 +187,8 @@ const HeaderContainer = () => {
         />
         <input
           type="text"
-          className={`ml-[2%] italic h-8 rounded-md px-2 font-semibold text-black text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold mt-1 ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"}`}
-          value={quote}
+          className={`ml-[2%] italic h-8 rounded-md px-2 font-semibold ${sectionError == "quote" ? "text-red-500" : "text-black"} ${sectionError == "quote" && "w-auto"} text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold mt-1 ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"}`}
+          value={errorMessage && sectionError == "quote" ? failMessage : quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>
             e.key === "Enter" && handleEnterOrBlur(e, "quote")

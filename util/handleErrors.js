@@ -38,6 +38,21 @@ export const handleDashboardMainGoalsError = (setErrorMessage, err) => {
   }
 };
 
+export const handleDashboardHeaderError = (setErrorMessage, err) => {
+  if (err.includes("Problem getting dashboard data")) {
+    setErrorMessage("")
+  } else if (err.includes("Request failed with status code 404")) {
+    setErrorMessage(ERROR_MESSAGES.HEADER.FETCH_HEADER);
+  } else if (err.includes("Problem with API Call (Title)")) {
+    console.error("Problem: Most likely to do with the DashboardClient. Check patch request.")
+    setErrorMessage(ERROR_MESSAGES.HEADER.UPDATE_TITLE)
+  } else if (err.includes("Problem with API Call (Quote)")) {
+    setErrorMessage(ERROR_MESSAGES.HEADER.UPDATE_QUOTE)
+  } else if (err.includes("Problem with API Call (Background Image")) {
+    setErrorMessage(ERROR_MESSAGES.HEADER.UPDATE_BACKGROUND)
+  }
+}
+
 // MAIN GOALS PAGE
 export const handleMainGoalsPageError = (setErrorMessage, err) => {
   if (err.includes("Request failed with status code 404")) {
