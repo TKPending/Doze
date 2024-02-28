@@ -24,8 +24,7 @@ class DashboardClient {
 
   async patchRequest(url, userInputValue, validHeader) {
     try {
-      // const response = await axios.patch(`${url}`, {userInputValue, validHeader});
-      const response = false;
+      const response = await axios.patch(`${url}`, {userInputValue, validHeader});
 
       return response ? true : false;
     } catch (err) {
