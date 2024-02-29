@@ -13,54 +13,65 @@ class DashboardClient {
       const response = await axios.get(`${SERVER}/headerData`);
 
       if (!response) {
-        console.log(`Response from DashboardHeaderData, is invalid!`);
-        return null;
+        return { success: false, error: "Problem getting dashboard data", title}
       }
 
-      return response.data;
+      return { success: true, data: response.data}
     } catch (err) {
-      console.error("No Response from DashboardHeaderData!");
-      console.error(err);
-      return null;
+      return { success: false, error: err.message};
     }
   }
 
   async patchRequest(url, userInputValue, validHeader) {
     try {
-      await axios.patch(`${url}`, {userInputValue, validHeader});
+      const response = await axios.patch(`${url}`, {userInputValue, validHeader});
+
+      return response ? true : false;
     } catch (err) {
-        console.error("Error Making API Request! - Check DashboardClient!");
+        return false;
     }
   }
 
   async changeDashboardTitle(userInputValue) {
-    await this.patchRequest(`${SERVER}/headerData/updateTitle`, userInputValue);
+    const response = await this.patchRequest(`${SERVER}/headerData/updateTitle`, userInputValue);
 
-    if (userInputValue == "") {
-      return TITLE_DEFAULT;
+    if (!response) {
+      return { success: false, error: "Problem with API Call (Title)", title: "title"}
     }
 
-    return userInputValue;
+    if (userInputValue == "") {
+      return {success: true, data: TITLE_DEFAULT};
+    }
+
+    return {success: true, data: userInputValue};
   }
 
   async changeDashboardQuote(userInputValue) {
-    await this.patchRequest(`${SERVER}/headerData/updateQuote`, userInputValue);
+    const response = await this.patchRequest(`${SERVER}/headerData/updateQuote`, userInputValue);
 
-    if (userInputValue == "") {
-      return QUOTE_DEFAULT;
+    if (!response) {
+      return { success: false, error: "Problem with API Call (Quote)", quote: "quote"}
     }
 
-    return userInputValue;
+    if (userInputValue == "") {
+      return { success: true, data: QUOTE_DEFAULT};
+    }
+
+    return { success: true, data: userInputValue};
   }
 
   async changeDashboardBackground(validHeader, userInputValue) {
-    await this.patchRequest(`${SERVER}/headerData/updateBackground`, userInputValue, validHeader);
+    const response = await this.patchRequest(`${SERVER}/headerData/updateBackground`, userInputValue, validHeader);
 
-    if (!validHeader || userInputValue == "") {
-        return HEADER_DEFAULT;
+    if (!response) {
+      return { success: true, error: "Problem with API Call (Background Image)", background: "background"}
     }
 
-    return userInputValue;
+    if (!validHeader || userInputValue == "") {
+        return { success: true, data: HEADER_DEFAULT};
+    }
+
+    return { success: true, data: userInputValue};
   }
 }
 

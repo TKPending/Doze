@@ -4,6 +4,7 @@ import "@testing-library/jest-dom";
 import SubGoal from "../../components/SubGoalComponent/SubGoal";
 
 jest.mock("axios");
+jest.mock("@/util/handleErrors");
 
 describe(SubGoal, () => {
   it("renders SubGoal component without crashing", () => {

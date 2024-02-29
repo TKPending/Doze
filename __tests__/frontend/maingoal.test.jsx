@@ -13,6 +13,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("@/util/clients/mainGoalsClient");
+jest.mock("@/util/handleErrors");
 
 describe("MainGoal", () => {
   it("renders MainGoal component without crashing", () => {

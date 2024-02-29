@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import ProgressionContainer from "./components/ProgressionContainer";
 import SubGoalsClient from "../../../util/clients/subGoalsClient";
+import { handleSubGoalError } from "@/util/handleErrors";
 
 const SubGoalsContainer = () => {
   const [taskUpdated, setTaskUpdated] = useState(true);
-  const [activeStageIndex, setActiveStageIndex] = useState("0")
+  const [errorMessage, setErrorMessage] = useState(false);
   const [stages, setStages] = useState([
     {
       text: "To-do",
@@ -36,14 +37,16 @@ const SubGoalsContainer = () => {
     }
   }
 
-  const handleStageSwitch = (stageIndex) => {
-    setActiveStageIndex(stageIndex);
-  }
-
   const fetchData = async () => {
     try {
       const goals = await SubGoalsClient.getAllSubGoals();
-      goals.forEach((item) => {
+
+      if (!goals.success) {
+        handleSubGoalError(setErrorMessage, goals.error);
+        return;
+      }
+
+      goals.data.forEach((item) => {
         if (item.status === "To-do") {
           pushTaskIfNotExists(item, stages[0].tasks);
         } else if (item.status === "In progress") {
@@ -64,8 +67,6 @@ const SubGoalsContainer = () => {
   }, [taskUpdated, stages]);
 
   return (
-  
-
       <div className="flex md:flex-row flex-col gap-4 w-full shadow bg-indigo-600 bg-opacity-20 h-full rounded-lg p-4">
         {stages.map((section, index) => (
           <ProgressionContainer
@@ -78,12 +79,10 @@ const SubGoalsContainer = () => {
             circleColor={section.circleColor}
             tasks={section.tasks}
             setTaskUpdated={setTaskUpdated}
+            error={errorMessage}
           />
-  
-      
         ))}
       </div>
-  
   );
 };
 
