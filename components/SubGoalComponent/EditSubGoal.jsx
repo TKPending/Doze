@@ -5,6 +5,10 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
 import TagButtonColours from "./Components/TagColoursButtons";
+import { handleSubGoalError } from "@/util/handleErrors";
+import { SUCCESS_MESSAGES } from "@/util/messages";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
 
 const EditSubGoal = ({
   setIsEditModalVisible,
@@ -13,6 +17,8 @@ const EditSubGoal = ({
   handleRemoveOldTask
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successStatus, setSuccessStatus] = useState(false);
   const [subGoalData, setSubGoalData] = useState({
     title: taskClicked.title,
     dateCreated: taskClicked.dateCreated,
@@ -57,12 +63,33 @@ const EditSubGoal = ({
       return;
     }
 
-    await SubGoalsClient.editSubGoal(subGoalData);
+    const response = await SubGoalsClient.editSubGoal(subGoalData);
+
+    if (!response.success) {
+      handleSubGoalError(setErrorMessage, response.error);
+      return;
+    }
+
+    setSuccessStatus(true);
     setTaskUpdated(true);
     handleRemoveOldTask(taskClicked)
-
-    closeModal();
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(false);
+        closeModal();
+      }, 2000)
+    }
+
+    if (successStatus) {
+      setTimeout(() => {
+        setSuccessStatus(false);
+        closeModal();
+      }, 1000)
+    }
+  }, [errorMessage, successStatus])
 
   const deleteSubGoal = async (subGoalData) => {
     const mainGoalId = subGoalData.mainGoalId;
@@ -70,11 +97,16 @@ const EditSubGoal = ({
     if (!confirm("Do you want to delete this sub goal?")) {
       return;
     }
-    await SubGoalsClient.deleteSubGoal(mainGoalId, id);
-    console.log("Deleted Task");
+    const response = await SubGoalsClient.deleteSubGoal(mainGoalId, id);
+
+    if (!response.success) {
+      handleSubGoalError(setErrorMessage, response.error);
+      return;
+    }
+
+    setSuccessStatus("DELETE");
+    handleRemoveOldTask(taskClicked);
     setTaskUpdated(true);
-    console.log("State changed to true");
-    closeModal();
   };
 
   //setting Emoji
@@ -99,7 +131,6 @@ const EditSubGoal = ({
 
   useEffect(() => {
     if (taskClicked.task !== undefined) {
-      console.log(taskClicked.task);
       setSubGoalData({
         title: taskClicked.task.title,
         dateCreated: taskClicked.task.dateCreated || "",
@@ -120,10 +151,14 @@ const EditSubGoal = ({
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div className="relative bg-gray-100 md:h-3/4 md:w-1/2 w-4/5 h-4/5 p-6 rounded-lg mt-24 outline outline-indigo-600">
+        {errorMessage && <ErrorMessage message={errorMessage} />}
+        {successStatus && successStatus != "DELETE" && <SuccessMessage message={SUCCESS_MESSAGES.EDITED_SUBGOAL} />}
+        {successStatus == "DELETE" && <SuccessMessage message={SUCCESS_MESSAGES.DELETED_SUBGOAL} />}
+
         <div className="w-full flex justify-end pr-[3%]">
           <p
             onClick={closeModal}
-            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl"
+            className="absolute right-4 top-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-full w-12 h-12 flex items-center justify-center text-2xl hover:cursor-pointer"
           >
             x
           </p>
@@ -201,7 +236,7 @@ const EditSubGoal = ({
           ></textarea>
           <a
             onClick={() => deleteSubGoal(subGoalData)}
-            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-indigo-600 p-2 hover:bg-indigo-600 hover:text-white text-indigo-600"
+            className="hover:cursor-pointer absolute bottom-4 left-4 border rounded-md border-red-600 p-2 hover:bg-red-600 hover:text-white text-red-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

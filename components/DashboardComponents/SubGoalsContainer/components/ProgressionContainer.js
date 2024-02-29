@@ -16,6 +16,7 @@ const ProgressionContainer = ({
   stages,
   setStages,
   setTaskUpdated,
+  error,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -34,7 +35,7 @@ const ProgressionContainer = ({
 
   return (
     <div
-      className={`h-auto max-h-screen w-1/3 rounded-lg ${color} p-2 bg-opacity-50`}
+      className={`h-auto max-h-screen md:w-1/3 lg:w-1/3 w-full rounded-lg ${color} p-2 bg-opacity-50`}
     >
       {/* Renders the header of subsection, Todo, In Progress and Done */}
       <SubGoalTitleContainer
@@ -83,8 +84,15 @@ const ProgressionContainer = ({
           />
         )}
 
+        {/* If error getting all tasks */}
+        {error && (
+          <div className="flex text-center items-center justify-center text-white border bg-red-500 rounded-lg px-4">
+            <p className="m-4">{error}</p>
+          </div>
+        )}
+
         {/* If no task, display no task */}
-        {tasks.length === 0 && (
+        {tasks.length === 0 && !error && (
           <div className="flex items-center justify-center text-black">
             <p className="text-xl">No Task {stage.text}</p>
           </div>
@@ -92,12 +100,12 @@ const ProgressionContainer = ({
       </div>
 
       {/* Allow user to add task */}
-      <AddSubGoal
+      {!error && <AddSubGoal
         stage={stage}
         stages={stages}
         setStages={setStages}
         setIsModalVisible={setIsModalVisible}
-      />
+      />}
     </div>
   );
 };

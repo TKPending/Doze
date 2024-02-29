@@ -1,17 +1,26 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Context } from "../ContextUser";
 import { useRouter } from "next/navigation";
 import AuthClient from "@/util/clients/authClient";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
+import { ERROR_MESSAGES } from "@/util/messages";
+import { SUCCESS_MESSAGES } from "@/util/messages";
+import { validEmailCheck } from "@/util/authFunctions";
+import { handleSignInError } from "@/util/handleErrors";
 
 const Signin = () => {
   const router = useRouter();
   const [userData, setUserData] = useState({ email: "", password: "" });
   const { onUserSignedIn } = useContext(Context);
+  const [signinCheck, setSigninCheck] = useState(true);
+  const [successStatus, setSuccessStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong.");
 
   const handleInputValue = (e) => {
     if (e.target.name === "email") {
-      setUserData({ ...userData, email: e.target.value });
+      setUserData({ ...userData, email: e.target.value.toLowerCase() });
     }
     if (e.target.name === "password") {
       setUserData({ ...userData, password: e.target.value });
@@ -20,18 +29,53 @@ const Signin = () => {
 
   const onSignInSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await AuthClient.signInReq(userData);
-      onUserSignedIn();
 
-      router.push("/");
+    const emailCheck = validEmailCheck(userData.email);
+
+    if (!emailCheck || userData.password === "") {
+      setSigninCheck(false);
+      setErrorMessage(ERROR_MESSAGES.SIGNIN.INVALID_DETAILS);
+      return;
+    }
+
+    try {
+      const signInResult = await AuthClient.signInReq(userData);
+
+      if (signInResult.success) {
+        setSuccessStatus(true);
+        setSigninCheck(true);
+      } else {
+        handleSignInError(setErrorMessage, signInResult.error);
+        setSigninCheck(false);
+      }
     } catch (err) {
-      console.log("Problem authenticating user");
-      console.error(err);
+      setErrorMessage(ERROR_MESSAGES.DEVELOPER_DATABASE_ERROR)
+      setSigninCheck(false);
     }
   };
+
+  useEffect(() => {
+    if (!signinCheck) {
+      setTimeout(() => {
+        setSigninCheck(true);
+        return;
+      }, 3500);
+    }
+
+    if (successStatus) {
+      setTimeout(() => {
+        onUserSignedIn();
+        router.push("/");
+      }, 1500);
+    }
+  }, [signinCheck, successStatus]);
+
+
   return (
-    <div className="w-screen h-auto ">
+    <div className="w-screen h-auto">
+      {!signinCheck && <ErrorMessage message={errorMessage} />}
+      {successStatus && <SuccessMessage message={SUCCESS_MESSAGES.SIGNIN_SUCCESS} />}
+
       <form onSubmit={onSignInSubmit}>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold m-5 mt-24">Welcome to Doze</h2>
@@ -120,7 +164,7 @@ const Signin = () => {
               width="1.5em"
               height="1.5em"
               viewBox="0 0 1024 1024"
-              className="dark:text-white text-black"
+              className=" text-black"
             >
               <path
                 fill="currentColor"
@@ -138,9 +182,7 @@ const Signin = () => {
           <input
             id="email"
             name="email"
-            type="email"
             autoComplete="email"
-            required
             className="input input-bordered border-[#7899D4] focus:border-[#7899D4] focus:outline-[#7899D4] w-full max-w-xs m-2.5"
             onChange={handleInputValue}
           />
@@ -155,7 +197,6 @@ const Signin = () => {
             onChange={handleInputValue}
           />
           <div>
-            {/* <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">Continue</button> */}
             <button className="btn btn-outline border-[#7899D4] hover:border-[#7899D4] bg-[#7899D4] hover:bg-white hover:text-[#7899D4] text-white m-5 w-32 mb-24">
               Sign In
             </button>

@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-10">
+    <header className="sticky top-0 z-20">
       <nav className="flex items-center px-6 md:px-16 py-6 justify-between bg-center bg-white border-b border-gray-200">
         <Link
           href="/"
@@ -80,7 +80,7 @@ const Header = () => {
                     Profile
                   </Link>
                   <Link
-                    href="/aboutus"
+                    href="/about"
                     className="hover:bg-slate-100 rounded-full p-2 w-full"
                     onClick={() => setToggleMobileMenu(false)}
                   >
@@ -149,7 +149,7 @@ const Header = () => {
                   Profile
                 </Link>
                 <Link
-                  href="/aboutus"
+                  href="/about"
                   className="hover:bg-slate-100 rounded-full p-2 w-full"
                   onClick={() => setToggleMobileMenu(false)}
                 >

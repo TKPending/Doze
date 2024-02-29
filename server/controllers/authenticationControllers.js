@@ -15,7 +15,12 @@ exports.signUp = async (req, res, next) => {
     }
 
     if (req.body.username == "") {
-      return res.status(400).json({ error: "Invalid username" });
+      return res.json({ error: 'Invalid username' });
+    }
+
+    const existingUser = await User.findOne({ $or: [{ username: req.body.username }, { email }] });
+    if (existingUser) {
+      return res.json({ error: 'Username or email already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -36,7 +41,7 @@ exports.signIn = async (req, res, next) => {
     const userEmail = req.body.email;
     const user = await User.findOne({ email: userEmail });
     if (!user) {
-      return next(createError(404, "The user not found"));
+      return res.json({error: "User not found."});
     }
     const result = await bcrypt.compare(req.body.password, user.password);
 
