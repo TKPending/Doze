@@ -1,6 +1,7 @@
 "use client";
 
 import ContactClient from "@/util/clients/contactClient";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const ContactPage = () => {
@@ -32,6 +33,7 @@ const ContactPage = () => {
     if (messageSent) {
       setTimeout(() => {
         setMessageSent(false);
+        router.push("/");
       }, 2000);
     }
   }, [messageSent]);
