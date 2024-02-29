@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 const ContactPage = () => {
   const [messageSent, setMessageSent] = useState(false);
   const [contactForm, setContactForm] = useState({});
+  const router = useRouter();
 
   const handleValueChange = (e) => {
     const valueName = e.target.name;
