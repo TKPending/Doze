@@ -199,7 +199,7 @@ const MainGoal = ({
   ]);
 
   useEffect(() => {
-    if (!mainGoalData.title) {
+    if (!mainGoalData.title && !mainGoalData._id) {
       handleMainGoalsPageError(setErrorMessage, mainGoalData.error);
       setTimeout(() => {
         router.push("/dashboard");
@@ -217,18 +217,18 @@ const MainGoal = ({
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
-      {Array.isArray(mainGoalData) || !mainGoalData.title ? (
+      {Array.isArray(mainGoalData) || !mainGoalData.startDate && !mainGoalData._id ? (
         <ErrorMessage message={errorMessage} />
       ) : (
         <>
           {errorMessage && (
-            <div className="h-screen w-screen absolute">
+            <div className="h-screen w-screen ">
               <ErrorMessage message={errorMessage} />
             </div>
           )}
 
           {emptyAllSubGoals && <SuccessMessage message={SUCCESS_MESSAGES.REMOVE_ALL_SUBGOALS} />}
-          <div className="md:w-1/2 h-full relative">
+          <div className="md:w-1/2 h-full">
       
         <form id="goalForm" onSubmit={submitHandler}>
           <input
@@ -459,17 +459,17 @@ const MainGoal = ({
               </div>
             )}
 
-            <div className="flex justify-between">
+            <div className="flex justify-around w-full">
               {mainGoalData._id && (
                 <button
-                  className="absolute left-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
+                  className="bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
                   data-testid="delete"
                   onClick={onDeleteMainGoal}
                 >
                   Delete
                 </button>
               )}
-              <button className="absolute right-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5">
+              <button className=" bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5">
                 Save
               </button>
             </div>

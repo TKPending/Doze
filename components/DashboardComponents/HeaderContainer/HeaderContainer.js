@@ -160,7 +160,7 @@ const HeaderContainer = () => {
     >
       {errorMessage && <ErrorMessage message={errorMessage} />}
 
-      <form className="flex flex-col w-auto pl-[5%] mb-2">
+      <form className="flex flex-col w-auto pl-[5%] mb-2 w-full">
         {isHeader && (
           <HeaderBackground
             setValidHeader={setValidHeader}

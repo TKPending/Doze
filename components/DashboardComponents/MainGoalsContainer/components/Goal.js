@@ -18,7 +18,7 @@ const Goal = ({ goal, deleteOneMainGoalFromDashboard }) => {
       <label className="lg:absolute lg:right-10 flex flex-col justify-center items-center w-1/4 md:w-1/4 font-medium">
         {/* {goal.completed}% */}
         <progress
-          value={goal.completed}
+          value={goal.completed > 0 && goal.completed}
           max="100"
           className="progress progress-primary opacity-75 md:w-full w-full"
         ></progress>

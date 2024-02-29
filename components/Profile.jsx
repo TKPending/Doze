@@ -113,7 +113,7 @@ const Profile = () => {
           <div className="flex flex-col gap-10">
             <form onSubmit={onChangeEmailSubmit}>
               <h2 className="font-bold">Email</h2>
-              <div className="flex gap-5 items-center mt-3">
+              <div className="flex flex-col gap-5 items-start md:items-center mt-3 md:flex-row">
                 <label
                   for="currentEmail"
                   className="flex flex-col text-sm text-gray-600"
@@ -158,7 +158,7 @@ const Profile = () => {
 
             <form onSubmit={onChangePasswordSubmit}>
               <h2 className="font-bold">Password</h2>
-              <div className="flex gap-5 items-center mt-3">
+              <div className="flex flex-col gap-5 items-start md:items-center mt-3 md:flex-row">
                 <label
                   htmlFor="currentPassword"
                   className="flex flex-col text-sm text-gray-600"
@@ -198,7 +198,7 @@ const Profile = () => {
 
             <form onSubmit={onDeleteAccountSubmit}>
               <h2 className="font-bold ">Delete my account</h2>
-              <div className="flex gap-5 mt-3">
+              <div className="flex flex-col gap-5 items-start md:items-center mt-3 md:flex-row">
                 <label
                   for="emailToDelete"
                   className="flex flex-col text-sm text-gray-600"

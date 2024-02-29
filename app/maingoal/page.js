@@ -36,7 +36,7 @@ export default function MainGoalPage() {
   }, [errorMessage, successStatus]);
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-full w-screen">
     {successStatus || errorMessage && 
       <div className="h-screen w-screen z-10 absolute">
         {successStatus && (
