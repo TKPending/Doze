@@ -28,6 +28,7 @@ const {
   updateDashboardQuote,
   updateDashboardBackground,
 } = require("../controllers/headerControllers");
+const { sendMessage } = require("../controllers/messageController")
 
 // Authentication
 router.post("/signup", signUp);
@@ -123,5 +124,8 @@ router.patch(
   passport.authenticate(["jwt"], { session: false }),
   updateDashboardQuote
 );
+
+// Message
+router.post("/message", sendMessage);
 
 module.exports = router;
