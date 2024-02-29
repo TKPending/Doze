@@ -5,6 +5,7 @@ import ProfileClient from "@/util/clients/profileClient";
 
 const Profile = () => {
   const { user } = useContext(Context);
+
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -73,8 +74,9 @@ const Profile = () => {
         if (confirmation.toUpperCase() === "Y") {
           await ProfileClient.deleteAccountReq(user._id);
           setEmailToDelete({ email: "" });
+          localStorage.removeItem("user");
           confirm("Your account was deleted");
-          window.location = "/";
+          return;
         } else {
           return;
         }
@@ -85,6 +87,7 @@ const Profile = () => {
       console.log(err);
     }
   };
+
   return (
     <main>
       <section className="flex flex-col items-center px-6 lg:px-8 py-10 md:py-24">
