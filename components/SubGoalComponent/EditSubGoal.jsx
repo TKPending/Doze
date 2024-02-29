@@ -72,7 +72,7 @@ const EditSubGoal = ({
 
     setSuccessStatus(true);
     setTaskUpdated(true);
-    handleRemoveOldTask(taskClicked)
+    // handleRemoveOldTask(taskClicked)
   };
 
   useEffect(() => {
