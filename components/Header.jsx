@@ -67,24 +67,24 @@ const Header = () => {
               {toggleMobileMenu && (
                 <div className="absolute right-0 top-full mt-3 w-full  p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2  shadow">
                   <div>
-                    <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">
+                    <span className="block text-sm text-gray-900 p-1">
                       {user.username}
                     </span>
-                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">
+                    <span className="block text-sm  text-gray-500 truncate p-1">
                       {user.email}
                     </span>
-                    <hr className="my-2 border-gray-300 dark:border-gray-700" />
+                    <hr className="my-2 border-gray-300" />
                   </div>
                   <Link
                     href="/profile"
-                    className="hover:bg-slate-100 rounded-full p-2 w-full"
+                    className="hover:bg-slate-100 rounded-full p-2 w-full text-black"
                     onClick={() => setToggleMobileMenu(false)}
                   >
                     Profile
                   </Link>
                   <Link
                     href="/about"
-                    className="hover:bg-slate-100 rounded-full p-2 w-full"
+                    className="hover:bg-slate-100 rounded-full p-2 w-full text-black"
                     onClick={() => setToggleMobileMenu(false)}
                   >
                     About us
@@ -92,6 +92,7 @@ const Header = () => {
                   <Link
                     href="/"
                     className="hover:bg-slate-100 rounded-full p-2 w-full"
+
                     onClick={signOutReq}
                   >
                     Sign out
@@ -119,7 +120,7 @@ const Header = () => {
 
         {/* Mobile navigation */}
         {user ? (
-          <div className="sm:hidden flex relative text-lg">
+          <div className="sm:hidden flex relative text-lg text-black">
             <button
               className="text-4xl "
               onClick={() => setToggleMobileMenu((prev) => !prev)}
@@ -129,31 +130,31 @@ const Header = () => {
             {toggleMobileMenu && (
               <div className="absolute right-0 top-full mt-3 w-full  p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 shadow">
                 <div>
-                  <span className="block text-sm text-gray-900 dark:text-gray-400 p-1">
+                  <span className="block text-sm text-gray-900 p-1">
                     {user.username}
                   </span>
-                  <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 p-1">
+                  <span className="block text-sm  text-gray-500 truncate p-1">
                     {user.email}
                   </span>
-                  <hr className="my-2 border-gray-300 dark:border-gray-700" />
+                  <hr className="my-2 border-gray-300" />
                 </div>
                 <Link
                   href="/dashboard"
-                  className="hover:bg-slate-100 rounded-full p-2 w-full"
+                  className="hover:bg-slate-100 rounded-full p-2 w-full text-black"
                   onClick={() => setToggleMobileMenu(false)}
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/profile"
-                  className="hover:bg-slate-100 rounded-full p-2 w-full"
+                  className="hover:bg-slate-100 rounded-full p-2 w-full text-black"
                   onClick={() => setToggleMobileMenu(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   href="/about"
-                  className="hover:bg-slate-100 rounded-full p-2 w-full"
+                  className="hover:bg-slate-100 rounded-full p-2 w-full text-black"
                   onClick={() => setToggleMobileMenu(false)}
                 >
                   About us
@@ -162,6 +163,7 @@ const Header = () => {
                   href="/signup"
                   className="hover:bg-slate-100 rounded-full p-2 w-full"
                   onClick={signOutReq}
+
                 >
                   Sign out
                 </Link>
