@@ -76,6 +76,7 @@ const Profile = () => {
           setEmailToDelete({ email: "" });
           localStorage.removeItem("user");
           confirm("Your account was deleted");
+          window.location = "/"
           return;
         } else {
           return;
