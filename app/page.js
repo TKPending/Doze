@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Hero from "../public/Hero.png";
+import HeroDesktop from "../public/DozeWindow.png";
+import HeroMobile from "../public/DozePhone.png"
 import Link from "next/link";
 export default function Home() {
   return (
@@ -24,7 +25,7 @@ export default function Home() {
               Set your goals
             </Link>
             <a
-              href="#"
+              href="/about"
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               Learn more <span aria-hidden="true">→</span>
@@ -124,13 +125,27 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <Image
-              src={Hero}
-              alt="Product screenshot"
-              className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
-              width={2432}
-              height={1442}
-            />
+            <div className="lg:hidden">
+              <Image
+                src={HeroMobile}
+                alt="Mobile Product screenshot"
+                className="w-[32rem] max-w-screen rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[40rem]"
+                href="/signup"
+                width={1616}
+                height={955}
+              />
+            </div>
+
+            {/* Desktop Hero Image (Hidden on smaller screens) */}
+            <div className="hidden lg:block">
+              <Image
+                src={HeroDesktop}
+                alt="Desktop Product screenshot"
+                className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
+                width={2432}
+                height={1442}
+              />
+            </div>
           </div>
         </div>
       </section>

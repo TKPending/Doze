@@ -11,6 +11,9 @@ const Header = () => {
   const router = useRouter();
 
   const signOutReq = async (e) => {
+    if (toggleMobileMenu) {
+      setToggleMobileMenu(false);
+    }
     try {
       e.preventDefault();
       await AuthClient.signOutUser();
@@ -87,7 +90,7 @@ const Header = () => {
                     About us
                   </Link>
                   <Link
-                    href="/signout"
+                    href="/"
                     className="hover:bg-slate-100 rounded-full p-2 w-full"
                     onClick={signOutReq}
                   >
@@ -156,9 +159,9 @@ const Header = () => {
                   About us
                 </Link>
                 <Link
-                  href="/signout"
+                  href="/signup"
                   className="hover:bg-slate-100 rounded-full p-2 w-full"
-                  onClick={() => setToggleMobileMenu(false)}
+                  onClick={signOutReq}
                 >
                   Sign out
                 </Link>
@@ -183,11 +186,11 @@ const Header = () => {
                   Sign in
                 </Link>
                 <Link
-                  href="/signout"
+                  href="/signup"
                   className="hover:bg-slate-100 rounded-full p-2 w-full"
                   onClick={() => setToggleMobileMenu(false)}
                 >
-                  Sign out
+                  Sign up
                 </Link>
               </div>
             )}

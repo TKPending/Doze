@@ -175,7 +175,7 @@ const HeaderContainer = () => {
 
         <input
           type="text"
-          className={`underline h-16  ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"} px-2 rounded-md ${sectionError == "title" ? "text-red-500" : "text-black"} ${sectionError == "title" && "w-auto"} font-semibold text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
+          className={`underline h-16  ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"} px-2 rounded-md ${sectionError == "title" ? "text-red-500" : "text-black"} ${sectionError == "title" && "w-auto"} font-semibold text-2xl md:text-4xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold`}
           value={errorMessage && sectionError == "title" ? errorMessage : title}
           onChange={(e) => handleValueChange(e, setTitle)}
           onKeyDown={(e) =>
@@ -187,7 +187,7 @@ const HeaderContainer = () => {
         />
         <input
           type="text"
-          className={`ml-[2%] italic h-8 rounded-md px-2 font-semibold ${sectionError == "quote" ? "text-red-500" : "text-black"} ${sectionError == "quote" && "w-auto"} text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold mt-1 ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"}`}
+          className={`ml-[2%] italic h-8 rounded-md px-2 font-semibold ${sectionError == "quote" ? "text-red-500" : "text-black"} ${sectionError == "quote" && "w-auto"} text-base md:text-xl border-none bg-transparent focus:border-none outline-none placeholder:text-black placeholder:font-semibold mt-1 ${imageLink === "" ? "w-full" : "bg-gray-200 bg-opacity-50"}`}
           value={errorMessage && sectionError == "quote" ? failMessage : quote}
           onChange={(e) => handleValueChange(e, setQuote)}
           onKeyDown={(e) =>

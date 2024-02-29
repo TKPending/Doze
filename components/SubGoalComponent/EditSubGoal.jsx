@@ -165,19 +165,21 @@ const EditSubGoal = ({
         </div>
 
         <form
-          className="flex flex-col items-center w-full h-full"
+          className="flex flex-col items-center justify-center w-full h-full"
           onSubmit={saveSubGoal}
         >
           <a onClick={toggleEmojiPicker} className="mb-5 hover:cursor-pointer">
             <span className="text-6xl">{subGoalData.icon}</span>
           </a>
           {isOpen && (
+            <div className="absolute">
             <Picker
               data={data}
               onEmojiSelect={handleEmoji}
               onClickOutside={toggleEmojiPicker}
               maxFrequentRows={0}
             />
+            </div>
           )}
 
           <input

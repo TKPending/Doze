@@ -214,6 +214,8 @@ const MainGoal = ({
     }
   }, [errorMessage]);
 
+  {/* <div className="md:absolute lg:absolute flex justify-center items-center md:left-2.5 lg:left-5 md:top-20 lg:top-24 mb-2.5"> */}
+
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
       {Array.isArray(mainGoalData) || !mainGoalData.startDate && !mainGoalData._id ? (
@@ -242,7 +244,7 @@ const MainGoal = ({
           <div className="flex items-center justify-center border border-[#7899D4] py-10 flex-col gap-4">
             
             {mainGoalData._id && (
-            <div className="md:absolute lg:absolute flex justify-center items-center md:left-2.5 lg:left-5 md:top-20 lg:top-24 mb-2.5">
+            <div className="">
               <div className="flex items-center flex-col">
               {/* <ProgressBar /> */}
               <div
@@ -266,7 +268,7 @@ const MainGoal = ({
                 <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
-                <div className="absolute sm:left-5">
+                <div className="absolute left-5">
                   <Picker
                     data={data}
                     onEmojiSelect={handleEmoji}
