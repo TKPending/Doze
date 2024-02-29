@@ -11,7 +11,7 @@ exports.signUp = async (req, res, next) => {
     const email = req.body.email;
 
     if (!emailRegex.test(email)) {
-      return res.json({ error: 'Invalid email format' });
+      return res.status(400).json({ error: "Invalid email format" });
     }
 
     if (req.body.username == "") {
@@ -60,7 +60,9 @@ exports.signIn = async (req, res, next) => {
     }
     res.json({ message: "Sign in" });
   } catch (error) {
-    return res.status(400).json({ error: "Failure to sign in. User doesn't exist" });
+    return res
+      .status(400)
+      .json({ error: "Failure to sign in. User doesn't exist" });
     // return next(createError(500, error.message));
   }
 };

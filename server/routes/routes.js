@@ -7,6 +7,11 @@ const {
   signOut,
 } = require("../controllers/authenticationControllers");
 const {
+  changeEmail,
+  changePassword,
+  deleteAccount,
+} = require("../controllers/profileControllers");
+const {
   addOneGoal,
   getOneMainGoal,
   changeOneMainGoal,
@@ -19,7 +24,7 @@ const {
   deleteSubGoal,
   getSubGoals,
   deleteAllSubGoalsFromStages,
-  deleteAllSubGoalsFromMainGoal
+  deleteAllSubGoalsFromMainGoal,
 } = require("../controllers/subGoalControllers");
 const passport = require("passport");
 const {
@@ -39,6 +44,23 @@ router.get(
   getUser
 );
 router.post("/signout", signOut);
+
+//Profile
+router.post(
+  "/user/changeEmail",
+  passport.authenticate(["jwt"], { session: false }),
+  changeEmail
+);
+router.post(
+  "/user/changePassword",
+  passport.authenticate(["jwt"], { session: false }),
+  changePassword
+);
+router.delete(
+  "/user",
+  passport.authenticate(["jwt"], { session: false }),
+  deleteAccount
+);
 
 // Main Goals
 router.post(
@@ -100,8 +122,6 @@ router.delete(
   passport.authenticate(["jwt"], { session: false }),
   deleteAllSubGoalsFromMainGoal
 );
-
-
 
 // Header Data - Header title, quote and background
 router.get(
