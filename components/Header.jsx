@@ -77,7 +77,7 @@ const Header = () => {
                     className="hover:bg-slate-100 rounded-full p-2 w-full"
                     onClick={() => setToggleMobileMenu(false)}
                   >
-                    Profile settings
+                    Profile
                   </Link>
                   <Link
                     href="/aboutus"
