@@ -31,7 +31,6 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
-  console.log(mainGoalData, "26");
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -199,7 +198,7 @@ const MainGoal = ({
   ]);
 
   useEffect(() => {
-    if (!mainGoalData.title) {
+    if (!mainGoalData.title && !mainGoalData._id) {
       handleMainGoalsPageError(setErrorMessage, mainGoalData.error);
       setTimeout(() => {
         router.push("/dashboard");
@@ -217,7 +216,7 @@ const MainGoal = ({
 
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
-      {Array.isArray(mainGoalData) || !mainGoalData.title ? (
+      {Array.isArray(mainGoalData) || !mainGoalData.startDate && !mainGoalData._id ? (
         <ErrorMessage message={errorMessage} />
       ) : (
         <>
