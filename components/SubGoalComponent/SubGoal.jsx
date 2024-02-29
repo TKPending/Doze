@@ -215,7 +215,7 @@ const SubGoal = ({
             </div>
 
             <form
-              className="flex flex-col items-center w-full h-full"
+              className="flex flex-col items-center justify-center w-full h-full"
               onSubmit={subGoalFormHandler}
             >
               <a

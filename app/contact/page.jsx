@@ -42,7 +42,7 @@ const ContactPage = () => {
   return (
     <div className="w-screen flex-col h-full flex items-center justify-center lg:px-40 md:px-10 px-5 py-">
       {/* Contact Text */}
-      <div className="text-center mt-[8%] w-1/2">
+      <div className="text-center mt-[8%] sd:w-3/4 md:w-1/2">
         <h1 className="mb-6 text-4xl tracking-tight font-extrabold">
           Contact <span className="text-indigo-600">Us</span>
         </h1>
@@ -122,7 +122,7 @@ const ContactPage = () => {
         {/* Submit */}
         <button
           type="submit"
-          className={`max-w-[30%] h-16 font-bold ${messageSent ? "bg-green-500" : "hover:bg-white hover:text-indigo-600 hover:border hover:border-indigo-600 bg-indigo-600"} text-white py-3 px-5 text-center rounded-lg`}
+          className={`sd:max-w-[50%] md:max-w-[30%] h-16 font-bold ${messageSent ? "bg-green-500" : "hover:bg-white hover:text-indigo-600 hover:border hover:border-indigo-600 bg-indigo-600"} text-white py-3 px-5 text-center rounded-lg`}
         >
           {messageSent ? "Message Sent" : "Send message"}
         </button>

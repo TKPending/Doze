@@ -1,6 +1,6 @@
 const ErrorMessage = ({ message }) => {
   return (
-    <div role="alert" className="z-10 alert alert-error max-w-[40%] md:max-w-[30%] text-center text-white absolute mt-4 right-4">
+    <div role="alert" className="z-10 alert alert-error sd:w-full md:max-w-[20%] md:max-w-[30%] text-center text-white sm:flex sm:justify-center md:absolute mt-4 right-4">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="stroke-current shrink-0 h-6 w-6"
