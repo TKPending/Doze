@@ -31,7 +31,6 @@ const MainGoal = ({
   },
 }) => {
   const [mainGoalData, setMainGoalData] = useState(initialMainGoalData);
-  console.log(mainGoalData, "26");
   const [tagInput, setTagInput] = useState("");
   const [selectedColour, setSelectedColour] = useState("");
   const [isOpen, setIsOpen] = useState(false);
