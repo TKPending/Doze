@@ -84,7 +84,7 @@ class SubGoalsClient {
   async deleteAllSubGoalsInStages(stage) {
     try {
       const response = await axios.delete(
-        `${SERVER}/mainGoal/stages_delete_al/${stage}`
+        `${SERVER}/mainGoal/stages_delete_all/${stage}`
       );
 
       if (!response) {
