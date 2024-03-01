@@ -16,11 +16,11 @@ const SubGoalComponent = ({ subGoal, onClick }) => {
   return (
     <div
       onClick={() => onClick(subGoal)}
-      className="relative h-16 border border-indigo-600 hover:scale-105 transition duration-200 rounded-2xl flex items-center justify-between p-4 cursor-pointer"
+      className="relative h-16 max-h-auto lg:w-full md:w-full border border-indigo-600 hover:scale-105 transition duration-200 rounded-2xl flex items-center justify-between p-4 cursor-pointer"
     >
-      <div className="h-16 flex gap-4 items-center">
+      <div className="h-16 flex lg:gap-4 sm:gap-4 md:gap-0 md:flex-col lg:flex-row sm:flex-row items-center">
         <div className="h-6 font-bold w-6">{subGoal.icon}</div>
-        <p className="font-medium">{subGoal.title}</p>
+        <p className="font-medium lg:text-base text-sm text-center">{subGoal.title}</p>
         <div className="absolute right-1 top-1">
         <svg className="rounded-full" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={showCircle(subGoal)} stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle"><circle cx="12" cy="12" r="10"/></svg>
         </div>

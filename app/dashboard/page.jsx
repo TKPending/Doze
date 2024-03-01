@@ -20,7 +20,7 @@ const DashboardPage = () => {
   }, [user])
 
   return (
-    <div className="h-min-screen w-full bg-white flex flex-col overscroll-none md:px-40 px-5 py-6 h-full">
+    <div className="h-min-screen w-full bg-white flex flex-col gap-8 overscroll-none lg:px-40 md:px-10 px-5 py-6 h-full">
       <HeaderContainer />
       <MainGoalsContainer />
       <SubGoalsContainer />

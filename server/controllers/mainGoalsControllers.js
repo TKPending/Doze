@@ -8,6 +8,10 @@ exports.addOneGoal = async (req, res, next) => {
     const maxDate = new Date(req.body.startDate);
     maxDate.setMonth(maxDate.getMonth() + 3);
 
+    if (!req.body.title || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "Invalid request body or empty title" });
+    }
+
     const goal = new MainGoals({
       title: req.body.title,
       startDate: req.body.startDate,
@@ -34,8 +38,7 @@ exports.getOneMainGoal = async (req, res, next) => {
     if (goal.userId !== userId) {
       return next(createError(404, "No such goal"));
     }
-
-    res.json(goal);
+    res.json(addGoalComplition(goal));
   } catch (error) {
     return next(createError(500, error.message));
   }
@@ -70,6 +73,11 @@ exports.deleteOneMainGoal = async (req, res, next) => {
   try {
     const mainGoalId = req.params.id;
     const userId = req.user._id.toString();
+    const goal = await MainGoals.findById(mainGoalId);
+
+    if (goal.userId !== userId) {
+      return next(createError(404, "No such goal"));
+    }
 
     await MainGoals.deleteMany({
       _id: mainGoalId,
@@ -82,6 +90,16 @@ exports.deleteOneMainGoal = async (req, res, next) => {
   }
 };
 
+const addGoalComplition = (goal) => {
+  const allSubGoalsCount = goal.subGoals.length;
+  const completedSubGoals = goal.subGoals.filter((subGoal) => {
+    return subGoal.status === "Complete";
+  });
+  const completedSubGoalsCount = completedSubGoals.length;
+  const result = Math.floor((completedSubGoalsCount / allSubGoalsCount) * 100);
+  return { ...goal.toObject(), completed: result };
+};
+
 exports.getAllMainGoalsForDashboard = async (req, res, next) => {
   try {
     const userId = req.user._id.toString();
@@ -89,9 +107,10 @@ exports.getAllMainGoalsForDashboard = async (req, res, next) => {
     if (!goals) {
       return next(createError(404, "No goals were found"));
     }
-    res.json(goals);
+
+    const goalsWithComplition = goals.map(addGoalComplition);
+    res.json(goalsWithComplition);
   } catch (error) {
     return next(createError(500, error.message));
-
   }
 };

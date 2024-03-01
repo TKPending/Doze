@@ -11,6 +11,13 @@ import { useRouter } from "next/navigation";
 import MainGoalsClient from "@/util/clients/mainGoalsClient";
 import EditSubGoal from "../SubGoalComponent/EditSubGoal";
 import SubGoalsClient from "@/util/clients/subGoalsClient";
+import ErrorMessage from "../MessageComponent/ErrorMessage";
+import {
+  handleMainGoalsPageError,
+  handleSubGoalError,
+} from "@/util/handleErrors";
+import SuccessMessage from "../MessageComponent/SuccessMessage";
+import { SUCCESS_MESSAGES } from "@/util/messages";
 
 const MainGoal = ({
   onSave,
@@ -32,6 +39,9 @@ const MainGoal = ({
   const [taskClicked, setTaskClicked] = useState({});
   const [taskUpdated, setTaskUpdated] = useState(false);
   const [emptyAllSubGoals, setEmptyAllSubGoals] = useState(false);
+  // ERROR HANDLING
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [successStatus, setSuccessStatus] = useState(false);
   const router = useRouter();
   const handleInputValue = (e) => {
     if (e.target.name === "title") {
@@ -55,7 +65,6 @@ const MainGoal = ({
     e.preventDefault();
     //PUT and POST request
     onSave(mainGoalData);
-    router.push("/dashboard");
   };
 
   const handleEmoji = (e) => {
@@ -114,10 +123,22 @@ const MainGoal = ({
   //DELETE - deleting main goal
   const onDeleteMainGoal = async (e) => {
     e.preventDefault();
-    const response = await MainGoalsClient.deleteOneMainGoalReq(
-      mainGoalData._id
-    );
-    router.push("/dashboard");
+    try {
+      const response = await MainGoalsClient.deleteOneMainGoalReq(
+        mainGoalData._id
+      );
+
+      if (!response.success) {
+        const customErrorMessage = "Failed to delete main goal";
+        handleMainGoalsPageError(setErrorMessage, customErrorMessage);
+        return;
+      }
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(
+        "Problem: Check how this function is coded. Check endpoints and routes."
+      );
+    }
   };
 
   // Add logic to empty all Sub Goals
@@ -126,8 +147,10 @@ const MainGoal = ({
       mainGoalData._id
     );
 
-    if (!response) {
-      console.log("Problem emptying sub goals in main goals page!");
+    if (!response.success) {
+      const customErrorMessage = "Problem deleting all goals";
+      handleSubGoalError(setErrorMessage, customErrorMessage);
+      return;
     }
 
     setEmptyAllSubGoals(true);
@@ -135,14 +158,31 @@ const MainGoal = ({
 
   useEffect(() => {
     if (emptyAllSubGoals) {
-      setEmptyAllSubGoals(false);
+      setTimeout(() => {setEmptyAllSubGoals(false)}, 2500);
     }
 
     const fetchData = async () => {
-      const response = await MainGoalsClient.getOneMainGoalReq(
-        mainGoalData._id
-      );
-      setMainGoalData(response);
+      try {
+        const response = await MainGoalsClient.getOneMainGoalReq(
+          mainGoalData._id
+        );
+
+        if (!response.success) {
+          const customErrorMessage = "Problem when re-fetching one main goal";
+          handleMainGoalsPageError(setErrorMessage, customErrorMessage);
+          setMainGoalData([]);
+          setTimeout(() => {
+            router.push("/dashboard");
+          }, 2500);
+          return;
+        }
+
+        setMainGoalData(response.data);
+      } catch (err) {
+        console.error(
+          "Problem with fetching one main goal. Check line 154-156"
+        );
+      }
     };
 
     if (!mainGoalData._id) {
@@ -157,9 +197,40 @@ const MainGoal = ({
     isEditModalVisible,
   ]);
 
+  useEffect(() => {
+    if (!mainGoalData.title && !mainGoalData._id) {
+      handleMainGoalsPageError(setErrorMessage, mainGoalData.error);
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage(false);
+      }, 3000);
+    }
+  }, [errorMessage]);
+
+  {/* <div className="md:absolute lg:absolute flex justify-center items-center md:left-2.5 lg:left-5 md:top-20 lg:top-24 mb-2.5"> */}
+
   return (
     <div className="w-full flex justify-center items-center mb-20 mt-24">
-      <div className="md:w-1/2 h-full relative">
+      {Array.isArray(mainGoalData) || !mainGoalData.startDate && !mainGoalData._id ? (
+        <ErrorMessage message={errorMessage} />
+      ) : (
+        <>
+          {errorMessage && (
+            <div className="h-screen w-screen ">
+              <ErrorMessage message={errorMessage} />
+            </div>
+          )}
+
+          {emptyAllSubGoals && <SuccessMessage message={SUCCESS_MESSAGES.REMOVE_ALL_SUBGOALS} />}
+          <div className="md:w-1/2 h-full">
+      
         <form id="goalForm" onSubmit={submitHandler}>
           <input
             data-testid="title"
@@ -169,13 +240,35 @@ const MainGoal = ({
             value={mainGoalData.title}
             onChange={handleInputValue}
           />
-          <div className="relative flex items-center justify-center border border-indigo-600 rounded-md flex-col w-full h-full">
+          
+          <div className="flex items-center justify-center border border-[#7899D4] py-10 flex-col gap-4">
             
+            {mainGoalData._id && (
+            <div className="">
+              <div className="flex items-center flex-col">
+              {/* <ProgressBar /> */}
+              <div
+                className="radial-progress text-indigo-400 circle-progress font-bold rounded-full"
+                style={{
+                  "--value": `${mainGoalData.completed}`,
+                  "--size": "5rem",
+                  "--thickness": "1rem",
+                }}
+                role="progressbar"
+              >
+                {mainGoalData.completed}%
+              </div>
+             </div>
+            </div>
+          )}
+          
+            <div className="">
               <button onClick={toggleEmojiPicker} className="mb-5 mt-6">
+
                 <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
-                <div className="absolute">
+                <div className="absolute left-5">
                   <Picker
                     data={data}
                     onEmojiSelect={handleEmoji}
@@ -183,6 +276,7 @@ const MainGoal = ({
                   />
                 </div>
               )}
+            </div>
            
             <p className="text-center mb-2.5 text-gray-800">Select a start date</p>
             
@@ -220,6 +314,7 @@ const MainGoal = ({
                 onChange={handleTagInputChange}
                 className="input border border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600 w-44 h-8"
                 placeholder="Tags"
+                disabled={errorMessage}
               />
               <button
                 className="flex items-center border bg-indigo-600 text-white rounded-md hover:bg-white hover:border-indigo-600 hover:text-black transition duration-200 p-2.5 ml-4 h-8 w-8"
@@ -236,6 +331,7 @@ const MainGoal = ({
                   id="blue"
                   name="colour"
                   value="blue"
+                  disabled={errorMessage}
                   defaultChecked={selectedColour === "blue"}
                   onChange={() => handleColourChange("blue")}
                   className="radio border-blue-400 checked:bg-blue-400 bg-blue-400 mt-1"
@@ -256,6 +352,7 @@ const MainGoal = ({
                   id="lime"
                   name="colour"
                   value="lime"
+                  disabled={errorMessage}
                   checked={selectedColour === "lime"}
                   onChange={() => handleColourChange("lime")}
                   className="radio border-lime-400 checked:bg-lime-400 bg-lime-400 ml-2 mt-1"
@@ -266,6 +363,7 @@ const MainGoal = ({
                   id="purple"
                   name="colour"
                   value="purple"
+                  disabled={errorMessage}
                   checked={selectedColour === "purple"}
                   onChange={() => handleColourChange("purple")}
                   className="radio border-purple-400 checked:bg-purple-400 bg-purple-400 ml-2 mt-1"
@@ -276,6 +374,7 @@ const MainGoal = ({
                   id="yellow"
                   name="colour"
                   value="yellow"
+                  disabled={errorMessage}
                   checked={selectedColour === "yellow"}
                   onChange={() => handleColourChange("yellow")}
                   className="radio border-yellow-400 checked:bg-yellow-400 bg-yellow-400 ml-2 mt-1"
@@ -286,6 +385,7 @@ const MainGoal = ({
                   id="orange"
                   name="colour"
                   value="orange"
+                  disabled={errorMessage}
                   checked={selectedColour === "orange"}
                   onChange={() => handleColourChange("orange")}
                   className="radio border-orange-400 checked:bg-orange-400 bg-orange-400 ml-2 mt-1"
@@ -296,6 +396,7 @@ const MainGoal = ({
                   id="pink"
                   name="colour"
                   value="pink"
+                  disabled={errorMessage}
                   checked={selectedColour === "pink"}
                   onChange={() => handleColourChange("pink")}
                   className="radio border-pink-400 checked:bg-pink-400 bg-pink-400 ml-2 mt-1"
@@ -323,6 +424,7 @@ const MainGoal = ({
                 name="description"
                 onChange={handleInputValue}
                 value={mainGoalData.description}
+                className="textarea h-18 input-bordered md:w-1/2 w-60 mb-5 border-indigo-600 focus:border-indigo-600 focus:outline-indigo-600"
               ></textarea>
            
 <span className="h-0.5 bg-indigo-600 opacity-25 mt-10 w-5/6"></span>
@@ -335,7 +437,7 @@ const MainGoal = ({
                   )}
                 </div>
 
-                <div className="p-2 grid grid-cols-3 gap-4 h-auto mb-8">
+                <div className="p-2 overflow-hidden grid lg:grid-cols-3 md:grid-cols-3 grid-rows-1 gap-4 h-auto mb-8">
                   {mainGoalData.subGoals.map((subGoal, index) => (
                     <SubGoalComponent
                       key={index}
@@ -358,17 +460,17 @@ const MainGoal = ({
               </div>
             )}
 
-            <div className="flex justify-between">
+            <div className="flex justify-around w-full">
               {mainGoalData._id && (
                 <button
-                  className="absolute left-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
+                  className="bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5"
                   data-testid="delete"
                   onClick={onDeleteMainGoal}
                 >
                   Delete
                 </button>
               )}
-              <button className="absolute right-4 bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5">
+              <button className=" bottom-4 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 rounded-md p-2 pl-5 pr-5">
                 Save
               </button>
             </div>
@@ -391,6 +493,8 @@ const MainGoal = ({
           />
         )}
       </div>
+      </>
+      )}
     </div>
   );
 };

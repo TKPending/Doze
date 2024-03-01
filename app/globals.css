@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.circle-progress {
+    box-shadow: inset 0px 0px 0px 15px lightgrey
+}
+
+* {
+    scroll-behavior: smooth;
+}

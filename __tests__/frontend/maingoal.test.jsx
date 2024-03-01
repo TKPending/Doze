@@ -13,6 +13,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("@/util/clients/mainGoalsClient");
+jest.mock("@/util/handleErrors");
 
 describe("MainGoal", () => {
   it("renders MainGoal component without crashing", () => {
@@ -44,8 +45,8 @@ describe("MainGoal", () => {
       const tags = screen.queryAllByTestId("tag");
 
       expect(tags.length).toBe(2);
-      expect(tags[0].textContent).toBe("cats");
-      expect(tags[1].textContent).toBe("dogs");
+      expect(tags[0].textContent).toBe("catsx");
+      expect(tags[1].textContent).toBe("dogsx");
     });
   });
 
