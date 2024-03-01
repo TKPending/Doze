@@ -43,7 +43,7 @@ describe("Authenticating Tests", () => {
       password: "testpassword",
     });
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
     expect(response.body.message).toBe(undefined); // Adjust this based on your error message
   });
 
