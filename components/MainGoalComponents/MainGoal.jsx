@@ -262,13 +262,13 @@ const MainGoal = ({
             </div>
           )}
           
-            <div className="">
+            <div className="relative">
               <button onClick={toggleEmojiPicker} className="mb-5 mt-6">
 
                 <span className="text-6xl">{mainGoalData.icon}</span>
               </button>
               {isOpen && (
-                <div className="absolute left-5">
+                <div className="absolute left-[-140px]">
                   <Picker
                     data={data}
                     onEmojiSelect={handleEmoji}
